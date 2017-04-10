@@ -1,0 +1,8 @@
+/* You can add global styles to this file, and also import other style files */
+.grid {
+  width: 100%;
+  margin: 0rem !important;
+}
+.row {
+    padding: 5px 0px !important;
+}

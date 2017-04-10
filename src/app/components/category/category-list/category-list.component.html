@@ -1,0 +1,45 @@
+<div class="ui grid">
+  <div class="three column row">
+    <div class="column">
+      <button class="ui labeled icon button" (click)="add_new_category('create')">
+        <i class="cubes icon"></i>
+        New
+      </button>
+    </div>
+  </div>
+  <div class="three column row">
+    <div class="column">
+      <div class="ui input">
+        <input type="text" placeholder="Search..." (ngModelChange)="myFilter($event)" [(ngModel)]="filterText">
+      </div>
+    </div>
+  </div>
+</div>
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Qty</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of categorys">
+      <td>{{item.cate_name}}</td>
+      <td>{{item.cate_description}}</td>
+      <td>{{item.product_qty}}</td>
+      <td></td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr><th colspan="4">
+      <div class="ui right floated pagination menu">
+        <!--page-->
+        <select class="ui search dropdown" (change) = "pageClick($event.target.value)">
+          <option *ngFor="let page of pageList">{{page}}</option>
+        </select>
+      </div>
+    </th>
+  </tr></tfoot>
+</table>

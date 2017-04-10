@@ -1,0 +1,36 @@
+<div class="head-menu" [hidden]="hiddenLogin">
+  <div class="ui inverted menu">
+    <div class="ui icon buttons">
+      <!--<div class="ui primary button" (click)="sidenav.toggle()">MENU</div>-->
+      <button class="large ui black button" (click)="sidenav.toggle()"><i class="align justify icon"></i> Menu</button>
+    </div>
+  </div>
+</div>
+
+<div class="body-side">
+  <md-sidenav-container class="sidenav-fab-container">
+    <md-sidenav #sidenav mode="side" [opened]="showSide">
+      <div class="scrolling-content">
+        <div class="ui inverted vertical labeled icon menu">
+          <a class="item" routerLink="/category_list" routerLinkActive="active">
+            <i class="cubes icon"></i>
+            Category
+          </a>
+          <a class="item">
+            <i class="video camera icon"></i>
+            Channels
+          </a>
+          <a class="item">
+            <i class="video play icon"></i>
+            Videos
+          </a>
+        </div>  
+      </div>
+    </md-sidenav>
+    <div class="scrolling-content">
+      <div style="margin: 5px;">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </md-sidenav-container>
+</div>

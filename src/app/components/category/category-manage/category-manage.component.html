@@ -1,0 +1,44 @@
+<!--<p-panel header="Category manage">
+    <form #categoryForm="ngForm">
+        <div class="ui-g">
+            <div class="ui-g-4">
+                <label for="categoryName">Category Name:</label>
+                <br/>
+                <input id="categoryName" style="width:100%" type="text" pInputText [(ngModel)]="cate.cateName" 
+                    name="cateName" #cateName="ngModel" required />
+            </div>
+            <div class="ui-g-8">
+                <br/>
+                <div class="required-message" [hidden]="cateName.valid || cateName.pristine">
+                    <i class="fa fa-close"></i>
+                    Category name is required
+                </div>
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-4">
+                <label for="categoryDesciption">Category Description:</label>
+                <br/>
+                <textarea rows="3" id="categoryDesciption" style="width:100%" pInputTextarea autoResize="autoResize" 
+                    name="categoryDesciption" [(ngModel)]="cate.cateDescription"></textarea>
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <label for="categoryStatus">Category Description:</label>
+                <br/>
+                <p-dropdown id="categoryStatus" name="categoryStatus" [options]="statusLists" 
+                    [(ngModel)]="cate.selectedStatus">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <button id="sentCatecory" pButton type="button" label="Save" [disabled]="categoryForm.form.invalid" (click)="confirmSaveCate()"></button>
+            </div>
+        </div>
+    </form>
+</p-panel>
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+
+<p-growl [value]="msgs"></p-growl>-->

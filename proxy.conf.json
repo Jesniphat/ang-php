@@ -1,0 +1,10 @@
+{
+  "/api": {
+    "target": "http://localhost/project_shop_api/api.php",
+    "secure": false
+  },
+  "/upload": {
+    "target": "http://localhost/project_shop_api/upload.php",
+    "secure": false
+  }
+}

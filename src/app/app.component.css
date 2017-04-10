@@ -1,0 +1,38 @@
+.head-menu {
+    width: 100%;
+}
+
+.body-side {
+    width: 100%;
+    min-height: 630px;
+}
+
+.ui.menu{
+    border-radius: 0;
+}
+
+.sidenav-fab-container {
+  width: 100%;
+  min-height: 629px;
+}
+
+.sidenav-fab-container md-sidenav {
+  max-width: 100px;
+  background-color: black;
+}
+
+.sidenav-fab-container .mat-sidenav-content,
+.sidenav-fab-container md-sidenav {
+  display: flex;
+  overflow: visible;
+}
+
+.scrolling-content {
+  overflow: auto;
+}
+
+.fab {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+}

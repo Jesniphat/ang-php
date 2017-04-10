@@ -1,0 +1,43 @@
+<!--<p-panel header="แก้ไขข้อมูลผู้ใช้งาน">
+    <form #editstaffForm="ngForm">
+        <div class="ui-g">
+            <div class="ui-g-4">
+                <label for="staffName">Staff Name:</label>
+                <br/>
+                <input id="staffName" style="width:100%" type="text" pInputText [(ngModel)]="staff.staffName" 
+                    name="staffName" #staffName="ngModel" required />
+            </div>
+            <div class="ui-g-8">
+                <br/>
+                <div class="required-message" [hidden]="staffName.valid || staffName.pristine">
+                    <i class="fa fa-close"></i>
+                    Staff name is required
+                </div>
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-4">
+                <label for="staffUserName">User Name:</label>
+                <br/>
+                <input id="staffUserName" style="width:100%" type="text" pInputText [(ngModel)]="staff.staffUserName" 
+                    name="staffUserName" #staffUserName="ngModel" required />
+            </div>
+            <div class="ui-g-8">
+                <br/>
+                <div class="required-message" [hidden]="staffUserName.valid || staffUserName.pristine">
+                    <i class="fa fa-close"></i>
+                    User name is required
+                </div>
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <button id="sentCatecory" pButton type="button" label="Save" 
+                [disabled]="editstaffForm.form.invalid" (click)="updateStaff()">
+                </button>
+            </div>
+        </div>
+    </form>
+</p-panel>
+
+<p-growl [value]="msgs"></p-growl>-->
