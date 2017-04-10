@@ -1,8 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
-.grid {
+/*.grid {
   width: 100%;
   margin: 0rem !important;
 }
 .row {
     padding: 5px 0px !important;
+}*/
+
+/*.fields {
+  margin-bottom: 10px !important;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.field {
+  padding: 0px !important;
+}*/
+
+.required-message {
+  color: red;
 }

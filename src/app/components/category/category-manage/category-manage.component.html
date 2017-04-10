@@ -42,3 +42,40 @@
 <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
 
 <p-growl [value]="msgs"></p-growl>-->
+<form class="ui form" #categoryForm="ngForm">
+  <h4 class="ui dividing header">Category control</h4>
+  <div class="field">
+    <label>Name</label>
+    <div class="fields">
+      <div class="four wide field">
+        <input type="text" id="categoryName" placeholder="First Name" [(ngModel)]="cate.cateName" name="cateName" #cateName="ngModel" required>
+      </div>
+      <div class="twelve wide field">
+        <div class="required-message" [hidden]="cateName.valid || cateName.pristine">
+            <i class="remove circle outline icon"></i>
+            Category name is required
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Description</label>
+    <div class="fields">
+      <div class="four wide field">
+        <textarea type="text" id="categoryDesciption" placeholder="First Name" [(ngModel)]="cate.cateDescription" 
+        name="categoryDesciption"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Status</label>
+    <div class="four wide field">
+        <select class="ui fluid dropdown" id="categoryStatus" name="categoryStatus" [(ngModel)]="cate.selectedStatus">
+            <option *ngFor="let item of statusLists" [value]='item.value'>
+                {{item.label}}
+            </option>
+        </select>
+    </div>
+  </div>
+  <button class="ui button" type="submit" [disabled]="categoryForm.form.invalid" (click)="confirmSaveCate()">Submit</button>
+</form>

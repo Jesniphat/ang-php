@@ -75,6 +75,8 @@ export class CategoryManageComponent implements OnInit {
   }
 
   private confirmSaveCate(){
+      console.log(this.cate);
+      this.saveCategory();
     //   this.confirmationService.confirm({
     //       message: 'Do you want to save category?',
     //       accept: () => {

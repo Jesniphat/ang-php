@@ -55,17 +55,6 @@ export class CategoryListComponent implements OnInit {
       console.log("errer = ", this.error);
   }
 
-  private add_new_category(data:any){
-      // console.log("add new cate = ", data);
-      let link: any;
-      if(data == 'create'){
-          link = ['/category_list/create_cate', data];
-      }else{
-          link = ['/category_list/create_cate', data.id];
-      }
-      this.router.navigate(link);
-  }
-
   private myFilter(str: string){
       let column = ['cate_name','cate_description'];
       this.categoryList = this.filterService.tableFilter(column,this.categoryLists,str);
@@ -84,8 +73,19 @@ export class CategoryListComponent implements OnInit {
 
   private page(start:any,data:any[]){
     this.categorys = [];
-    this.categorys = (this.filterService.pageNo(start,10,data)).data;
-    this.pageList = (this.filterService.pageNo(start,10,data)).page;
+    this.categorys = (this.filterService.pageNo(start,9,data)).data;
+    this.pageList = (this.filterService.pageNo(start,9,data)).page;
+  }
+
+  private add_new_category(data:any){
+      // console.log("add new cate = ", data);
+      let link: any;
+      if(data == 'create'){
+          link = ['/category_list/create_cate', data];
+      }else{
+          link = ['/category_list/create_cate', data.id];
+      }
+      this.router.navigate(link);
   }
 
 }
