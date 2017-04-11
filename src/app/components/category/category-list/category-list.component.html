@@ -33,13 +33,15 @@
     </tr>
   </tbody>
   <tfoot>
-    <tr><th colspan="4">
-      <div class="ui right floated pagination menu">
-        <!--page-->
-        <select class="ui search dropdown" (change) = "pageClick($event.target.value)">
-          <option *ngFor="let page of pageList">{{page}}</option>
-        </select>
-      </div>
-    </th>
-  </tr></tfoot>
+    <tr>
+      <th colspan="4">
+        <div class="ui right floated pagination menu">
+          <!--page-->
+          <select class="ui search dropdown" (change) = "pageClick($event.target.value)">
+            <option *ngFor="let page of pageList">{{page}}</option>
+          </select>
+        </div>
+      </th>
+    </tr>
+  </tfoot>
 </table>

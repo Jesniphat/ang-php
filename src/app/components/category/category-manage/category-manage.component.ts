@@ -26,7 +26,7 @@ export class CategoryManageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private apiService: ApiService ,
-    private _elRef: ElementRef
+    private el: ElementRef
   ) { }
 
   ngOnInit() {
@@ -75,8 +75,8 @@ export class CategoryManageComponent implements OnInit {
   }
 
   private confirmSaveCate(){
-      console.log(this.cate);
-      this.saveCategory();
+    //   console.log(this.cate);
+    //   this.saveCategory();
     //   this.confirmationService.confirm({
     //       message: 'Do you want to save category?',
     //       accept: () => {
@@ -84,6 +84,8 @@ export class CategoryManageComponent implements OnInit {
     //           this.saveCategory();
     //       }
     //   });
+
+    $('.ui.basic.modal').modal('show');
   }
 
   private saveCategory(){
