@@ -10,22 +10,22 @@ declare var $ : any;
   styleUrls: ['./category-list.component.css']
 })
 export class CategoryListComponent implements OnInit {
-    private item = 1;
-    private error:string = "";
-    private query:string = "";
-    private categoryLists:any = [];
-    private categoryList:any = [];
-    private categorys:any = [];
-    private filterText:any = "";
-    private pageList:any = [];
-    private cols:any = ["cate_name","cate_description","product_qty","status"];
+    item = 1;
+    error:string = "";
+    query:string = "";
+    categoryLists:any = [];
+    categoryList:any = [];
+    categorys:any = [];
+    filterText:any = "";
+    pageList:any = [];
+    cols:any = ["cate_name","cate_description","product_qty","status"];
 
-    private testPipes = "";
+    testPipes = "";
 
   constructor(
-    private router: Router,
-    private apiService: ApiService,
-    private filterService: FilterService
+    public router: Router,
+    public apiService: ApiService,
+    public filterService: FilterService
   ) { }
 
   ngOnInit() {
@@ -34,7 +34,7 @@ export class CategoryListComponent implements OnInit {
     this.getCategoryList();
   }
 
-  private getCategoryList(){
+  getCategoryList(){
     let param = {"id":"ทดสอบ"}
     this.apiService
         .post("/api/category_list",param)
@@ -44,25 +44,25 @@ export class CategoryListComponent implements OnInit {
           );
   }
 
-  private getCategoryDoneAction(data:any){
+  getCategoryDoneAction(data:any){
       // console.log("data = ", data);
       this.categoryLists = data.data;
       this.page(1,data.data);
   }
 
-  private errorAction(error:any){
+  errorAction(error:any){
       this.error = error.message;
       console.log("errer = ", this.error);
   }
 
-  private myFilter(str: string){
+  myFilter(str: string){
       let column = ['cate_name','cate_description'];
       this.categoryList = this.filterService.tableFilter(column,this.categoryLists,str);
       this.page(1,this.categoryList);
   }
 
 
-  private pageClick(start:any){
+  pageClick(start:any){
       if(this.categoryList.length == 0){
         this.page(start,this.categoryLists);
       }else{
@@ -71,13 +71,13 @@ export class CategoryListComponent implements OnInit {
       
   }
 
-  private page(start:any,data:any[]){
+  page(start:any,data:any[]){
     this.categorys = [];
     this.categorys = (this.filterService.pageNo(start,9,data)).data;
     this.pageList = (this.filterService.pageNo(start,9,data)).page;
   }
 
-  private add_new_category(data:any){
+  add_new_category(data:any){
       // console.log("add new cate = ", data);
       let link: any;
       if(data == 'create'){

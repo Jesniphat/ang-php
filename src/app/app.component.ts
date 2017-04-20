@@ -12,15 +12,15 @@ import './rxjs-operators';
 })
 export class AppComponent {
   title = 'app works!';
-  private pic_url:string = "";
-  private hiddenLogin: any = true;
-  private showSide: any = true;
-  private isLogged: boolean = true;
+  pic_url:string = "";
+  hiddenLogin: any = true;
+  showSide: any = true;
+  isLogged: boolean = true;
 
   constructor(
-    private apiSevice: ApiService, 
-    private cookie: CookieService, 
-    private $rootScope: RootscopeService
+   public apiSevice: ApiService, 
+   public cookie: CookieService, 
+   public $rootScope: RootscopeService
   ) { }
 
   ngOnInit(){
@@ -31,7 +31,7 @@ export class AppComponent {
     this.$rootScope.showNav$.subscribe(data => this.showNav(data));
   }
 
-  private checkLogin(){
+  checkLogin(){
     let param:any = {"id":"isLogin"};
     this.apiSevice
         .post("/api/checklogin", param)
@@ -41,7 +41,7 @@ export class AppComponent {
         );
   }
 
-  private checkLoginDoneAction(res:any){ // เดี่ยวไปใช้ service
+  checkLoginDoneAction(res:any){ // เดี่ยวไปใช้ service
     // console.log(res);
     if(res.data){
         this.hiddenLogin = false;
@@ -53,11 +53,11 @@ export class AppComponent {
     }
   }
 
-  private checkLoginErrorAction(error:any){
+  checkLoginErrorAction(error:any){
       console.log(error);
   }
 
-  private testapi(){
+  testapi(){
     let param = {"id":"ทดสอบ"}
     this.apiSevice.post("/api/test", param)
         .subscribe(
@@ -66,18 +66,18 @@ export class AppComponent {
         );
   }
 
-  private testdone(data:any){
+  testdone(data:any){
     console.log("data = ", data);
     if(!data.status){
       this.testerror(data);
     }
   }
 
-  private testerror(error:any){
+  testerror(error:any){
     console.log("error => ", error)
   }
 
-  private showNav(obj:any){
+  showNav(obj:any){
     if(obj != "" && obj != undefined && Object.keys(obj).length != 0){
       // console.log("obj = ", obj);
       let show = obj;

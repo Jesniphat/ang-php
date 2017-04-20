@@ -10,14 +10,14 @@ import { RootscopeService } from "../../service/rootscope.service";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  private msgs:any;
-  private error: any;
+  msgs:any;
+  error: any;
   response: {};
   password: any;
   username: any;
-  private storage: any;
+  storage: any;
 
-  constructor(private apiService: ApiService, private $rootScope: RootscopeService) { 
+  constructor(public apiService: ApiService, public $rootScope: RootscopeService) { 
     this.storage = localStorage;
   }
 
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     this.$rootScope.loginShow({hiddenLogin:true, class10:false /*,loginPading:"0px" */});
   }
 
-  private getLogin(){
+  getLogin(){
     let param = {"clear":"login"};
     this.apiService
         .post("/api/clearlogin", param)
@@ -36,15 +36,15 @@ export class LoginComponent implements OnInit {
         );
   }
 
-  private getLoginDoneAction(res:any){
+  getLoginDoneAction(res:any){
       // console.log("res login = ", res);
   }
 
-  private getLoginErrorAction(error:any){
+  getLoginErrorAction(error:any){
       this.error = error.message;
   }
 
-  private login(){
+  login(){
     let param = {
       user: this.username,
       password: this.password

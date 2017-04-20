@@ -10,23 +10,23 @@ declare var $ : any;
   providers: []
 })
 export class CategoryManageComponent implements OnInit {
-  private error:string = "";
-  private cate = {
+error:string = "";
+cate = {
       cateId: "",
       cateName: "",
       cateDescription: "",
       selectedStatus: "Y"
   }
-  private statusLists = [{label:'Active', value:'Y'},
+statusLists = [{label:'Active', value:'Y'},
                           {label:'Unactive', value:'N'}];
 
-  private msgs:any;
+msgs:any;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private apiService: ApiService ,
-    private el: ElementRef
+    public router: Router,
+    public route: ActivatedRoute,
+    public apiService: ApiService ,
+    public el: ElementRef
   ) { }
 
   ngOnInit() {
@@ -39,7 +39,7 @@ export class CategoryManageComponent implements OnInit {
     }
   }
 
-  private getCategoryByid(id:any){
+getCategoryByid(id:any){
       let param = {
           cate_id: id
       };
@@ -51,7 +51,7 @@ export class CategoryManageComponent implements OnInit {
           )
   }
 
-  private getCategoryByidDoneAction(res:any){
+getCategoryByidDoneAction(res:any){
       if(res.status === true){
           // console.log(res);
           let cateResData = res.data;
@@ -64,17 +64,17 @@ export class CategoryManageComponent implements OnInit {
       }
   }
 
-  private getCategoryByidErrorAction(error:any){
+getCategoryByidErrorAction(error:any){
       this.error = error.message;
       console.log("error = ", this.error);
   }
 
-  private changeStatus(newValue:any) {
+changeStatus(newValue:any) {
       console.log(newValue);
       this.cate.selectedStatus = newValue;
   }
 
-  private confirmSaveCate(){
+confirmSaveCate(){
     //   console.log(this.cate);
     //   this.saveCategory();
     //   this.confirmationService.confirm({
@@ -88,7 +88,7 @@ export class CategoryManageComponent implements OnInit {
     $('.ui.basic.modal').modal('show');
   }
 
-  private saveCategory(){
+saveCategory(){
       this.apiService
           .post("/api/savecategory", this.cate)
           .subscribe(
@@ -97,7 +97,7 @@ export class CategoryManageComponent implements OnInit {
           )
   }
 
-  private saveCategoryDoneAction(res:any){
+saveCategoryDoneAction(res:any){
       if(res.status === true){
           this.msgs = [];
           this.msgs.push({severity:'success', summary:'Save data seccess'});
@@ -109,7 +109,7 @@ export class CategoryManageComponent implements OnInit {
       }
   }
 
-  private saveCategoryErrorAction(error:any){
+saveCategoryErrorAction(error:any){
       this.error = error.message;
       console.log("error = ", this.error);
       // this.toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Oops!');
@@ -118,7 +118,7 @@ export class CategoryManageComponent implements OnInit {
       setTimeout(() => this.error = null, 4000);
   }
 
-  private reset(){
+reset(){
       this.cate = {
           cateId: "create",
           cateName: "",
