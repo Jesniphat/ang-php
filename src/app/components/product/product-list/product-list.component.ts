@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
+import { FilterService } from "../../../service/filter.service";
 declare var $ : any;
 
 @Component({
@@ -10,14 +11,18 @@ declare var $ : any;
 })
 export class ProductListComponent implements OnInit {
 
-  private error:any;
-  private productLists:any[];
-  private cols = ["product_name","product_description","product_qty","product_price"];
+  public error:any;
+  public productLists:any = [];
+  public productList:any = [];
+  public products:any = [];
+  public pageList:any = [];
+  public cols = ["product_name","product_description","product_qty","product_price"];
 
   constructor(
-    private router: Router,
-    private apiService: ApiService ,
-    private _elRef: ElementRef
+    public router: Router,
+    public apiService: ApiService ,
+    public _elRef: ElementRef,
+    public filterService: FilterService
   ) { }
 
   ngOnInit() {
@@ -25,27 +30,28 @@ export class ProductListComponent implements OnInit {
     this.getAllProduct();
   }
 
-  private getAllProduct(){
+  public getAllProduct(){
       let param = {"id":"สินค้าทั้งหมด"}
       this.apiService
           .post("/api/product_list",param)
           .subscribe(
-              data => this.productLists = data.data,
+              data => this.getAllProductDoneAction(data),//this.productLists = data.data,
               error => this.getAllProductErrorAction(error)
           );
   }
 
-  // private getAllProductDoneAction(res){
-  //   // console.log(res);
-  //   this.productLists = res.data
-  // }
+  public getAllProductDoneAction(data){
+    console.log(data);
+    this.productLists = data.data
+    this.page(1,data.data);
+  }
 
-  private getAllProductErrorAction(error:any){
+  public getAllProductErrorAction(error:any){
       this.error = error.message;
       console.log("errer = ", this.error);
   }
 
-  private add_new_product(data:any){
+  public add_new_product(data:any){
       let link: any;
       if(data == 'create'){
           link = ['/product_list/product', data];
@@ -56,11 +62,32 @@ export class ProductListComponent implements OnInit {
       this.router.navigate(link);
   }
 
-  private viwe_product_pic(data:any){
+  public viwe_product_pic(data:any){
       let link: any;
     //   console.log("Product Pic = ", data);
       link = ['/product_list/product_pic/', data.id];
       this.router.navigate(link);
+  }
+
+  public myFilter(str: string){
+      let column = ['product_name','product_description','product_price'];
+      this.productList = this.filterService.tableFilter(column,this.productLists,str);
+      this.page(1,this.productList);
+  }
+
+  public pageClick(start:any){
+      if(this.productList.length == 0){
+        this.page(start,this.productLists);
+      }else{
+        this.page(start,this.productList);
+      }
+      
+  }
+
+  public page(start:any,data:any[]){
+    this.products = [];
+    this.products = (this.filterService.pageNo(start,6,data)).data;
+    this.pageList = (this.filterService.pageNo(start,6,data)).page;
   }
 
 }

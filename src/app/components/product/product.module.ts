@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from "@angular/http";
+import { Uploader }      from 'angular2-http-file-upload';
 
 import { SharedModule } from "../../shared/shared.module";
 
@@ -22,6 +23,13 @@ import { ProductPicComponent } from './product-pic/product-pic.component';
 
     routing
   ],
-  declarations: [ProductListComponent, ProductManageComponent, ProductPicComponent]
+  declarations: [
+    ProductListComponent, 
+    ProductManageComponent, 
+    ProductPicComponent
+  ],
+  providers: [ 
+    Uploader 
+  ]
 })
 export class ProductModule { }

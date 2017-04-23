@@ -1,7 +1,7 @@
 <div class="ui grid">
   <div class="three column row">
     <div class="column">
-      <button class="ui labeled icon button" (click)="add_new_category('create')">
+      <button class="ui positive labeled icon button" (click)="add_new_category('create')">
         <i class="cubes icon"></i>
         New
       </button>
@@ -15,13 +15,13 @@
     </div>
   </div>
 </div>
-<table class="ui celled table">
+<table class="ui sortable celled table">
   <thead>
     <tr>
       <th>Name</th>
       <th>Description</th>
       <th>Qty</th>
-      <th>Action</th>
+      <th style="text-align:center;">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -29,7 +29,11 @@
       <td>{{item.cate_name}}</td>
       <td>{{item.cate_description}}</td>
       <td>{{item.product_qty}}</td>
-      <td></td>
+      <td style="text-align:center;">
+        <button class="primary circular ui icon button" (click)="add_new_category(item)">
+          <i class="write icon"></i>
+        </button>
+      </td>
     </tr>
   </tbody>
   <tfoot>

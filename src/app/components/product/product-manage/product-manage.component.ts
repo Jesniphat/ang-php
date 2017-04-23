@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, ElementRef } from "@angular/core";
 import { Router,ActivatedRoute } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
+import { MyUploadItem }  from "../../../upload-item";
 declare var $ : any;
 
 @Component({
   selector: 'app-product-manage',
   templateUrl: './product-manage.component.html',
-  styleUrls: ['./product-manage.component.css'],
-  providers: []
+  styleUrls: ['./product-manage.component.css']
 })
 export class ProductManageComponent implements OnInit {
   private error:string = "";

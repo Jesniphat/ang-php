@@ -73,8 +73,8 @@ export class CategoryListComponent implements OnInit {
 
   page(start:any,data:any[]){
     this.categorys = [];
-    this.categorys = (this.filterService.pageNo(start,9,data)).data;
-    this.pageList = (this.filterService.pageNo(start,9,data)).page;
+    this.categorys = (this.filterService.pageNo(start,6,data)).data;
+    this.pageList = (this.filterService.pageNo(start,6,data)).page;
   }
 
   add_new_category(data:any){

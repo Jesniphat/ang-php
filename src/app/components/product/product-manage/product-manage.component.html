@@ -113,3 +113,69 @@
 
 <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="450"></p-confirmDialog>
 <p-growl [value]="msgs"></p-growl>-->
+
+<form class="ui form" #productForm="ngForm">
+    <h4 class="ui dividing header">Product control</h4>
+    <div class="field">
+        <label>Category List</label>
+        <div class="four wide field">
+            <select class="ui fluid dropdown" id="categoryList" name="categoryList" [(ngModel)]="product.category">
+                <option *ngFor="let item of categoryList" [value]='item.value'>
+                    {{item.label}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label>Product Name*</label>
+        <div class="fields">
+            <div class="four wide field">
+                <input type="text" id="productName" placeholder="Product Name" [(ngModel)]="product.name" 
+                name="name" #name="ngModel" required minlength="4" maxlength="20">
+            </div>
+            <div class="twelve wide field">
+                <div *ngIf="name.errors && (name.dirty || name.touched)" class="required-message">
+                    <div [hidden]="!name.errors.required">
+                        <i class="remove circle outline icon"></i>
+                        Name is required
+                    </div>
+                    <div [hidden]="!name.errors.minlength">
+                        <i class="remove circle outline icon"></i>
+                        Name must be at least 4 characters long.
+                    </div>
+                    <div [hidden]="!name.errors.maxlength">
+                        <i class="remove circle outline icon"></i>
+                        Name cannot be more than 20 characters long.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <label>Product Description</label>
+        <div class="fields">
+            <div class="four wide field">
+                <textarea type="text" placeholder="Description" id="productDesc" [(ngModel)]="product.desc" 
+                name="desc"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <label>Product Price*</label>
+        <div class="fields">
+            <div class="four wide field">
+                <input type="number" id="productPrice" placeholder="Product price" [(ngModel)]="product.price" 
+                name="price" #price="ngModel" required />
+            </div>
+            <div class="five wide field">
+                <div class="required-message" [hidden]="price.valid || price.pristine">
+                    <i class="remove circle outline icon"></i>
+                    Price is required
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

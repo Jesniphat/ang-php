@@ -31,7 +31,7 @@ msgs:any;
 
   ngOnInit() {
     console.log("category_managet.component");
-
+    
     this.cate.cateId = this.route.snapshot.params['id'];
     //   console.log(this.cateId);
     if(this.cate.cateId != "create"){

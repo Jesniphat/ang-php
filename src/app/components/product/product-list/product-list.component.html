@@ -1,37 +1,57 @@
-<!--<p-panel header="รายการสินค้า">
-
-  <div class="ui-g">
-    <div class="ui-md-4">
-      <button type="button" pButton (click)="add_new_product('create')" label="เพิ่มสินค้าใหม่"></button>
+<div class="ui grid">
+  <div class="three column row">
+    <div class="column">
+      <button class="ui positive labeled icon button" (click)="add_new_product('create')">
+        <i class="shopping basket icon"></i>
+        New
+      </button>
     </div>
   </div>
-
-  <div class="ui-g">
-      <div class="ui-md-12">
-        <div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
-          <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
-          <input #prod type="text" pInputText style="float:left" placeholder="Global Filter">
-        </div>
-        <p-dataTable [value]="productLists" [rows]="8" [paginator]="true" [globalFilter]="prod">
-            <header>List of Category</header>
-            <p-column field="product_name" header="Name" [sortable]="true"></p-column>
-            <p-column field="product_description" header="Description" [sortable]="true"></p-column>
-            <p-column field="product_qty" header="Qty" [sortable]="true"></p-column>
-            <p-column field="product_price" header="Price" [sortable]="true"></p-column>
-            <p-column styleClass="col-button table-center">
-              <template pTemplate type="header">
-                Action
-              </template>
-              <template let-productList="rowData" pTemplate type="body">
-                  <button type="button" pButton (click)="add_new_product(productList)" icon="fa-edit"></button>
-                  <button type="button" pButton (click)="viwe_product_pic(productList)" icon="fa-file-image-o"></button>
-              </template>
-            </p-column>
-        </p-dataTable>
+  <div class="three column row">
+    <div class="column">
+      <div class="ui input">
+        <input type="text" placeholder="Search..." (ngModelChange)="myFilter($event)" [(ngModel)]="filterText">
       </div>
     </div>
-</p-panel>-->
+  </div>
+</div>
 
-<!--<div class="test-for" *ngFor="let hero of productLists">
-    {{hero.product_name}}
-</div>-->
+<table class="ui sortable celled table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Qty</th>
+      <th>Price</th>
+      <th style="text-align:center;">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of products">
+      <td>{{item.product_name}}</td>
+      <td>{{item.product_description}}</td>
+      <td>{{item.product_qty}}</td>
+      <td>{{item.product_price}}</td>
+      <td style="text-align:center;">
+        <button class="primary circular ui icon button" (click)="add_new_product(item)">
+          <i class="write icon"></i>
+        </button>
+        <button class="primary circular ui icon button" (click)="viwe_product_pic(item)">
+          <i class="file image outline icon"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th colspan="5">
+        <div class="ui right floated pagination menu">
+          <!--page-->
+          <select class="ui search dropdown" (change) = "pageClick($event.target.value)">
+            <option *ngFor="let page of pageList">{{page}}</option>
+          </select>
+        </div>
+      </th>
+    </tr>
+  </tfoot>
+</table>
