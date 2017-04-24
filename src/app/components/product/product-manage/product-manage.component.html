@@ -178,4 +178,32 @@
         </div>
     </div>
 
+    <div class="field">
+        <label>Product Qty*</label>
+        <div class="fields">
+            <div class="four wide field">
+                <input type="number" id="productQty" placeholder="Product qty" [(ngModel)]="product.qty" 
+                name="qty" #qty="ngModel" required />
+            </div>
+            <div class="five wide field">
+                <div class="required-message" [hidden]="qty.valid || qty.pristine">
+                    <i class="remove circle outline icon"></i>
+                    Qty is required
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <label>Product image</label>
+        <div class="fields">
+            <div class="four wide field">
+                <input type="file" id="productImage" placeholder="Product image" [(ngModel)]="product.productImage" 
+                (change)="checkFile($event)" name="productImage" #productImage />
+            </div>
+        </div>
+    </div>
+
+    <button class="ui primary button" id="saveProduct" type="submit" [disabled]="productForm.form.invalid" (click)="checkBeforSave()">Submit</button>
+    <button class="ui button" id="cancelAll" type="submit" (click)="reset()">Cancel</button>
 </form>

@@ -21,7 +21,8 @@ export class ProductManageComponent implements OnInit {
       pic_id:<any>[],
       pic_ids:"",
       staffid: "0",
-      category:""
+      category:"",
+      productImage:<any>null
   }
   private categoryList = [];
   private selectedStatus:any = "Y";
@@ -132,6 +133,10 @@ export class ProductManageComponent implements OnInit {
       this.product.category = newValue;
   }
 
+  checkFile(data:any){
+      console.log("file = ", data.target.files);
+  }
+
   onUploaded(event:any){
       // console.log("onUploaded = ", event);
       // console.log("get xhr = ", JSON.parse(event.xhr.response));
@@ -153,16 +158,6 @@ export class ProductManageComponent implements OnInit {
       console.log("upload error = ", event);
       this.msgs = [];
       this.msgs.push({severity:'warn', summary:'Oops!', detail:'บันทึกรูปภาพไม่สำเร็จกรุณาลองใหม่อีกครั้ง'});
-  }
-
-//   removeUploadingId(event:any){
-//       console.log("Remove = ", event);
-//   }
-
-  hideUploadBt(){
-    $(this._elRef.nativeElement).find("[label=Upload]").css({"display": "none"});
-    $(this._elRef.nativeElement).find("[label=Cancel]").css({"display": "none"});
-    $(this._elRef.nativeElement).find("#cancelAll").css({"display": "inherit"});
   }
 
   checkBeforSave(){
@@ -241,7 +236,8 @@ export class ProductManageComponent implements OnInit {
           pic_id: [],
           staffid: "0",
           pic_ids: "",
-          category: ""
+          category: "",
+          productImage: <any>null
       }
       this.uploadedFiles = [];
   }
