@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ElementRef } from "@angular/core";
 import { Router,ActivatedRoute } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
+import { Uploader }      from 'angular2-http-file-upload';
 import { MyUploadItem }  from "../../../upload-item";
 declare var $ : any;
 
@@ -36,6 +37,7 @@ export class ProductManageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private apiService: ApiService ,
+    public uploaderService: Uploader,
     private _elRef: ElementRef
   ) { 
     this.storage = localStorage;
@@ -134,7 +136,20 @@ export class ProductManageComponent implements OnInit {
   }
 
   checkFile(data:any){
-      console.log("file = ", data.target.files);
+      console.log("file = ", data.target.files[0]);
+      let uploadFile = data.target.files[0];
+
+      let myUploadItem = new MyUploadItem(uploadFile, this.uploadUrl);
+      myUploadItem.formData = { FormDataKey: 'Form Data Value' };  // (optional) form data can be sent with file
+
+      this.uploaderService.onSuccessUpload = (item, response, status, headers) => {
+         console.log("onSuccessUpload = ", response);
+         this.product.productImage = "";
+      };
+      this.uploaderService.onErrorUpload = (item, response, status, headers) => {
+         console.log("onErrorUpload = ", response);
+      };
+      this.uploaderService.upload(myUploadItem);
   }
 
   onUploaded(event:any){
@@ -236,7 +251,7 @@ export class ProductManageComponent implements OnInit {
           pic_id: [],
           staffid: "0",
           pic_ids: "",
-          category: "",
+          category: "1",
           productImage: <any>null
       }
       this.uploadedFiles = [];
