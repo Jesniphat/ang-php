@@ -207,3 +207,31 @@
     <button class="ui primary button" id="saveProduct" type="submit" [disabled]="productForm.form.invalid" (click)="checkBeforSave()">Submit</button>
     <button class="ui button" id="cancelAll" type="submit" (click)="reset()">Cancel</button>
 </form>
+
+<br/>
+<div class="ui special cards">
+  <div class="card" *ngFor="let file of uploadedFiles; let x = index;">
+    <div class="blurring dimmable image">
+      <div class="ui dimmer">
+        <div class="content">
+          <div class="center">
+            <div class="ui inverted button">Add Friend</div>
+          </div>
+        </div>
+      </div>
+      <img [src]="file.productpic_path">
+    </div>
+    <div class="content">
+      <a class="header">Team Fu</a>
+      <div class="meta">
+        <span class="date">Create in Sep 2014</span>
+      </div>
+    </div>
+    <div class="extra content">
+      <a>
+        <i class="users icon"></i>
+        2 Members
+      </a>
+    </div>
+  </div>
+</div>

@@ -144,6 +144,16 @@ export class ProductManageComponent implements OnInit {
 
       this.uploaderService.onSuccessUpload = (item, response, status, headers) => {
          console.log("onSuccessUpload = ", response);
+         let pic_name = JSON.parse(response);
+         if(pic_name.status === true){
+            pic_name.data.productpic_path = this.imgLink + pic_name.data.productpic_path;
+            pic_name.data.flag = "c";
+            this.uploadedFiles.push(pic_name.data);
+         } else {
+            console.log("error = ", pic_name.error);
+            // this.msgs = [];
+            // this.msgs.push({severity:'warn', summary:'Oops!', detail:'บันทึกรูปภาพไม่สำเร็จกรุณาลองใหม่อีกครั้ง'});
+         }
          this.product.productImage = "";
       };
       this.uploaderService.onErrorUpload = (item, response, status, headers) => {
