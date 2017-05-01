@@ -12,6 +12,8 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { ProductManageComponent } from './product-manage/product-manage.component';
 import { ProductPicComponent } from './product-pic/product-pic.component';
 
+import { TableFilterPipe } from '../../pipes/table-filter.pipe';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -24,6 +26,7 @@ import { ProductPicComponent } from './product-pic/product-pic.component';
     routing
   ],
   declarations: [
+    TableFilterPipe,
     ProductListComponent, 
     ProductManageComponent, 
     ProductPicComponent

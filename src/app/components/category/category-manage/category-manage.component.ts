@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
 declare var $ : any;
+declare var toastr : any;
 
 @Component({
   selector: 'app-category-manage',
@@ -75,17 +76,7 @@ changeStatus(newValue:any) {
   }
 
 confirmSaveCate(){
-    //   console.log(this.cate);
-    //   this.saveCategory();
-    //   this.confirmationService.confirm({
-    //       message: 'Do you want to save category?',
-    //       accept: () => {
-    //           //Actual logic to perform a confirmation
-    //           this.saveCategory();
-    //       }
-    //   });
-
-    $('.ui.basic.modal').modal('show');
+    $('#cateModal').modal('show');
   }
 
 saveCategory(){
@@ -99,13 +90,11 @@ saveCategory(){
 
 saveCategoryDoneAction(res:any){
       if(res.status === true){
-          this.msgs = [];
-          this.msgs.push({severity:'success', summary:'Save data seccess'});
+          toastr.success('บันทึกข้อมูลสำเร็จ', 'Success!');
           this.reset();
       } else {
           console.log("can't save");
-          this.msgs = [];
-          this.msgs.push({severity:'warn', summary:'Success!', detail:'บันทึกข้อมูลไม่สำเร็จ'});
+          toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
       }
   }
 
@@ -113,8 +102,7 @@ saveCategoryErrorAction(error:any){
       this.error = error.message;
       console.log("error = ", this.error);
       // this.toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Oops!');
-      this.msgs = [];
-      this.msgs.push({severity:'warn', summary:'Success!', detail:'บันทึกข้อมูลไม่สำเร็จ'});
+      toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
       setTimeout(() => this.error = null, 4000);
   }
 

@@ -55,3 +55,7 @@
     </tr>
   </tfoot>
 </table>
+
+<div *ngFor="let item of productLists | tableFilter:filterText">
+  {{item.product_name}}
+</div>

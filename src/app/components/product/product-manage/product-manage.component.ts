@@ -4,6 +4,7 @@ import { ApiService } from "../../../service/api.service";
 import { Uploader }      from 'angular2-http-file-upload';
 import { MyUploadItem }  from "../../../upload-item";
 declare var $ : any;
+declare var toastr : any;
 
 @Component({
   selector: 'app-product-manage',
@@ -11,9 +12,9 @@ declare var $ : any;
   styleUrls: ['./product-manage.component.css']
 })
 export class ProductManageComponent implements OnInit {
-  private error:string = "";
-  private storage: any;
-  private product = {
+  public error:string = "";
+  public storage: any;
+  public product = {
       id : "",
       name: "",
       desc: "",
@@ -25,13 +26,16 @@ export class ProductManageComponent implements OnInit {
       category:"",
       productImage:<any>null
   }
-  private categoryList = [];
-  private selectedStatus:any = "Y";
-  private productPicName:any[] = [];
-  private uploadedFiles: any[] = [];
-  private msgs:any;
-  private uploadUrl:string = "/upload/product";
-  private imgLink:string = "";
+  public categoryList = [];
+  public selectedStatus:any = "Y";
+  public productPicName:any[] = [];
+  public uploadedFiles: any[] = [];
+  public uploadUrl:string = "/upload/product";
+  public imgLink:string = "";
+  public warningmsg:string = "";
+  public dialogmsg:string = "";
+  public imgIndex: any = 0;
+//   public birthday = new Date(1988, 3, 15);
 
   constructor(
     private router: Router,
@@ -135,7 +139,7 @@ export class ProductManageComponent implements OnInit {
       this.product.category = newValue;
   }
 
-  checkFile(data:any){
+  uploadFile(data:any){
       console.log("file = ", data.target.files[0]);
       let uploadFile = data.target.files[0];
 
@@ -151,8 +155,7 @@ export class ProductManageComponent implements OnInit {
             this.uploadedFiles.push(pic_name.data);
          } else {
             console.log("error = ", pic_name.error);
-            // this.msgs = [];
-            // this.msgs.push({severity:'warn', summary:'Oops!', detail:'บันทึกรูปภาพไม่สำเร็จกรุณาลองใหม่อีกครั้ง'});
+            toastr.warning('บันทึกรูปภาพไม่สำเร็จกรุณาลองใหม่อีกครั้ง', 'Warning!');
          }
          this.product.productImage = "";
       };
@@ -162,46 +165,15 @@ export class ProductManageComponent implements OnInit {
       this.uploaderService.upload(myUploadItem);
   }
 
-  onUploaded(event:any){
-      // console.log("onUploaded = ", event);
-      // console.log("get xhr = ", JSON.parse(event.xhr.response));
-      let pic_name = JSON.parse(event.xhr.response);
-      if(pic_name.status === true){
-        //   this.product.pic_id.push(pic_name.data.id);
-          pic_name.data.productpic_path = this.imgLink + pic_name.data.productpic_path;
-          pic_name.data.flag = "c";
-          this.uploadedFiles.push(pic_name.data);
-      } else {
-          console.log("error = ", pic_name.error);
-          this.msgs = [];
-          this.msgs.push({severity:'warn', summary:'Oops!', detail:'บันทึกรูปภาพไม่สำเร็จกรุณาลองใหม่อีกครั้ง'});
-      }
-    //   console.log("File ID = ", this.product.pic_id);
-  }
-
-  onUploadedError(event:any){
-      console.log("upload error = ", event);
-      this.msgs = [];
-      this.msgs.push({severity:'warn', summary:'Oops!', detail:'บันทึกรูปภาพไม่สำเร็จกรุณาลองใหม่อีกครั้ง'});
-  }
-
   checkBeforSave(){
       if((this.product.pic_id).length == 0){
-        //   this.confirmationService.confirm({
-        //       message: "You doesn't upload product picture. Do you want to save this product?",
-        //       accept: () => {
-        //           //Actual logic to perform a confirmation
-        //           this.saveProduct();
-        //       }
-        //   });
+          this.warningmsg = "Warning!";
+          this.dialogmsg = "You doesn't upload product picture. Do you want to save this product?";
+          $('#productSaveModel').modal('show');
       } else {
-        //   this.confirmationService.confirm({
-        //       message: 'Are you sure that you want to save this product?',
-        //       accept: () => {
-        //           //Actual logic to perform a confirmation
-        //           this.saveProduct();
-        //       }
-        //   });
+        this.warningmsg = "Save product";
+          this.dialogmsg = "Are you sure that you want to save this product?";
+          $('#productSaveModel').modal('show');
       }
   }
 
@@ -224,31 +196,33 @@ export class ProductManageComponent implements OnInit {
   saveProductDoneAction(res:any){
       console.log("res = ", res);
       if(res.status === true){
-          this.msgs = [];
-          this.msgs.push({severity:'success', summary:'Success!', detail:'บันทึกข้อมูลสำเร็จ'});
           this.reset();
+          toastr.success('บันทึกข้อมูลสำเร็จ', 'Success!');
       } else {
           console.log("can't save ", res.error);
-          this.msgs = [];
-          this.msgs.push({severity:'warn', summary:'Oops!', detail:'บันทึกข้อมูลไม่สำเร็จ'});
+          toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
       }
   }
 
   saveProductErrorAction(error:any){
       this.error = error.message;
       console.log("error = ", this.error);
-      this.msgs = [];
-      this.msgs.push({severity:'warn', summary:'Oops!', detail:'บันทึกข้อมูลไม่สำเร็จ'});
+      toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
   }
 
   onSubmit(value:any){
       console.log("value submit = ", value);
   }
 
-  removeImg(id:any, index:any){
-      console.log(id);
-      console.log("index = ", index);
-      this.uploadedFiles.splice(index, 1);
+  beforeRemoveImg(id:any, index:any){
+      console.log('id = ', id, '  index = ', index);
+      this.imgIndex = index;
+      $('#productImgModel').modal('show');
+  }
+
+  removeImg(){
+      console.log("index = ", this.imgIndex);
+      this.uploadedFiles.splice(this.imgIndex, 1);
   }
 
   reset(){
