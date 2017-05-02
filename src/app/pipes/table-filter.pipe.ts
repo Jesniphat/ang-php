@@ -18,6 +18,10 @@ export class TableFilterPipe implements PipeTransform {
 
 
   transform(data: any[], str: any): any {
+    if(!str){
+      return data;
+    }
+
     let keys = [];
     for(let k in data[0]){
       keys.push(k);

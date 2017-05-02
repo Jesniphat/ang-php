@@ -47,8 +47,8 @@
       <th colspan="5">
         <div class="ui right floated pagination menu">
           <!--page-->
-          <select class="ui search dropdown" (change) = "pageClick($event.target.value)">
-            <option *ngFor="let page of pageList">{{page}}</option>
+          <select class="ui search dropdown" [(ngModel)]="pageText" (change) = "pageClick($event.target.value)">
+            <option *ngFor="let page of pageList" [value]='page'>{{page}}</option>
           </select>
         </div>
       </th>
@@ -56,6 +56,7 @@
   </tfoot>
 </table>
 
-<div *ngFor="let item of productLists | tableFilter:filterText">
+
+<div *ngFor="let item of productLists | tableFilter:filterText | pageNumber:pageText">
   {{item.product_name}}
 </div>

@@ -16,6 +16,7 @@ export class ProductListComponent implements OnInit {
   public productList:any = [];
   public products:any = [];
   public pageList:any = [];
+  public pageText:any = 1;
   public cols = ["product_name","product_description","product_qty","product_price"];
 
   constructor(
@@ -71,6 +72,7 @@ export class ProductListComponent implements OnInit {
 
   public myFilter(str: string){
       let column = ['product_name','product_description','product_price'];
+      this.pageText = 1;
       this.productList = this.filterService.tableFilter(column,this.productLists,str);
       this.page(1,this.productList);
   }

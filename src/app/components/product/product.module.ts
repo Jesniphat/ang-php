@@ -13,6 +13,7 @@ import { ProductManageComponent } from './product-manage/product-manage.componen
 import { ProductPicComponent } from './product-pic/product-pic.component';
 
 import { TableFilterPipe } from '../../pipes/table-filter.pipe';
+import { PageNumberPipe } from '../../pipes/page-number.pipe';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { TableFilterPipe } from '../../pipes/table-filter.pipe';
   ],
   declarations: [
     TableFilterPipe,
+    PageNumberPipe,
     ProductListComponent, 
     ProductManageComponent, 
     ProductPicComponent
