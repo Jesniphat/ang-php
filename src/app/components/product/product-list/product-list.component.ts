@@ -68,4 +68,8 @@ export class ProductListComponent implements OnInit {
       this.router.navigate(link);
   }
 
+  public focusFilter(){
+      this.pageNo = 1;
+  }
+
 }

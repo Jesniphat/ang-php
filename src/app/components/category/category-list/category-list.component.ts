@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
-import { FilterService } from "../../../service/filter.service";
 declare var $ : any;
 
 @Component({
@@ -16,7 +15,6 @@ export class CategoryListComponent implements OnInit {
     categoryLists:any = [];
     categoryList:any = [];
     categorys:any = [];
-    // filterText:any = "";
     pageList:any = [];
     cols:any = ["cate_name","cate_description","product_qty","status"];
     pageNo:any = 1;
@@ -25,8 +23,7 @@ export class CategoryListComponent implements OnInit {
 
   constructor(
     public router: Router,
-    public apiService: ApiService,
-    public filterService: FilterService
+    public apiService: ApiService
   ) { }
 
   ngOnInit() {
@@ -48,7 +45,6 @@ export class CategoryListComponent implements OnInit {
   getCategoryDoneAction(data:any){
       console.log("data = ", data);
       this.categoryLists = data.data;
-      // this.page(1,data.data);
   }
 
   errorAction(error:any){
@@ -56,24 +52,8 @@ export class CategoryListComponent implements OnInit {
       console.log("errer = ", this.error);
   }
 
-  myFilter(){
-    console.log("change data");
-  }
-
-
-  pageClick(start:any){
-      if(this.categoryList.length == 0){
-        this.page(start,this.categoryLists);
-      }else{
-        this.page(start,this.categoryList);
-      }
-      
-  }
-
-  page(start:any,data:any[]){
-    this.categorys = [];
-    this.categorys = (this.filterService.pageNo(start,6,data)).data;
-    this.pageList = (this.filterService.pageNo(start,6,data)).page;
+  focusFilter(){
+      this.pageNo = 1;
   }
 
   add_new_category(data:any){

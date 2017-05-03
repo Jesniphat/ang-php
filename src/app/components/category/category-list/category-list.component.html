@@ -10,7 +10,7 @@
   <div class="three column row">
     <div class="column">
       <div class="ui input">
-        <input type="text" placeholder="Search..." [(ngModel)]="filterText">
+        <input type="text" placeholder="Search..." [(ngModel)]="filterText" (focus)="focusFilter()">
       </div>
     </div>
   </div>
