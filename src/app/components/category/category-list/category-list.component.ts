@@ -56,11 +56,8 @@ export class CategoryListComponent implements OnInit {
       console.log("errer = ", this.error);
   }
 
-  myFilter(str: string){
-      // let column = ['cate_name','cate_description'];
-      // this.categoryList = this.filterService.tableFilter(column,this.categoryLists,str);
-      // this.page(1,this.categoryList);
-      this.pageNo = 1;
+  myFilter(){
+    console.log("change data");
   }
 
 
