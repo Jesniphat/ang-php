@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
-import { PageListPipe } from '../../../pipes/page-list.pipe';
 declare var $ : any;
 
 @Component({
@@ -15,7 +14,7 @@ export class ProductListComponent implements OnInit {
   public productLists:any = [];
   public productList:any = [];
   public products:any = [];
-  public pageList:any = [];
+  public filterText:any = "";
   public pageNo:any = 1;
   public cols = ["product_name","product_description","product_qty","product_price"];
 

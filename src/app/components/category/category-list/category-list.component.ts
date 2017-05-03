@@ -15,8 +15,7 @@ export class CategoryListComponent implements OnInit {
     categoryLists:any = [];
     categoryList:any = [];
     categorys:any = [];
-    pageList:any = [];
-    cols:any = ["cate_name","cate_description","product_qty","status"];
+    filterText:any = "";
     pageNo:any = 1;
 
     testPipes = "";
