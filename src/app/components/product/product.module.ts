@@ -12,8 +12,9 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { ProductManageComponent } from './product-manage/product-manage.component';
 import { ProductPicComponent } from './product-pic/product-pic.component';
 
-import { TableFilterPipe } from '../../pipes/table-filter.pipe';
-import { PageNumberPipe } from '../../pipes/page-number.pipe';
+// import { TableFilterPipe } from '../../pipes/table-filter.pipe';
+// import { PageNumberPipe } from '../../pipes/page-number.pipe';
+// import { PageListPipe } from '../../pipes/page-list.pipe';
 
 @NgModule({
   imports: [
@@ -27,8 +28,9 @@ import { PageNumberPipe } from '../../pipes/page-number.pipe';
     routing
   ],
   declarations: [
-    TableFilterPipe,
-    PageNumberPipe,
+    // TableFilterPipe,
+    // PageNumberPipe,
+    // PageListPipe,
     ProductListComponent, 
     ProductManageComponent, 
     ProductPicComponent

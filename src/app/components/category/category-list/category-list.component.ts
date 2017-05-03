@@ -16,9 +16,10 @@ export class CategoryListComponent implements OnInit {
     categoryLists:any = [];
     categoryList:any = [];
     categorys:any = [];
-    filterText:any = "";
+    // filterText:any = "";
     pageList:any = [];
     cols:any = ["cate_name","cate_description","product_qty","status"];
+    pageNo:any = 1;
 
     testPipes = "";
 
@@ -45,9 +46,9 @@ export class CategoryListComponent implements OnInit {
   }
 
   getCategoryDoneAction(data:any){
-      // console.log("data = ", data);
+      console.log("data = ", data);
       this.categoryLists = data.data;
-      this.page(1,data.data);
+      // this.page(1,data.data);
   }
 
   errorAction(error:any){
@@ -56,9 +57,10 @@ export class CategoryListComponent implements OnInit {
   }
 
   myFilter(str: string){
-      let column = ['cate_name','cate_description'];
-      this.categoryList = this.filterService.tableFilter(column,this.categoryLists,str);
-      this.page(1,this.categoryList);
+      // let column = ['cate_name','cate_description'];
+      // this.categoryList = this.filterService.tableFilter(column,this.categoryLists,str);
+      // this.page(1,this.categoryList);
+      this.pageNo = 1;
   }
 
 

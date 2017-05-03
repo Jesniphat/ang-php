@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
-import { FilterService } from "../../../service/filter.service";
+import { PageListPipe } from '../../../pipes/page-list.pipe';
 declare var $ : any;
 
 @Component({
@@ -16,14 +16,13 @@ export class ProductListComponent implements OnInit {
   public productList:any = [];
   public products:any = [];
   public pageList:any = [];
-  public pageText:any = 1;
+  public pageNo:any = 1;
   public cols = ["product_name","product_description","product_qty","product_price"];
 
   constructor(
     public router: Router,
     public apiService: ApiService ,
-    public _elRef: ElementRef,
-    public filterService: FilterService
+    public _elRef: ElementRef
   ) { }
 
   ngOnInit() {
@@ -44,7 +43,6 @@ export class ProductListComponent implements OnInit {
   public getAllProductDoneAction(data){
     console.log(data);
     this.productLists = data.data
-    this.page(1,data.data);
   }
 
   public getAllProductErrorAction(error:any){
@@ -68,28 +66,6 @@ export class ProductListComponent implements OnInit {
     //   console.log("Product Pic = ", data);
       link = ['/product_list/product_pic/', data.id];
       this.router.navigate(link);
-  }
-
-  public myFilter(str: string){
-      let column = ['product_name','product_description','product_price'];
-      this.pageText = 1;
-      this.productList = this.filterService.tableFilter(column,this.productLists,str);
-      this.page(1,this.productList);
-  }
-
-  public pageClick(start:any){
-      if(this.productList.length == 0){
-        this.page(start,this.productLists);
-      }else{
-        this.page(start,this.productList);
-      }
-      
-  }
-
-  public page(start:any,data:any[]){
-    this.products = [];
-    this.products = (this.filterService.pageNo(start,6,data)).data;
-    this.pageList = (this.filterService.pageNo(start,6,data)).page;
   }
 
 }

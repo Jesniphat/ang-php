@@ -10,7 +10,7 @@
   <div class="three column row">
     <div class="column">
       <div class="ui input">
-        <input type="text" placeholder="Search..." (ngModelChange)="myFilter($event)" [(ngModel)]="filterText">
+        <input type="text" placeholder="Search..." [(ngModel)]="filterText">
       </div>
     </div>
   </div>
@@ -27,7 +27,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of products">
+    <tr *ngFor="let item of productLists | tableFilter:filterText | pageNumber:pageNo">
       <td>{{item.product_name}}</td>
       <td>{{item.product_description}}</td>
       <td>{{item.product_qty}}</td>
@@ -47,8 +47,8 @@
       <th colspan="5">
         <div class="ui right floated pagination menu">
           <!--page-->
-          <select class="ui search dropdown" [(ngModel)]="pageText" (change) = "pageClick($event.target.value)">
-            <option *ngFor="let page of pageList" [value]='page'>{{page}}</option>
+          <select class="ui search dropdown" [(ngModel)]="pageNo">
+            <option *ngFor="let page of productLists | tableFilter:filterText | pageList:6" [value]='page'>{{page}}</option>
           </select>
         </div>
       </th>
@@ -57,6 +57,12 @@
 </table>
 
 
-<div *ngFor="let item of productLists | tableFilter:filterText | pageNumber:pageText">
+<!--<div *ngFor="let item of productLists | tableFilter:filterText | pageNumber:pageListNo">
   {{item.product_name}}
 </div>
+
+<div class="ui right floated pagination menu">
+  <select class="ui search dropdown" [(ngModel)]="pageListNo">
+    <option *ngFor="let page of productLists | tableFilter:filterText | pageList:6" [value]='page'>{{page}}</option>
+  </select>
+</div>-->

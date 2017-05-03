@@ -7,8 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { routing } from "./category.routing";
 import { SharedModule } from "../../shared/shared.module";
 
-import { filterTestPipe } from "../../pipes/testfilter.pipe";
-
 import { CategoryListComponent } from './category-list/category-list.component';
 import { CategoryManageComponent } from './category-manage/category-manage.component';
 
@@ -20,7 +18,6 @@ import { CategoryManageComponent } from './category-manage/category-manage.compo
     SharedModule
   ],
   declarations: [
-    filterTestPipe,
     CategoryListComponent,
     CategoryManageComponent
   ]

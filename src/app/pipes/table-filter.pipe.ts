@@ -18,6 +18,7 @@ export class TableFilterPipe implements PipeTransform {
 
 
   transform(data: any[], str: any): any {
+    // console.log("data = ", data, " str = ", str);
     if(!str){
       return data;
     }
@@ -28,6 +29,8 @@ export class TableFilterPipe implements PipeTransform {
     }
     
     let result:any = [];
+    // console.log(keys);
+    // console.log(" NULL = ", data[0][keys[0]]);
     for(let i = 0; i < keys.length; i++){
         if(data.filter(item => item[keys[i]].indexOf(str) !== -1).length !== 0){
           result = result.concat(data.filter(item => item[keys[i]].indexOf(str) !== -1));
