@@ -167,7 +167,7 @@ export class ProductManageComponent implements OnInit {
   }
 
   checkBeforSave(){
-      if((this.product.pic_id).length == 0){
+      if((this.uploadedFiles).length == 0){
           this.warningmsg = "Warning!";
           this.dialogmsg = "You doesn't upload product picture. Do you want to save this product?";
           $('#productSaveModel').modal('show');
