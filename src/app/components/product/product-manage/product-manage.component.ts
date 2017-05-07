@@ -153,6 +153,7 @@ export class ProductManageComponent implements OnInit {
             pic_name.data.productpic_path = this.imgLink + pic_name.data.productpic_path;
             pic_name.data.flag = "c";
             this.uploadedFiles.push(pic_name.data);
+            console.log("upload seccess");
          } else {
             console.log("error = ", pic_name.error);
             toastr.warning('บันทึกรูปภาพไม่สำเร็จกรุณาลองใหม่อีกครั้ง', 'Warning!');
@@ -166,7 +167,7 @@ export class ProductManageComponent implements OnInit {
   }
 
   checkBeforSave(){
-      if((this.product.pic_id).length == 0){
+      if((this.uploadedFiles).length == 0){
           this.warningmsg = "Warning!";
           this.dialogmsg = "You doesn't upload product picture. Do you want to save this product?";
           $('#productSaveModel').modal('show');
