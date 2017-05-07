@@ -10,7 +10,6 @@ import { SharedModule } from "../../shared/shared.module";
 import { routing } from "./product.routing";
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductManageComponent } from './product-manage/product-manage.component';
-import { ProductPicComponent } from './product-pic/product-pic.component';
 
 // import { TableFilterPipe } from '../../pipes/table-filter.pipe';
 // import { PageNumberPipe } from '../../pipes/page-number.pipe';
@@ -32,8 +31,7 @@ import { ProductPicComponent } from './product-pic/product-pic.component';
     // PageNumberPipe,
     // PageListPipe,
     ProductListComponent, 
-    ProductManageComponent, 
-    ProductPicComponent
+    ProductManageComponent
   ],
   providers: [ 
     Uploader 

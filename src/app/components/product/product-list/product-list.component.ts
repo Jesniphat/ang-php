@@ -60,13 +60,6 @@ export class ProductListComponent implements OnInit {
       this.router.navigate(link);
   }
 
-  public viwe_product_pic(data:any){
-      let link: any;
-    //   console.log("Product Pic = ", data);
-      link = ['/product_list/product_pic/', data.id];
-      this.router.navigate(link);
-  }
-
   public focusFilter(){
       this.pageNo = 1;
   }
