@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
 declare var $ : any;
+declare var toastr : any;
 
 @Component({
   selector: 'app-staff-create',
@@ -40,14 +41,16 @@ export class StaffCreateComponent implements OnInit {
   private saveStaffDoneAction(res:any){
     console.log(res);
     if(res.status){
-      this.msgs = [];
-      this.msgs.push({severity:'success', summary:'Success!', detail:'บันทึกข้อมูลสำเร็จ'});
+      // this.msgs = [];
+      // this.msgs.push({severity:'success', summary:'Success!', detail:'บันทึกข้อมูลสำเร็จ'});
+      toastr.success('บันทึกข้อมูลสำเร็จ', 'Success!');
 
       this.reset();
     }else{
       console.log(res.error);
-      this.msgs = [];
-      this.msgs.push({severity:'warn', summary:'Oops!', detail:'บันทึกข้อมูลไม่สำเร็จ'});
+      // this.msgs = [];
+      // this.msgs.push({severity:'warn', summary:'Oops!', detail:'บันทึกข้อมูลไม่สำเร็จ'});
+      toastr.warning('บันทึกไม่สำเร็จกรุณาลองใหม่อีกครั้ง', 'Warning!');
     }
   }
 

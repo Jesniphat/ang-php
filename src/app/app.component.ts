@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { ApiService } from "./service/api.service";
 import { CookieService } from "./service/cookie.service";
 import { RootscopeService } from "./service/rootscope.service";
 // Add the RxJS Observable operators.
 import './rxjs-operators';
+declare var $ : any;
 
 @Component({
   selector: 'app-root',
@@ -17,17 +18,33 @@ export class AppComponent {
   showSide: any = true;
   isLogged: boolean = true;
 
+  storage: any;
+  staffData:any;
+  display_name: any;
+  menuId: any[];
+  dropDownMenu: any;
+
   constructor(
    public apiSevice: ApiService, 
    public cookie: CookieService, 
-   public $rootScope: RootscopeService
-  ) { }
+   public $rootScope: RootscopeService,
+   public _elRef: ElementRef
+  ) {}
 
   ngOnInit(){
+    this.storage = localStorage;
+    
+    if(this.storage.getItem('logindata')){
+      let logindata = JSON.parse(this.storage.getItem('logindata'));
+      this.staffData = logindata;
+      this.display_name = logindata.display_name;
+      // console.log("staff = ", this.staffData);
+    }
+
+    $('.ui.dropdown').dropdown();
     // this.testapi();
     this.checkLogin();
-    // console.log(this.permission.test());
-    // this.checkLoginDoneAction(this.permission.readToken());
+    
     this.$rootScope.showNav$.subscribe(data => this.showNav(data));
   }
 
@@ -83,6 +100,13 @@ export class AppComponent {
       let show = obj;
       this.hiddenLogin = show.hiddenLogin;
       this.showSide = show.class10;
+    }
+
+    if(this.storage.getItem('logindata')){
+      let logindata = JSON.parse(this.storage.getItem('logindata'));
+      this.staffData = logindata;
+      this.display_name = logindata.display_name;
+      // console.log("staff = ", this.staffData);
     }
   }
 

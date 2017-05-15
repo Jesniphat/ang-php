@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
         this.storage.setItem('logindata',loginData);
         this.$rootScope.loginShow({hiddenLogin:false, class10:true});
         window.location.href = "#/home";
-        // window.location.reload();
+        window.location.reload();
     } else {
         console.log("can't login = ", res.error);
         this.msgs = [];

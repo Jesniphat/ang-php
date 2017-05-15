@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
 declare var $ : any;
+declare var toastr : any;
 
 @Component({
   selector: 'app-staff-setting',
@@ -15,6 +16,7 @@ export class StaffSettingComponent implements OnInit {
       staffId: "",
       password: "",
       staffName: "",
+      staffLastName: "",
       staffUserName: ""
   };
   private staffData: any;
@@ -40,6 +42,7 @@ export class StaffSettingComponent implements OnInit {
         //   console.log("staff = ", this.staffData);
 
           this.staff.staffName = this.staffData.display_name;
+          this.staff.staffLastName = this.staffData.last_name;
           this.staff.staffUserName = this.staffData.login_name;
           this.staff.staffId = this.staffData.id;
           this.staff.password = this.staffData.password
@@ -49,6 +52,7 @@ export class StaffSettingComponent implements OnInit {
   private updateStaff(){
       let param = {
         name: this.staff.staffName,
+        lastName: this.staff.staffLastName,
         user: this.staff.staffUserName,
         id: this.staff.staffId,
         password: this.staff.password
@@ -67,8 +71,7 @@ export class StaffSettingComponent implements OnInit {
           this.storage.setItem('logindata',loginData);
           // console.log("logindata => ", loginData);
           this.$rootScope.loginShow({hiddenLogin:false, class10:true});
-          this.msgs = [];
-          this.msgs.push({severity:'success', summary:'Success!', detail:'บันทึกข้อมูลสำเร็จ'});
+          toastr.success('บันทึกข้อมูลสำเร็จ', 'Success!');
       } else {
           console.log("can't change");
       }
@@ -77,6 +80,7 @@ export class StaffSettingComponent implements OnInit {
   updateStaffErrorAction(error:any) {
       this.error = error.message;
       console.log("error = ", this.error);
+      toastr.warning('บันทึกไม่สำเร็จกรุณาลองใหม่อีกครั้ง', 'Warning!');
       setTimeout(() => this.error = null, 4000);
   }
 

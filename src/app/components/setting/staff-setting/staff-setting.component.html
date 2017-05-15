@@ -1,43 +1,65 @@
-<!--<p-panel header="แก้ไขข้อมูลผู้ใช้งาน">
-    <form #editstaffForm="ngForm">
-        <div class="ui-g">
-            <div class="ui-g-4">
-                <label for="staffName">Staff Name:</label>
-                <br/>
-                <input id="staffName" style="width:100%" type="text" pInputText [(ngModel)]="staff.staffName" 
-                    name="staffName" #staffName="ngModel" required />
-            </div>
-            <div class="ui-g-8">
-                <br/>
-                <div class="required-message" [hidden]="staffName.valid || staffName.pristine">
-                    <i class="fa fa-close"></i>
-                    Staff name is required
-                </div>
-            </div>
-        </div>
-        <div class="ui-g">
-            <div class="ui-g-4">
-                <label for="staffUserName">User Name:</label>
-                <br/>
-                <input id="staffUserName" style="width:100%" type="text" pInputText [(ngModel)]="staff.staffUserName" 
-                    name="staffUserName" #staffUserName="ngModel" required />
-            </div>
-            <div class="ui-g-8">
-                <br/>
-                <div class="required-message" [hidden]="staffUserName.valid || staffUserName.pristine">
-                    <i class="fa fa-close"></i>
-                    User name is required
-                </div>
+<form class="ui form" #editstaffForm="ngForm">
+    <h4 class="ui dividing header">แก้ไขข้อมูลผู้ใช้งาน</h4>
+    <div class="three fields">
+        <div class="field">
+            <label>
+                <span>Staff Name </span> 
+            </label>
+            <div class="field">
+                <input type="text" id="staffName" placeholder="Staff Name" [(ngModel)]="staff.staffName" 
+                name="staffName" #staffName="ngModel" required>
+                <span>
+                    <span *ngIf="staffName.errors && (staffName.dirty || staffName.touched)" class="ui pointing red basic label">
+                        <span [hidden]="!staffName.errors.required">
+                            <i class="remove circle outline icon"></i>
+                            staffName is required
+                        </span>
+                    </span>
+                </span>
             </div>
         </div>
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <button id="sentCatecory" pButton type="button" label="Save" 
-                [disabled]="editstaffForm.form.invalid" (click)="updateStaff()">
-                </button>
+        <div class="field">
+            <label>
+                <span>Staff Last Name </span> 
+            </label>
+            <div class="field">
+                <input type="text" id="staffLastName" placeholder="Staff Name" [(ngModel)]="staff.staffLastName" 
+                name="staffLastName" #staffLastName="ngModel" required>
+                <span>
+                    <span *ngIf="staffLastName.errors && (staffLastName.dirty || staffLastName.touched)" class="ui pointing red basic label">
+                        <span [hidden]="!staffLastName.errors.required">
+                            <i class="remove circle outline icon"></i>
+                            Staff Last Name is required
+                        </span>
+                    </span>
+                </span>
             </div>
         </div>
-    </form>
-</p-panel>
-
-<p-growl [value]="msgs"></p-growl>-->
+        <div class="field">
+            <label>
+                <span>User Name</span>
+            </label>
+            <div class="field">
+                <input type="text" id="staffUserName" placeholder="Staff Name" [(ngModel)]="staff.staffUserName" 
+                name="staffUserName" #staffUserName="ngModel" required minlength="4" maxlength="20">
+                <span>
+                    <span *ngIf="staffUserName.errors && (staffUserName.dirty || staffUserName.touched)" class="ui pointing red basic label">
+                        <span [hidden]="!staffUserName.errors.required">
+                            <i class="remove circle outline icon"></i>
+                            staffUserName is required
+                        </span>
+                        <span [hidden]="!staffUserName.errors.minlength">
+                            <i class="remove circle outline icon"></i>
+                            UserName must be at least 4 characters long.
+                        </span>
+                        <span [hidden]="!staffUserName.errors.maxlength">
+                            <i class="remove circle outline icon"></i>
+                            UserName cannot be more than 20 characters long.
+                        </span>
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <button class="ui primary button" id="editstaff" type="submit" [disabled]="editstaffForm.form.invalid" (click)="updateStaff()">Save</button>
+</form>

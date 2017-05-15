@@ -17,7 +17,22 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     console.log("home.component");
     // this.uploadUrl = this.apiService.upl + this.uploadUrl;
+    let param = {"id":"check_login"}
+    this.apiService
+    .post("/api/ping",param)
+    .subscribe(
+        data => this.pingDoneAction(data),//this.productLists = data.data,
+        error => this.pingErrorAction(error)
+    );
   }
+
+  pingDoneAction(data:any){
+    console.log("OK");
+  }
+
+  pingErrorAction(error:any){
+    console.log(error);
+  }  
 
   
   // onUploaded(event:any){

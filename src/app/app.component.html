@@ -1,8 +1,19 @@
 <div class="head-menu" [hidden]="hiddenLogin">
-  <div class="ui inverted menu">
-    <div class="ui icon buttons">
-      <!--<div class="ui primary button" (click)="sidenav.toggle()">MENU</div>-->
+  <div class="ui large inverted menu">
+    <!--<div class="ui icon buttons">
       <button class="large ui black button" (click)="sidenav.toggle()"><i class="align justify icon"></i> Menu</button>
+    </div>-->
+    <a class="item" (click)="sidenav.toggle()">
+      <i class="align justify icon"></i> Menu
+    </a>
+    <div class="right menu">
+      <div class="ui dropdown item" style="margin-right: 3px;">
+        {{display_name}} <i class="dropdown icon"></i>
+        <div class="menu">
+          <div class="item" routerLink="/setting"><i class="setting icon"></i> Settings</div>
+          <div class="item" routerLink="/staffcreate"><i class="add user icon"></i> Create staff</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -20,9 +31,17 @@
             <i class="shopping basket icon"></i>
             Product
           </a>
-          <a class="item">
+          <a class="item" routerLinkActive="active">
             <i class="unordered list icon"></i>
             Order
+          </a>
+          <a class="item" routerLinkActive="active">
+            <i class="users icon"></i>
+            User setting
+          </a>
+          <a class="item" routerLink="/login" routerLinkActive="active">
+            <i class="power icon"></i>
+            Log out
           </a>
         </div>  
       </div>
