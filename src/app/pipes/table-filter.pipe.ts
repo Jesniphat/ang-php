@@ -24,6 +24,9 @@ export class TableFilterPipe implements PipeTransform {
 
     let keys = [];
     for(let k in data[0]){
+      if (k == "img"){
+        continue;
+      }
       keys.push(k);
     }
     
