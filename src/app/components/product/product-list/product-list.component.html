@@ -16,45 +16,32 @@
   </div>
 </div>
 
-<table class="ui sortable celled table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Qty</th>
-      <th>Price</th>
-      <th style="text-align:center;">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of productLists | tableFilter:filterText | pageNumber:pageNo">
-      <td>{{item.product_name}}</td>
-      <td>{{item.product_description}}</td>
-      <td>{{item.product_qty}}</td>
-      <td>{{item.product_price}}</td>
-      <td style="text-align:center;">
-        <button class="primary circular ui icon button" (click)="add_new_product(item)">
-          <i class="write icon"></i>
-        </button>
-        <!--<button class="primary circular ui icon button" (click)="viwe_product_pic(item)">
-          <i class="file image outline icon"></i>
-        </button>-->
-      </td>
-    </tr>
-  </tbody>
-  <tfoot>
-    <tr>
-      <th colspan="5">
-        <div class="ui right floated pagination menu">
-          <!--page-->
-          <select class="ui search dropdown" [(ngModel)]="pageNo">
-            <option *ngFor="let page of productLists | tableFilter:filterText | pageList:6" [value]='page'>{{page}}</option>
-          </select>
-        </div>
-      </th>
-    </tr>
-  </tfoot>
-</table>
+<div class="ui cards">
+  <div class="card" *ngFor="let item of productLists | tableFilter:filterText | pageNumber:pageNo">
+    <div class="content">
+      <img class="right floated mini ui image" src="">
+      <div class="header">
+        {{item.product_name}}
+      </div>
+      <div class="meta">
+        {{item.product_price}}
+      </div>
+      <div class="description">
+        {{item.product_description}}
+      </div>
+    </div>
+    <div class="extra content">
+      <div class="ui two buttons">
+        <div class="ui basic green button" (click)="add_new_product(item)">Edit</div>
+        <!--<div class="ui basic red button">Decline</div>-->
+      </div>
+    </div>
+  </div>
+</div>
+<br/>
+<select class="ui search dropdown" [(ngModel)]="pageNo">
+  <option *ngFor="let page of productLists | tableFilter:filterText | pageList:6" [value]='page'>{{page}}</option>
+</select>
 
 
 <!--<div *ngFor="let item of productLists | tableFilter:filterText | pageNumber:pageListNo">
