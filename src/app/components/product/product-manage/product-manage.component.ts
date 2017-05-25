@@ -38,11 +38,11 @@ export class ProductManageComponent implements OnInit {
 //   public birthday = new Date(1988, 3, 15);
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private apiService: ApiService ,
+    public router: Router,
+    public route: ActivatedRoute,
+    public apiService: ApiService ,
     public uploaderService: Uploader,
-    private _elRef: ElementRef
+    public _elRef: ElementRef
   ) { 
     this.storage = localStorage;
   }

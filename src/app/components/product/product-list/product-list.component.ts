@@ -16,6 +16,8 @@ export class ProductListComponent implements OnInit {
   public products:any = [];
   public filterText:any = "";
   public pageNo:any = 1;
+  public uploadUrl:string = "/upload/product";
+  public imgLink:string = "";
   public cols = ["product_name","product_description","product_qty","product_price"];
 
   constructor(
@@ -26,6 +28,9 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit() {
     console.log("product_list.component");
+    this.uploadUrl = this.apiService.upl + this.uploadUrl;
+    this.imgLink = this.apiService.img;
+
     this.getAllProduct();
   }
 
@@ -42,6 +47,11 @@ export class ProductListComponent implements OnInit {
   public getAllProductDoneAction(data){
     console.log(data);
     this.productLists = data.data
+    if(this.productLists.length > 0){
+        for(let z = 0; z < this.productLists.length; z++){
+            this.productLists[z].img = this.imgLink + this.productLists[z].img;
+        }
+    }
   }
 
   public getAllProductErrorAction(error:any){
