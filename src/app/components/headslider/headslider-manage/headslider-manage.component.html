@@ -1,0 +1,101 @@
+<form class="ui form" #sliderForm="ngForm">
+    <h4 class="ui dividing header">Slider control</h4>
+    <div class="two fields">
+        <div class="field">
+            <label>
+                <span>Slider Name* </span> 
+            </label>
+            <div class="field">
+                <input type="text" id="sliderName" placeholder="Slider Name" [(ngModel)]="slider.name" 
+                name="name" #name="ngModel" required minlength="4" maxlength="20">
+                <span>
+                    <span *ngIf="name.errors && (name.dirty || name.touched)" class="ui pointing red basic label">
+                        <span [hidden]="!name.errors.required">
+                            <i class="remove circle outline icon"></i>
+                            Name is required
+                        </span>
+                        <span [hidden]="!name.errors.minlength">
+                            <i class="remove circle outline icon"></i>
+                            Name must be at least 4 characters long.
+                        </span>
+                        <span [hidden]="!name.errors.maxlength">
+                            <i class="remove circle outline icon"></i>
+                            Name cannot be more than 20 characters long.
+                        </span>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="field">
+            <label>
+                <span>Slider Description</span>
+            </label>
+            <div class="field">
+                <textarea type="text" rows="1" placeholder="Description" id="sliderDesc" [(ngModel)]="slider.desc" 
+                name="desc"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="two fields">
+        <div class="field">
+            <label>Link to</label>
+            <select class="ui fluid dropdown" id="linkTo" name="linkTo" [(ngModel)]="slider.link_to" (change)="changeLinkTo($event)">
+                <option value="category">Category</option>
+                <option value="product" selected>Product</option>
+            </select>
+        </div>
+        <div class="field" [hidden]="slider.link_to == 'product'">
+          <label>Category name</label>
+            <select class="ui fluid dropdown" id="linkId" name="linkId" [(ngModel)]="slider.link_id">
+                <option *ngFor="let item of categoryList" [value]='item.value' [hidden]='item.ishide'>
+                    {{item.label}}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="two fields">
+        <div class="field">
+            <label>Slider image</label>
+            <div class="field">
+                <input type="file" id="sliderImage" placeholder="Slider image" [(ngModel)]="slider.image" 
+                (change)="uploadFile($event)" name="sliderImage" #productImage />
+            </div>
+        </div>
+        <div class="field">
+            
+        </div>
+    </div>
+
+    <button class="ui primary button" id="saveProduct" type="submit" [disabled]="sliderForm.form.invalid" (click)="checkBeforSave()">Submit</button>
+    <button class="ui button" id="cancelAll" type="submit" (click)="reset()">Cancel</button>
+</form>
+
+<br/>
+<div class="ui special cards">
+  <div class="card" *ngFor="let file of uploadedFiles; let x = index;">
+    <div class="blurring dimmable image">
+      <div class="ui dimmer">
+        <div class="content">
+          <div class="center">
+            <div class="ui inverted button">Add Friend</div>
+          </div>
+        </div>
+      </div>
+      <img [src]="file.sliderpic_path">
+    </div>
+    <div class="content">
+      <!--<a class="header">Team Fu</a>-->
+      <div class="meta">
+        <!--<span class="date">{{file.productpic_name}}</span>-->
+      </div>
+    </div>
+    <div class="extra content">
+      <a (click)="beforeRemoveImg(file.id, x)">
+        <i class="trash icon"></i>
+        Delete
+      </a>
+    </div>
+  </div>
+</div>
