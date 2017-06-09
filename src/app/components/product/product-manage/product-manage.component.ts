@@ -43,7 +43,7 @@ export class ProductManageComponent implements OnInit {
     public apiService: ApiService ,
     public uploaderService: Uploader,
     public _elRef: ElementRef
-  ) { 
+  ) {
     this.storage = localStorage;
   }
 
@@ -73,7 +73,7 @@ export class ProductManageComponent implements OnInit {
               .post("/api/category_list",param)
               .subscribe(
                 data => this.getCategoryListDoneAction(data), // OR this.categoryLists = data.data,
-                error => this.getCategoryListErrorAction(error) 
+                error => this.getCategoryListErrorAction(error)
               );
       });
   }
@@ -123,11 +123,11 @@ export class ProductManageComponent implements OnInit {
           if(pic_name.length > 0){
               for(var z = 0; z < pic_name.length; z++){
                   pic_name[z].productpic_path = this.imgLink + pic_name[z].productpic_path;
-                  pic_name[z].flag = "u"; 
+                  pic_name[z].flag = "u";
               }
           }
           this.uploadedFiles = pic_name;
-      }   
+      }
   }
 
   getProductByidErrorAction(error){
