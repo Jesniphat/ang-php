@@ -7,15 +7,19 @@ import { ResponseData }     from './constructor-variable';
 @Injectable()
 export class ApiService {
     private prod:boolean = false; 
-    public api:string = "http://localhost/project_shop_api/api.php";
-    public upl:string = "http://localhost/project_shop_api/upload.php";
-    public img:string = "http://localhost/project_shop_api/";
+    public api:string = "http://127.0.0.1/project_shop_api/api.php";
+    public upl:string = "http://127.0.0.1/project_shop_api/upload.php";
+    public img:string = "http://" + location.hostname + "/";
 
-  constructor(private http: Http) { 
-      if(!this.prod){
+  constructor(private http: Http) {
+      console.log(location.hostname); 
+      if(location.hostname == 'localhost'){
           this.api = "";
           this.upl = "";
         //   this.img = "?id=";
+      }else{
+          this.api = "/api.php";
+          this.upl = "/upload.php";
       }
   }
 

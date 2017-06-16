@@ -33,7 +33,7 @@
     <div class="extra content">
       <div class="ui two buttons">
         <div class="ui basic green button" (click)="add_new_product(item)">Edit</div>
-        <!--<div class="ui basic red button">Decline</div>-->
+        <div class="ui basic red button" (click)="delete_product(item)">Delete</div>
       </div>
     </div>
   </div>
@@ -45,6 +45,17 @@
 <select class="ui search dropdown" [(ngModel)]="pageNo">
   <option *ngFor="let page of productLists | tableFilter:filterText | pageList:6" [value]='page'>{{page}}</option>
 </select>
+
+<div class="ui small modal" id="deleteProduct">
+  <div class="header">Delete product pictuer</div>
+  <div class="content">
+    <p>Do you want to delete this product ?</p>
+  </div>
+  <div class="actions">
+    <div class="ui negative button">NO</div>
+    <div class="ui positive right labeled icon button" (click)="removeProduct()">YES</div>
+  </div>
+</div>
 
 
 <!--<div *ngFor="let item of productLists | tableFilter:filterText | pageNumber:pageListNo">

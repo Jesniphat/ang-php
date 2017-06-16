@@ -10,25 +10,25 @@ declare var toastr : any;
   styleUrls: ['./staff-create.component.css']
 })
 export class StaffCreateComponent implements OnInit {
-  private msgs:any;
-  private error:any;
-  private staff:any = {
+  public msgs:any;
+  public error:any;
+  public staff:any = {
     staffName:"",
     staffUserName:"",
     staffLastName:"",
     staffPassword:""
   }
   constructor(
-    private apiService:ApiService,
-    private $rootScope:RootscopeService,
-    private _elRef: ElementRef
+    public apiService:ApiService,
+    public $rootScope:RootscopeService,
+    public _elRef: ElementRef
   ) { }
 
   ngOnInit() {
     console.log("staff_create.component");
   }
 
-  private saveStaff(){
+  public saveStaff(){
     // console.log(this.staff);
     this.apiService
         .post("/api/createstaff", this.staff)
@@ -38,7 +38,7 @@ export class StaffCreateComponent implements OnInit {
         )
   }
 
-  private saveStaffDoneAction(res:any){
+  public saveStaffDoneAction(res:any){
     console.log(res);
     if(res.status){
       // this.msgs = [];
@@ -54,13 +54,13 @@ export class StaffCreateComponent implements OnInit {
     }
   }
 
-  private saveStaffErrorAction(error:any){
+  public saveStaffErrorAction(error:any){
     this.error = error.message;
     console.log("error = ", this.error);
     setTimeout(() => this.error = null, 4000);
   }
 
-  private reset(){
+  public reset(){
     this.msgs = [];
     this.error = "";
     this.staff = {

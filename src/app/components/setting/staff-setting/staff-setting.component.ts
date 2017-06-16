@@ -11,22 +11,22 @@ declare var toastr : any;
   styleUrls: ['./staff-setting.component.css']
 })
 export class StaffSettingComponent implements OnInit {
-  private storage: any;
-  private staff:any = {
+  public storage: any;
+  public staff:any = {
       staffId: "",
       password: "",
       staffName: "",
       staffLastName: "",
       staffUserName: ""
   };
-  private staffData: any;
-  private error: any;
-  private msgs:any;
+  public staffData: any;
+  public error: any;
+  public msgs:any;
 
   constructor(
-    private apiService:ApiService,
-    private $rootScope:RootscopeService,
-    private _elRef: ElementRef
+    public apiService:ApiService,
+    public $rootScope:RootscopeService,
+    public _elRef: ElementRef
   ) { }
 
   ngOnInit() {
@@ -35,7 +35,7 @@ export class StaffSettingComponent implements OnInit {
     this.getStaffFromStorage();
   }
 
-  private getStaffFromStorage(){
+  public getStaffFromStorage(){
       if(this.storage.getItem('logindata')){
           let logindata = JSON.parse(this.storage.getItem('logindata'));
           this.staffData = logindata;
@@ -49,7 +49,7 @@ export class StaffSettingComponent implements OnInit {
       }
   }
 
-  private updateStaff(){
+  public updateStaff(){
       let param = {
         name: this.staff.staffName,
         lastName: this.staff.staffLastName,

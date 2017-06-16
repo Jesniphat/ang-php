@@ -12,18 +12,28 @@ declare var toastr : any;
   styleUrls: ['./headslider-manage.component.css']
 })
 export class HeadsliderManageComponent implements OnInit {
+  public storage: any;
   public slider = {
     id:"",
     name:"",
     description:"",
     link_to:"",
     link_id:"",
-    image:""
+    image:"",
+    staff:"",
+    image_data:{}
   }
-  public uploadUrl:string = "/upload/slider";
+  public uploadUrl:string = "";
   public imgLink:string = "";
-  public uploadedFiles: any[] = [];
+  public uploadedFiles = {
+    flag: "",
+    pic_name:"",
+    pic_path:"",
+    sliderpic_path:""
+  };
   public categoryList = [];
+  public warningmsg:string = "";
+  public dialogmsg:string = "";
 
   constructor(
     public router: Router,
@@ -38,10 +48,21 @@ export class HeadsliderManageComponent implements OnInit {
     this.categoryList = [{"value":"all_product","label":"All product","ishide":true}];
     this.slider.link_id = "all_product";
 
+    this.slider.id = this.route.snapshot.params['id'];
+
+    this.storage = localStorage;
+    let logindata = JSON.parse(this.storage.getItem('logindata'));
+    this.slider.staff = logindata.id;
+
     this.getCategoryList();
 
-    this.uploadUrl = this.apiService.upl + this.uploadUrl;
+    this.uploadUrl = this.apiService.upl + "/upload/slider";
+    console.log(this.uploadUrl);
     this.imgLink = this.apiService.img;
+
+    if(this.slider.id != "create"){
+      this.getSliderById();
+    }
   }
 
   public getCategoryList(){
@@ -78,24 +99,28 @@ export class HeadsliderManageComponent implements OnInit {
     console.log(this.categoryList);
   }
 
-  public checkBeforSave(){
-    console.log(this.slider);
-  }
-
   public uploadFile(data:any){
       console.log("file = ", data.target.files[0]);
+      console.log("upload = ", this.uploadUrl);
       let uploadFile = data.target.files[0];
 
       let myUploadItem = new MyUploadItem(uploadFile, this.uploadUrl);
       myUploadItem.formData = { FormDataKey: 'Form Data Value' };  // (optional) form data can be sent with file
 
       this.uploaderService.onSuccessUpload = (item, response, status, headers) => {
-         console.log("onSuccessUpload = ", response);
-         let pic_name = JSON.parse(response);
+        //  console.log("onSuccessUpload = ", response);
+        let pic_name:any;
+        if(typeof response == 'string'){
+            pic_name = JSON.parse(response);
+        } else {
+            pic_name = response;
+        }
+        //  let pic_name = JSON.parse(response);
          if(pic_name.status === true){
-            pic_name.data.sliderpic_path = this.imgLink + pic_name.data.productpic_path;
+            pic_name.data.sliderpic_path = this.imgLink + pic_name.data.pic_path;
             pic_name.data.flag = "c";
-            this.uploadedFiles.push(pic_name.data);
+            this.uploadedFiles = pic_name.data;
+            // console.log(this.uploadedFiles);
             console.log("upload seccess");
          } else {
             console.log("error = ", pic_name.error);
@@ -107,6 +132,106 @@ export class HeadsliderManageComponent implements OnInit {
          console.log("onErrorUpload = ", response);
       };
       this.uploaderService.upload(myUploadItem);
+  }
+
+  public beforeRemoveImg(data:any){
+    $('#productImgModel').modal('show');
+  }
+
+  public removeImg(){
+    this.uploadedFiles = {
+      flag: "",
+      pic_name:"",
+      pic_path:"",
+      sliderpic_path:""
+    };
+  }
+
+  public checkBeforSave(){
+      if(this.uploadedFiles.pic_path == ""){
+          this.warningmsg = "Warning!";
+          this.dialogmsg = "You doesn't upload product picture. Do you want to save this product?";
+          $('#productSaveModel').modal('show');
+      } else {
+        this.warningmsg = "Save product";
+          this.dialogmsg = "Are you sure that you want to save this product?";
+          $('#productSaveModel').modal('show');
+      }
+  }
+
+  public saveSlider(){
+    console.log("save slider");
+    this.slider.image_data = this.uploadedFiles;
+    console.log(this.slider);
+    this.apiService
+        .post("/api/saveslider", this.slider)
+        .subscribe(
+            res => this.saveSliderDoneAction(res),
+            error => this.saveSliderErrorAction(error)
+        )
+  }
+
+  public saveSliderDoneAction(data:any){
+    console.log("res = ", data);
+      if(data.status === true){
+          this.reset();
+          toastr.success('บันทึกข้อมูลสำเร็จ', 'Success!');
+      } else {
+          console.log("can't save ", data.error);
+          toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
+      }
+  }
+
+  public saveSliderErrorAction(error:any){
+    // this.error = error.message;
+    console.log("error = ", error);
+    toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
+  }
+
+  public getSliderById(){
+    let param = {id: this.slider.id};
+    this.apiService
+        .post("/api/getsliderbyid", param)
+        .subscribe(
+            res => this.getSliderDoneAction(res),
+            error => this.getSliderErrorAction(error)
+        )
+  }
+
+  public getSliderDoneAction(res:any){
+    let data = res.data;
+
+    this.uploadedFiles.flag = "u";
+    this.uploadedFiles.pic_name = data.pic_name;
+    this.uploadedFiles.pic_path = data.pic_path;
+    this.uploadedFiles.sliderpic_path = this.imgLink + data.pic_path;
+    
+    this.slider.id = data.id;
+    this.slider.name = data.name;
+    this.slider.description =  data.description;
+    this.slider.link_to =  data.link_to;
+    this.slider.link_id =  data.link_id;
+    this.slider.image_data = this.uploadedFiles;
+  }
+
+  public getSliderErrorAction(error:any){
+    console.log(error);
+  }
+
+  public reset(){
+      this.slider.id = "create";
+      this.slider.name = "";
+      this.slider.description = "";
+      this.slider.link_to = "";
+      this.slider.link_id = "";
+      this.slider.image_data = {};
+
+    this.uploadedFiles = {
+      flag: "",
+      pic_name:"",
+      pic_path:"",
+      sliderpic_path:""
+    };
   }
 
 }

@@ -7,12 +7,45 @@
       </button>
     </div>
   </div>
-  <div class="three column row">
+  <!--<div class="three column row">
     <div class="column">
       <div class="ui input">
-        <!--<input type="text" placeholder="Search..." [(ngModel)]="filterText" (focus)="focusFilter()">-->
-        <input type="text" placeholder="Search..." [(ngModel)]="filterText">
+        <input type="text" placeholder="Search..." [(ngModel)]="filterText" (focus)="focusFilter()">
       </div>
     </div>
+  </div>-->
+</div>
+
+<div class="ui special cards">
+  <div class="card" style="padding:10px;" *ngFor="let item of sliderLists">
+    <div class="image">
+      <img [src]="item.sliderpic_path" style="max-width: 270px; border-radius: 4px;">
+    </div>
+    <div class="content">
+      <div class="header">{{item.name}}</div>
+      <!--<div class="meta">
+        {{item.product_price}}
+      </div>-->
+      <div class="description">
+        {{item.description}}
+      </div>
+    </div>
+    <div class="extra content">
+      <div class="ui two buttons">
+        <div class="ui basic green button" (click)="add_new_slider(item)">Edit</div>
+        <div class="ui basic red button" (click)="delete_slider(item)">Delete</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ui small modal" id="deleteSlider">
+  <div class="header">Delete product pictuer</div>
+  <div class="content">
+    <p>Do you want to delete this product ?</p>
+  </div>
+  <div class="actions">
+    <div class="ui negative button">NO</div>
+    <div class="ui positive right labeled icon button" (click)="removeSlider()">YES</div>
   </div>
 </div>

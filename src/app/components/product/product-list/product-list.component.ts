@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
 declare var $ : any;
+declare var toastr : any;
 
 @Component({
   selector: 'app-product-list',
@@ -19,6 +20,7 @@ export class ProductListComponent implements OnInit {
   public uploadUrl:string = "/upload/product";
   public imgLink:string = "";
   public cols = ["product_name","product_description","product_qty","product_price"];
+  public delete_id:any = "";
 
   constructor(
     public router: Router,
@@ -45,8 +47,8 @@ export class ProductListComponent implements OnInit {
   }
 
   public getAllProductDoneAction(data){
-    console.log(data);
-    this.productLists = data.data
+    // console.log(data);
+    this.productLists = data.data;
     if(this.productLists.length > 0){
         for(let z = 0; z < this.productLists.length; z++){
             this.productLists[z].img = this.imgLink + this.productLists[z].img;
@@ -72,6 +74,29 @@ export class ProductListComponent implements OnInit {
 
   public focusFilter(){
       this.pageNo = 1;
+  }
+
+  public delete_product(data:any){
+    // console.log(data);
+    this.delete_id = data.id;
+    $('#deleteProduct').modal('show');
+  }
+
+  public removeProduct(){
+    //   console.log(this.delete_id);
+    let param = {"id": this.delete_id}
+      this.apiService
+          .post("/api/delete_product",param)
+          .subscribe(
+              (data) => {
+                console.log(data);
+                toastr.success('ลบข้อมูลสำเร็จ', 'Success!');
+                this.getAllProduct();
+              },
+              (error) => {
+                console.log(error);
+              }
+          );
   }
 
 }
