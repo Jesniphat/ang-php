@@ -24,7 +24,9 @@ export class ProductManageComponent implements OnInit {
         pic_ids: "",
         staffid: "0",
         category: "",
-        productImage: <any>null
+        productImage: <any>null,
+        coverId: "0",
+        recommend: false
     }
     public categoryList = [];
     public selectedStatus: any = "Y";
@@ -114,6 +116,12 @@ export class ProductManageComponent implements OnInit {
             this.product.category = prodResData.category_id;
             //   console.log(prodResData.pic);
 
+            if(prodResData.recommend == 'Y'){
+                this.product.recommend = true;
+            }else{
+                this.product.recommend = false;
+            }
+
             let pic_name = prodResData.pic;
 
             if (pic_name.length > 0) {
@@ -155,6 +163,10 @@ export class ProductManageComponent implements OnInit {
             if (pic_name.status === true) {
                 pic_name.data.productpic_path = this.imgLink + pic_name.data.productpic_path;
                 pic_name.data.flag = "c";
+                if(this.uploadedFiles.length == 0){
+                    pic_name.data.cover = "Y";
+                    this.product.coverId = pic_name.data.id;
+                }
                 this.uploadedFiles.push(pic_name.data);
                 console.log("upload seccess");
             } else {
@@ -229,6 +241,15 @@ export class ProductManageComponent implements OnInit {
         this.uploadedFiles.splice(this.imgIndex, 1);
     }
 
+    setCoverPic(id:any){
+        // console.log(id);
+        this.product.coverId = id;
+    }
+
+    checkRecommend(){
+        console.log(this.product.recommend);
+    }
+
     reset() {
         this.product = {
             id: "create",
@@ -240,7 +261,9 @@ export class ProductManageComponent implements OnInit {
             staffid: "0",
             pic_ids: "",
             category: "1",
-            productImage: <any>null
+            productImage: <any>null,
+            coverId: "0",
+            recommend:false
         }
         this.uploadedFiles = [];
     }

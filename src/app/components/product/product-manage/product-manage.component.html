@@ -88,6 +88,21 @@
         </div>
     </div>
 
+    <div class="two fields">
+        <div class="field">
+            <label>Recommend product</label>
+            <div class="field">
+                <div class="ui checkbox">
+                    <input type="checkbox" name="recommend" [(ngModel)]="product.recommend" (change)="checkRecommend()">
+                    <label>Recommend</label>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            
+        </div>
+    </div>
+
     <button class="ui primary button" id="saveProduct" type="submit" [disabled]="productForm.form.invalid" (click)="checkBeforSave()">Submit</button>
     <button class="ui button" id="cancelAll" type="submit" (click)="reset()">Cancel</button>
 </form>
@@ -107,8 +122,12 @@
     </div>
     <div class="content">
       <!--<a class="header">Team Fu</a>-->
-      <div class="meta">
-        <!--<span class="date">{{file.productpic_name}}</span>-->
+      <!--<div class="meta">
+        <span class="date">cover</span>
+      </div>-->
+      <div class="ui radio checkbox">
+        <input type="radio" name="cover" [value]="file.id" (change)="setCoverPic(file.id)" [checked]="file.cover=='Y'">
+        <label>Cover</label>
       </div>
     </div>
     <div class="extra content">
