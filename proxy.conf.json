@@ -1,10 +1,10 @@
 {
   "/api": {
-    "target": "http://192.168.99.100/api.php",
+    "target": "http://localhost/api.php",
     "secure": false
   },
   "/upload": {
-    "target": "http://192.168.99.100/upload.php",
+    "target": "http://localhost/upload.php",
     "secure": false
   }
 }
