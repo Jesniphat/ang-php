@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ElementRef } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { ApiService } from "../../../service/api.service";
 import { Uploader } from 'angular2-http-file-upload';
 import { MyUploadItem } from "../../../upload-item";
@@ -187,14 +188,15 @@ export class ProductManageComponent implements OnInit {
             this.dialogmsg = "You doesn't upload product picture. Do you want to save this product?";
             $('#productSaveModel').modal('show');
         } else {
-            this.warningmsg = "Save product";
-            this.dialogmsg = "Are you sure that you want to save this product?";
-            $('#productSaveModel').modal('show');
+            // this.warningmsg = "Save product";
+            // this.dialogmsg = "Are you sure that you want to save this product?";
+            // $('#productSaveModel').modal('show');
+            this.saveProduct();
         }
     }
 
     saveProduct() {
-        console.log("save product");
+        // console.log("save product = ");
         if ((this.uploadedFiles).length > 0) {
             for (var i = 0; i < this.uploadedFiles.length; i++) {
                 (this.product.pic_id).push(this.uploadedFiles[i].id);

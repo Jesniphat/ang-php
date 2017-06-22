@@ -13,7 +13,7 @@ export class ApiService {
     public img:string = "http://192.168.99.100/";
 
   constructor(private http: Http) {
-      console.log(location.hostname); 
+    //   console.log(location.hostname); 
       if(location.hostname == 'localhost'){
           this.api = "";
           this.upl = "";

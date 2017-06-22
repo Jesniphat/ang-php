@@ -103,7 +103,7 @@
         </div>
     </div>
 
-    <button class="ui primary button" id="saveProduct" type="submit" [disabled]="productForm.form.invalid" (click)="checkBeforSave()">Submit</button>
+    <button class="ui primary button" id="saveProduct" type="submit" [disabled]="productForm.form.invalid" (click)="saveProduct()">Submit</button>
     <button class="ui button" id="cancelAll" type="submit" (click)="reset()">Cancel</button>
 </form>
 
@@ -149,14 +149,10 @@
     <p>{{dialogmsg}}</p>
   </div>
   <div class="actions">
-    <div class="ui red basic cancel inverted button">
-      <i class="remove icon"></i>
-      No
-    </div>
-    <div class="ui green ok inverted button" (click)="saveProduct()">
+    <button class="ui green ok inverted button" id="saveProdBtn" (click)="saveProduct()">
       <i class="checkmark icon"></i>
       Yes
-    </div>
+    </button>
   </div>
 </div>
 
