@@ -75,4 +75,12 @@ export class HeadsliderListComponent implements OnInit {
         );
   }
 
+  public go(id:any){
+    console.log(id);
+    // this.router.navigate(['/head_slider/testrcomp', {outlets: {'slide': [id]}}]);
+    let link: any;
+    link = ['testrcomp'];
+    this.router.navigate(link);
+  }
+
 }
