@@ -10,8 +10,6 @@ import { SharedModule } from "../../shared/shared.module";
 import { routing } from "./headslider.routing";
 import { HeadsliderListComponent } from './headslider-list/headslider-list.component';
 import { HeadsliderManageComponent } from './headslider-manage/headslider-manage.component';
-import { TestrComponent } from './testr/testr.component';
-import { Testr2Component } from './testr2/testr2.component';
 
 @NgModule({
   imports: [
@@ -26,9 +24,7 @@ import { Testr2Component } from './testr2/testr2.component';
   ],
   declarations: [
     HeadsliderListComponent,
-    HeadsliderManageComponent,
-    TestrComponent,
-    Testr2Component
+    HeadsliderManageComponent
   ],
   providers: [ 
     Uploader 
