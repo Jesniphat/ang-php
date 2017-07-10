@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from "@angular/http";
-import { MdDialogModule } from '@angular/material';
 import { Uploader }      from 'angular2-http-file-upload';
 
 import { SharedModule } from "../../shared/shared.module";
@@ -22,7 +21,6 @@ import { ProductManageComponent } from './product-manage/product-manage.componen
     BrowserModule,
     FormsModule,
     HttpModule,
-    MdDialogModule,
 
     SharedModule,
 

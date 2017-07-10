@@ -23,6 +23,9 @@ export class AppComponent {
   display_name: any;
   menuId: any[];
   dropDownMenu: any;
+  sideHeight:string = "611px";
+  leftPad:string = "0px";
+  rightPad:string = "0px";
 
   constructor(
    public apiSevice: ApiService, 
@@ -40,7 +43,7 @@ export class AppComponent {
       this.display_name = logindata.display_name;
       // console.log("staff = ", this.staffData);
     }
-
+    this.setPage();
     $('.ui.dropdown').dropdown();
     // this.testapi();
     this.checkLogin();
@@ -66,8 +69,9 @@ export class AppComponent {
     }else{
         this.hiddenLogin = true;
         this.showSide = false;
-        window.location.href = "#/login";
+        // window.location.href = "login";
     }
+    console.log('hide = ', this.hiddenLogin, ' and show = ', this.showSide);
   }
 
   checkLoginErrorAction(error:any){
@@ -95,6 +99,7 @@ export class AppComponent {
   }
 
   showNav(obj:any){
+    console.log(obj);
     if(obj != "" && obj != undefined && Object.keys(obj).length != 0){
       // console.log("obj = ", obj);
       let show = obj;
@@ -108,6 +113,20 @@ export class AppComponent {
       this.display_name = logindata.display_name;
       // console.log("staff = ", this.staffData);
     }
+  }
+
+  setPage(){
+    this.sideHeight = (document.body.clientHeight - 64) + "px";
+    let pageWidth = document.body.clientWidth;
+    if(pageWidth < 1200){
+      this.leftPad = "0px";
+      this.rightPad = "0px";
+    }else{
+      let pad = (pageWidth - 1200)/2;
+      this.leftPad = (pad) + "px";
+      this.rightPad = (pad) + "px";
+    }
+    // console.log(this.leftPad, " - ", this.rightPad);
   }
 
 }

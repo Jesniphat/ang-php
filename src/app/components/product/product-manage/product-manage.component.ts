@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ElementRef } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
-import { MdDialog, MdDialogRef } from '@angular/material';
 import { ApiService } from "../../../service/api.service";
 import { Uploader } from 'angular2-http-file-upload';
 import { MyUploadItem } from "../../../upload-item";

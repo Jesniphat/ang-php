@@ -20,3 +20,7 @@
 .required-message {
   color: red;
 }
+
+.hiddenLeftMargin {
+  margin-left: 0px !important;
+}
