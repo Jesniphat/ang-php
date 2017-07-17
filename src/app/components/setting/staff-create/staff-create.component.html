@@ -83,91 +83,58 @@
 
 <p-growl [value]="msgs"></p-growl>-->
 
-<form class="ui form" #createStaffForm="ngForm">
+<form #createStaffForm="ngForm">
     <h4 class="ui dividing header">เพิ่มผู้ใช้งาน</h4>
-    <div class="two fields">
-        <div class="field">
-            <label>
-                <span>Staff Name </span> 
-            </label>
-            <div class="field">
-                <input type="text" id="staffName" placeholder="Staff Name" [(ngModel)]="staff.staffName" 
-                    name="staffName" #staffName="ngModel" required>
-                <span>
-                    <span *ngIf="staffName.errors && (staffName.dirty || staffName.touched)" class="ui pointing red basic label">
-                        <span [hidden]="!staffName.errors.required">
-                            <i class="remove circle outline icon"></i>
-                            Staff name is required
-                        </span>
-                    </span>
-                </span>
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--6-col">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="staffName" [(ngModel)]="staff.staffName" name="staffName" #staffName="ngModel" required>
+                <label class="mdl-textfield__label" for="staffName">Staff Name</label>
+                <span class="mdl-textfield__error">*Staff name is required!</span>
             </div>
         </div>
-        <div class="field">
-            <label>
-                <span>Last Name</span>
-            </label>
-            <div class="field">
-                <input type="text" id="staffLastName" placeholder="Last Name" [(ngModel)]="staff.staffLastName" 
-                name="staffLastName" #staffLastName="ngModel" required>
-                <span>
-                    <span *ngIf="staffLastName.errors && (staffLastName.dirty || staffLastName.touched)" class="ui pointing red basic label">
-                        <span [hidden]="!staffLastName.errors.required">
-                            <i class="remove circle outline icon"></i>
-                            Staff last name is required
-                        </span>
-                    </span>
-                </span>
+
+        <div class="mdl-cell mdl-cell--6-col">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="staffLastName" [(ngModel)]="staff.staffLastName" name="staffLastName" #staffLastName="ngModel" required>
+                <label class="mdl-textfield__label" for="staffLastName">Last Name</label>
+                <span class="mdl-textfield__error">*Staff last name is required</span>
             </div>
         </div>
     </div>
-    <div class="two fields">
-        <div class="field">
-            <label>
-                <span>User name</span>
-            </label>
-            <div class="field">
-                <input id="staffUserName" type="text" [(ngModel)]="staff.staffUserName" placeholder="User name" 
-                    name="staffUserName" #staffUserName="ngModel" required minlength="4" maxlength="20" />
-                <span>
-                    <span *ngIf="staffUserName.errors && (staffUserName.dirty || staffUserName.touched)" class="ui pointing red basic label">
-                        <span [hidden]="!staffUserName.errors.required">
-                            <i class="remove circle outline icon"></i>
-                            UserName is required
-                        </span>
-                        <span [hidden]="!staffUserName.errors.minlength">
-                            <i class="remove circle outline icon"></i>
-                            UserName must be at least 4 characters long.
-                        </span>
-                        <span [hidden]="!staffUserName.errors.maxlength">
-                            <i class="remove circle outline icon"></i>
-                            UserName cannot be more than 20 characters long.
-                        </span>
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--6-col">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" id="staffUserName" type="text" [(ngModel)]="staff.staffUserName" 
+                       name="staffUserName" #staffUserName="ngModel" required minlength="4" maxlength="20" />
+                <label class="mdl-textfield__label" for="staffUserName">User name</label>
+                <span *ngIf="staffUserName.errors">
+                    <span [hidden]="!staffUserName.errors.required" class="mdl-textfield__error">
+                        UserName is required
+                    </span>
+                    <span [hidden]="!staffUserName.errors.minlength" class="mdl-textfield__error">
+                        UserName must be at least 4 characters long.
+                    </span>
+                    <span [hidden]="!staffUserName.errors.maxlength" class="mdl-textfield__error">
+                        UserName cannot be more than 20 characters long.
                     </span>
                 </span>
             </div>
         </div>
-        <div class="field">
-            <label>
-                <span>Password</span>
-            </label>
-            <div class="field">
-                <input  id="staffPassword" style="width:100%" type="password" [(ngModel)]="staff.staffPassword" placeholder="Password"
-                    name="staffPassword" #staffPassword="ngModel" required minlength="4" maxlength="20" />
-                <span>
-                    <span *ngIf="staffPassword.errors && (staffPassword.dirty || staffPassword.touched)" class="ui pointing red basic label">
-                        <span [hidden]="!staffPassword.errors.required">
-                            <i class="remove circle outline icon"></i>
-                            Password is required
-                        </span>
-                        <span [hidden]="!staffPassword.errors.minlength">
-                            <i class="remove circle outline icon"></i>
-                            Password must be at least 4 characters long.
-                        </span>
-                        <span [hidden]="!staffPassword.errors.maxlength">
-                            <i class="remove circle outline icon"></i>
-                            Password cannot be more than 20 characters long.
-                        </span>
+        <div class="mdl-cell mdl-cell--6-col">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" id="staffPassword" type="password" [(ngModel)]="staff.staffPassword"
+                    name="staffPassword" #staffPassword="ngModel" required minlength="4" maxlength="20">
+                <label class="mdl-textfield__label" for="staffPassword">Password</label>
+                <span *ngIf="staffPassword.errors">
+                    <span [hidden]="!staffPassword.errors.required" class="mdl-textfield__error">
+                        Password is required
+                    </span>
+                    <span [hidden]="!staffPassword.errors.minlength" class="mdl-textfield__error">
+                        Password must be at least 4 characters long.
+                    </span>
+                    <span [hidden]="!staffPassword.errors.maxlength" class="mdl-textfield__error">
+                        Password cannot be more than 20 characters long.
                     </span>
                 </span>
             </div>
