@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
     // this.uploadUrl = this.apiService.upl + this.uploadUrl;
     let param = {"id":"check_login"}
     this.apiService
-    .post("/api/ping",param)
+    .post("/api/home/ping",param)
     .subscribe(
         data => this.pingDoneAction(data),//this.productLists = data.data,
         error => this.pingErrorAction(error)

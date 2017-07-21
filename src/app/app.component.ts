@@ -54,7 +54,7 @@ export class AppComponent {
   checkLogin(){
     let param:any = {"id":"isLogin"};
     this.apiSevice
-        .post("/api/checklogin", param)
+        .post("/api/authen/checklogin", param)
         .subscribe(
           data => this.checkLoginDoneAction(data),
           error => this.checkLoginErrorAction(error)
