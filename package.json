@@ -11,7 +11,8 @@
     "e2e": "ng e2e",
     "ngbuild": "ng build --target=production --environment=prod",
     "ngbuild2": "ng build --prod",
-    "dev": "ng serve --proxy-config proxy.conf.json"
+    "dev": "ng serve --proxy-config proxy.conf.json",
+    "start2": "node ./bin/www"
   },
   "private": true,
   "dependencies": {
@@ -25,9 +26,19 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "angular2-http-file-upload": "^1.0.6",
+    "bluebird": "^3.5.0",
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
     "core-js": "^2.4.1",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "jade": "~1.11.0",
     "jquery": "^3.2.1",
+    "jwt-simple": "^0.5.1",
+    "morgan": "~1.8.1",
+    "mysql": "^2.13.0",
     "rxjs": "^5.1.0",
+    "serve-favicon": "~2.4.2",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
