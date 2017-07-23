@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 declare var $ : any;
 
 @Component({
@@ -9,6 +10,7 @@ declare var $ : any;
   styleUrls: ['./category-list.component.css']
 })
 export class CategoryListComponent implements OnInit {
+    @BlockUI() blockUI: NgBlockUI;
     item = 1;
     error:string = "";
     query:string = "";
@@ -32,9 +34,10 @@ export class CategoryListComponent implements OnInit {
   }
 
   getCategoryList(){
+    this.blockUI.start('Loading...');
     let param = {"id":"ทดสอบ"}
     this.apiService
-        .post("/api/category_list",param)
+        .post("/api/category/category_list",param)
         .subscribe(
           data => this.getCategoryDoneAction(data), // OR this.categoryLists = data.data,
           error => this.errorAction(error) 
@@ -44,11 +47,13 @@ export class CategoryListComponent implements OnInit {
   getCategoryDoneAction(data:any){
       console.log("data = ", data);
       this.categoryLists = data.data;
+      this.blockUI.stop();
   }
 
   errorAction(error:any){
       this.error = error.message;
       console.log("errer = ", this.error);
+      this.blockUI.stop();
   }
 
   focusFilter(){

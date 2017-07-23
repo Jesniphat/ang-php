@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   getLogin(){
     let param = {"clear":"login"};
     this.apiService
-        .post("/api/clearlogin", param)
+        .post("/api/authen/clearlogin", param)
         .subscribe(
             res => this.getLoginDoneAction(res),
             error => this.getLoginErrorAction(error)
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
     }
     // console.log(param);
     this.apiService
-      .post("/api/login", param)
+      .post("/api/authen/login", param)
       .subscribe(
           (res) => this.loginDoneAction(res),
           (error) => this.loginErrorAction(error)

@@ -4,7 +4,7 @@ let db = require('../library/db');
 
 
 router.use(function(req, res, next){
-  console.log("perrmission : ", permission.readToken(req));
+  // console.log("perrmission : ", permission.readToken(req));
   if(permission.isLogin(req)){
     next();
   }else {
@@ -14,6 +14,13 @@ router.use(function(req, res, next){
       error: "Access Denied"
     });
   }
+});
+
+router.post("/ping", function(req, res, next){
+  res.json({
+      status:true,
+      data:'1'
+    });
 });
 
 module.exports = router;

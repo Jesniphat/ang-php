@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 // import { Uploader }      from 'angular2-http-file-upload';
 
+import { BlockUIModule } from 'ng-block-ui';
 import { routing } from "./app.routing";
 
 import { AppComponent } from './app.component';
@@ -21,6 +22,7 @@ import { HeadsliderModule } from './components/headslider/headslider.module';
     AppComponent
   ],
   imports: [
+    // BlockUIModule,
     // routing //
     routing,
     // system //
