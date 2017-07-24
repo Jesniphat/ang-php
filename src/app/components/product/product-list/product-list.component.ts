@@ -39,7 +39,7 @@ export class ProductListComponent implements OnInit {
   public getAllProduct(){
       let param = {"id":"สินค้าทั้งหมด"}
       this.apiService
-          .post("/api/product_list",param)
+          .post("/api/product/product_list",param)
           .subscribe(
               data => this.getAllProductDoneAction(data),//this.productLists = data.data,
               error => this.getAllProductErrorAction(error)
@@ -86,7 +86,7 @@ export class ProductListComponent implements OnInit {
     //   console.log(this.delete_id);
     let param = {"id": this.delete_id}
       this.apiService
-          .post("/api/delete_product",param)
+          .post("/api/product/delete_product",param)
           .subscribe(
               (data) => {
                 console.log(data);

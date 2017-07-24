@@ -17,7 +17,7 @@ router.use(function(req, res, next){
   }
 });
 
-router.post("/category_list", function(req, res, next){
+router.post("/category_list", (req, res, next) => {
 	let category = req.body;
 	let sql = "SELECT id, cate_name, cate_description, '' as product_qty FROM category WHERE status = 'Y'";
 	let where = [];
