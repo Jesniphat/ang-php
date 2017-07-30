@@ -71,65 +71,9 @@ router.post("/getcategorybyid", function(req, res, next) {
 });
 
 router.post("/savecategory", function(req, res, next) {
-	let category = req.body;
-	if(category.cateId != "create"){
-		console.log("update");
-		let data = {
-			query: {
-				cate_name: category.cateName,
-				cate_description: category.cateDescription,
-				status: category.selectedStatus
-			},
-			table: "category",
-			where: {
-				id: category.cateId
-			}
-		};
-		db.Update(data, 
-			(success) => {
-				res.json({
-					status: true,
-					data: success
-				});
-			}, (error) => {
-				res.json({
-					status: false,
-					error: error
-				});
-			});
-	} else {
-		console.log("insert");
-		data = {
-			query:{
-				cate_name: category.cateName,
-				cate_description: category.cateDescription,
-				status: category.selectedStatus,
-				created_by: permission.getID(req),
-				updated_by: permission.getID(req),
-				uuid: uuidv1()
-			},
-			table: "category"
-		};
-		// sql = "INSERT INTO category SET ? ";
-		db.Insert(data, 
-			(success) => {
-				res.json({
-					status: true,
-					data: success
-				});
-			}, (error) => {
-				res.json({
-					status: false,
-					error: error
-				});
-			});
-	}
-});
-
-router.post("/savecategory2", function(req, res, next) {
 	let connection = conn.init();
 	let category = req.body;
-
+	let $scope = "";
 	let transection = function(){
 		console.log("transection");
 		return new promise((resolve, reject) => {
@@ -141,42 +85,64 @@ router.post("/savecategory2", function(req, res, next) {
 		});
 	}
 
-	let insert_data = function(){
-		let deferred = promise.pending();
-		console.log("insert");
-		data = {
-			query:{
-				cate_name: category.cateName,
-				cate_description: category.cateDescription,
-				status: category.selectedStatus,
-				created_by: permission.getID(req),
-				updated_by: permission.getID(req),
-				uuid: uuidv1()
-			},
-			table: "category"
-		};
-		// sql = "INSERT INTO category SET ? ";
-		db.TranInsert(connection,data, (success) => {
-			console.log("It ok");
-			deferred.resolve("OK");
-		}, (error) => {
-			console.log("Noooooooooooooo!!!");
-			deferred.reject(error);
+	let savecetegory = function(){
+		return new promise((resolve, reject) => {
+			if(category.cateId != "create"){
+				let data = {
+					query: {
+						cate_name: category.cateName,
+						cate_description: category.cateDescription,
+						status: category.selectedStatus
+					},
+					table: "category",
+					where: {
+						id: category.cateId
+					}
+				};
+				db.Update(connection, data, (success) => {
+					// console.log("Update categort success = ", success);
+					resolve(success);
+					$scope = success;
+				}, (error) => {
+					// console.log("Error Update Category = ", error);
+					reject(error);
+				});
+			} else {
+				console.log("insert");
+				data = {
+					query:{
+						cate_name: category.cateName,
+						cate_description: category.cateDescription,
+						status: category.selectedStatus,
+						created_by: permission.getID(req),
+						updated_by: permission.getID(req),
+						uuid: uuidv1()
+					},
+					table: "category"
+				};
+				// sql = "INSERT INTO category SET ? ";
+				db.Insert(connection,data, (success) => {
+					// console.log("Insert Category success = ", success);
+					$scope = success;
+					resolve(success);
+				}, (error) => {
+					// console.log("Noooooooooooooo!!! Insert Category Error !!! = ", error);
+					reject(error);
+				});
+			}
 		});
-
-		return deferred.promise;
 	}
 
 
 	transection()
-	.then(insert_data)
+	.then(savecetegory)
 	.then(function(){
 		return new promise((resolve, reject) => {
 			db.Commit(connection, (success) => {
 				console.log("commited !!");
 				res.json({
 					status: true,
-					data: "ok"
+					data: $scope
 				});
 				resolve("commited");
 			}, (error) => {

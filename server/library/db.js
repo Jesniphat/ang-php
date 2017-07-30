@@ -110,119 +110,119 @@ module.exports = new function() {
 
   }
 
-  this.Insert = function(data, success, errors){
-    let connection = conn.init();
-    let $scrope;
+  // this.Insert = function(data, success, errors){
+  //   let connection = conn.init();
+  //   let $scrope;
 
-    let isObject = function(){
-      let deferred = promise.pending();
-      if(typeof(data) == "object"){
-        deferred.resolve("continued");
-      } else {
-        deferred.reject("Is not object");
-      }
-      return deferred.promise;
-    }
+  //   let isObject = function(){
+  //     let deferred = promise.pending();
+  //     if(typeof(data) == "object"){
+  //       deferred.resolve("continued");
+  //     } else {
+  //       deferred.reject("Is not object");
+  //     }
+  //     return deferred.promise;
+  //   }
 
-    let insert_data = function(){
-      let deferred = promise.pending();
-      let insert = "INSERT INTO " + data.table + " SET ? ";
-      connection.beginTransaction(function(err) {
-        if (err) { deferred.reject(err); }
-        var querys = connection.query(insert, data.query, function(error, results, fields) {
-          // console.log(querys.sql);
-          if (error) {
-            return connection.rollback(function() {
-              deferred.reject(error);
-            });
-          }
-          $scrope = {insert_id:results.insertId, effected_row:results.affectedRows, change_row:results.changedRows };
-          connection.commit(function(e){
-            if (e) {
-              return connection.rollback(function(){
-                deferred.reject(e);
-              });
-            }
-            console.log("commit success");
-            deferred.resolve("Update success");
-          });
-        });
-      });
-      return deferred.promise;
-    }
+  //   let insert_data = function(){
+  //     let deferred = promise.pending();
+  //     let insert = "INSERT INTO " + data.table + " SET ? ";
+  //     connection.beginTransaction(function(err) {
+  //       if (err) { deferred.reject(err); }
+  //       var querys = connection.query(insert, data.query, function(error, results, fields) {
+  //         // console.log(querys.sql);
+  //         if (error) {
+  //           return connection.rollback(function() {
+  //             deferred.reject(error);
+  //           });
+  //         }
+  //         $scrope = {insert_id:results.insertId, effected_row:results.affectedRows, change_row:results.changedRows };
+  //         connection.commit(function(e){
+  //           if (e) {
+  //             return connection.rollback(function(){
+  //               deferred.reject(e);
+  //             });
+  //           }
+  //           console.log("commit success");
+  //           deferred.resolve("Update success");
+  //         });
+  //       });
+  //     });
+  //     return deferred.promise;
+  //   }
 
-    isObject()
-    .then(insert_data)
-    .then(function(){
-      connection.end();
-      success($scrope);
-    }).catch(function(ee){
-      connection.end();
-      console.log("my error = ", ee);
-      errors(ee);
-    });
-  }
+  //   isObject()
+  //   .then(insert_data)
+  //   .then(function(){
+  //     connection.end();
+  //     success($scrope);
+  //   }).catch(function(ee){
+  //     connection.end();
+  //     console.log("my error = ", ee);
+  //     errors(ee);
+  //   });
+  // }
 
 
-  this.Update = function(data, success, errors){
-    let connection = conn.init();
-    let $scrope;
+  // this.Update = function(data, success, errors){
+  //   let connection = conn.init();
+  //   let $scrope;
     
-    let update_data = function(){
-      let deferred = promise.pending();
+  //   let update_data = function(){
+  //     let deferred = promise.pending();
 
-      let fields = [];
-      let set = [];
-      let where = " WHERE 1 = 1 "; 
-      for(keys in data.query){
-        fields.push(keys + " = ?");
-        set.push(data.query[keys]);
-      }
-      fields.toString();
+  //     let fields = [];
+  //     let set = [];
+  //     let where = " WHERE 1 = 1 "; 
+  //     for(keys in data.query){
+  //       fields.push(keys + " = ?");
+  //       set.push(data.query[keys]);
+  //     }
+  //     fields.toString();
 
-      if(typeof(data.where) == "object"){
-        for(keys in data.where){
-          where += " AND " + keys + " = '?'";
-          set.push(data.where[keys]);
-        }
-      }else if (data.where != undefined){
-        where += " AND " + data.where;
-      }
-      let update = "UPDATE " + data.table + " SET " + fields + where;
-      // console.log(update);
-      connection.beginTransaction(function(err) {
-        if (err) { deferred.reject(err); }
-        connection.query(update, set, function(error, results, fields) {
-          if (error) {
-            return connection.rollback(function() {
-              deferred.reject(error);
-            });
-          }
-          $scrope = { effected_row:results.affectedRows, change_row:results.changedRows };
-          connection.commit(function(e){
-            if (e) {
-              return connection.rollback(function(){
-                deferred.reject(e);
-              });
-            }
-            console.log("commit success");
-            deferred.resolve("Update success");
-          });
-        });
-      });
-      return deferred.promise;
-    }
+  //     if(typeof(data.where) == "object"){
+  //       for(keys in data.where){
+  //         where += " AND " + keys + " = '?'";
+  //         set.push(data.where[keys]);
+  //       }
+  //     }else if (data.where != undefined){
+  //       where += " AND " + data.where;
+  //     }
+  //     let update = "UPDATE " + data.table + " SET " + fields + where;
+  //     // console.log(update);
+  //     connection.beginTransaction(function(err) {
+  //       if (err) { deferred.reject(err); }
+  //       connection.query(update, set, function(error, results, fields) {
+  //         if (error) {
+  //           return connection.rollback(function() {
+  //             deferred.reject(error);
+  //           });
+  //         }
+  //         $scrope = { effected_row:results.affectedRows, change_row:results.changedRows };
+  //         connection.commit(function(e){
+  //           if (e) {
+  //             return connection.rollback(function(){
+  //               deferred.reject(e);
+  //             });
+  //           }
+  //           console.log("commit success");
+  //           deferred.resolve("Update success");
+  //         });
+  //       });
+  //     });
+  //     return deferred.promise;
+  //   }
 
-    update_data()
-    .then(function(){
-      connection.end();
-      success($scrope);
-    }).catch(function(ee){
-      connection.end();
-      console.log("error = ", ee);
-      errors(ee);
-    });
-  }
+  //   update_data()
+  //   .then(function(){
+  //     connection.end();
+  //     success($scrope);
+  //   }).catch(function(ee){
+  //     connection.end();
+  //     console.log("error = ", ee);
+  //     errors(ee);
+  //   });
+  // }
 
   this.Delete = function(data, success, errors){
     let connection = conn.init();
@@ -304,7 +304,7 @@ module.exports = new function() {
     });
   }
 
-  this.TranInsert = function(connection, data, success, errors){
+  this.Insert = function(connection, data, success, errors){
     let $scrope;
     let deferred = promise.pending();
     if(typeof(data) == "object"){
@@ -322,6 +322,37 @@ module.exports = new function() {
       } else {
         $scrope = {insert_id:results.insertId, effected_row:results.affectedRows, change_row:results.changedRows };
         console.log("INSERT SUCCESS = ", $scrope);
+        success($scrope);
+      }
+    });
+  }
+
+  this.Update = function(connection, data, success, errors){
+    let $scrope;
+    let fields = [];
+    let set = [];
+    let where = " WHERE 1 = 1 "; 
+    for(keys in data.query){
+      fields.push(keys + " = ?");
+      set.push(data.query[keys]);
+    }
+    fields.toString();
+
+    if(typeof(data.where) == "object"){
+      for(keys in data.where){
+        where += " AND " + keys + " = '?'";
+        set.push(data.where[keys]);
+      }
+    }else if (data.where != undefined){
+      where += " AND " + data.where;
+    }
+    let update = "UPDATE " + data.table + " SET " + fields + where;
+    // console.log(update);
+    connection.query(update, set, function(error, results, fields) {
+      if (error) {
+        errors(error)
+      } else {
+        $scrope = { effected_row:results.affectedRows, change_row:results.changedRows };
         success($scrope);
       }
     });
