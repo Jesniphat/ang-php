@@ -4,7 +4,7 @@ export class MyUploadItem extends UploadItem {
     constructor(file: any, url: any) {
         super();
         this.url = url;
-        this.headers = { HeaderName: 'Header Value', AnotherHeaderName: 'Another Header Value' };
+        this.headers = { HeaderName: 'pic', AnotherHeaderName: 'pic' };
         this.file = file;
     }
 }

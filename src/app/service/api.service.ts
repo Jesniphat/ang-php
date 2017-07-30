@@ -9,7 +9,7 @@ export class ApiService {
     private prod:boolean = false; 
     public api:string = "http://127.0.0.1/project_shop_api/api.php";
     public upl:string = "http://127.0.0.1/project_shop_api/upload.php";
-    public img:string = "http://" + location.hostname + ":8010/";
+    public img:string = "http://" + location.hostname + ":3000/";
     // public img:string = "http://192.168.99.100/";
 
   constructor(private http: Http) {
@@ -19,8 +19,9 @@ export class ApiService {
           this.upl = "";
         //   this.img = "?id=";
       }else{
-          this.api = "/api.php";
-          this.upl = "/upload.php";
+        //   this.api = "/api.php";
+        //   this.upl = "/upload.php";
+        this.img = "http://" + location.hostname + "/";
       }
   }
 

@@ -87,7 +87,7 @@ export class CategoryManageComponent implements OnInit {
   saveCategory() {
     this.blockUI.start('Loading...');
     this.apiService
-      .post("/api/category/savecategory", this.cate)
+      .post("/api/category/savecategory2", this.cate)
       .subscribe(
       res => this.saveCategoryDoneAction(res),
       error => this.saveCategoryErrorAction(error)

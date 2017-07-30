@@ -9,6 +9,7 @@ var home = require('./routes/home');
 var authen = require('./routes/authen');
 var category = require('./routes/category');
 var product = require('./routes/product');
+var upload = require('./routes/upload');
 // var home = require('./routes/home');
 
 var app = express();
@@ -23,12 +24,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, './../dist')));
+app.use(express.static(path.join(__dirname, './dist')));
 
 app.use('/api/authen', authen);
 app.use('/api/home', home);
 app.use('/api/category', category);
 app.use('/api/product', product);
+app.use('/api/upload', upload);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

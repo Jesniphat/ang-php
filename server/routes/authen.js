@@ -24,8 +24,13 @@ router.post("/clearlogin", function(req, res, next){
 
 router.post("/login", function(req, res, next) {
   let login = req.body;
-  let where = [login.user, md5(login.password)];
-  db.SelectRow("select * from staff where user = ? and password = ?", where, 
+  let where = {user:login.user, password: md5(login.password)};
+  let gets = {
+    fields: "*",
+    table:  "staff",
+    where:  where
+  };
+  db.SelectRow(gets, 
   (data) => {
     let id = data.id;
     if(id != 0 || id != "0"){

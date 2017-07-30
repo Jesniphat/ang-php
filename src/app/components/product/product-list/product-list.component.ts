@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 declare var $ : any;
 declare var toastr : any;
 
@@ -10,7 +11,7 @@ declare var toastr : any;
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-
+  @BlockUI() blockUI: NgBlockUI;
   public error:any;
   public productLists:any = [];
   public productList:any = [];
@@ -37,13 +38,14 @@ export class ProductListComponent implements OnInit {
   }
 
   public getAllProduct(){
-      let param = {"id":"สินค้าทั้งหมด"}
-      this.apiService
-          .post("/api/product/product_list",param)
-          .subscribe(
-              data => this.getAllProductDoneAction(data),//this.productLists = data.data,
-              error => this.getAllProductErrorAction(error)
-          );
+		this.blockUI.start('Loading...');
+		let param = {"id":"สินค้าทั้งหมด"}
+		this.apiService
+				.post("/api/product/product_list",param)
+				.subscribe(
+						data => this.getAllProductDoneAction(data),//this.productLists = data.data,
+						error => this.getAllProductErrorAction(error)
+				);
   }
 
   public getAllProductDoneAction(data){
@@ -53,27 +55,29 @@ export class ProductListComponent implements OnInit {
         for(let z = 0; z < this.productLists.length; z++){
             this.productLists[z].img = this.imgLink + this.productLists[z].img;
         }
-    }
+		}
+		this.blockUI.stop();
   }
 
   public getAllProductErrorAction(error:any){
-      this.error = error.message;
-      console.log("errer = ", this.error);
+		this.error = error.message;
+		console.log("errer = ", this.error);
+		this.blockUI.stop();
   }
 
   public add_new_product(data:any){
-      let link: any;
-      if(data == 'create'){
-          link = ['/product_list/product', data];
-      }
-      else{
-          link = ['/product_list/product', data.id];
-      }
-      this.router.navigate(link);
+		let link: any;
+		if(data == 'create'){
+				link = ['/product_list/product', data];
+		}
+		else{
+				link = ['/product_list/product', data.id];
+		}
+		this.router.navigate(link);
   }
 
   public focusFilter(){
-      this.pageNo = 1;
+		this.pageNo = 1;
   }
 
   public delete_product(data:any){
