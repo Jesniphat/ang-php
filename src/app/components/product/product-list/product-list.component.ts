@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 declare var $ : any;
 declare var toastr : any;
 
@@ -11,6 +12,7 @@ declare var toastr : any;
 })
 export class ProductListComponent implements OnInit {
 
+  @BlockUI() blockUI: NgBlockUI;
   public error:any;
   public productLists:any = [];
   public productList:any = [];
@@ -37,6 +39,7 @@ export class ProductListComponent implements OnInit {
   }
 
   public getAllProduct(){
+      this.blockUI.start('Loading...');
       let param = {"id":"สินค้าทั้งหมด"}
       this.apiService
           .post("/api/product/product_list",param)
@@ -54,11 +57,13 @@ export class ProductListComponent implements OnInit {
             this.productLists[z].img = this.imgLink + this.productLists[z].img;
         }
     }
+    this.blockUI.stop();
   }
 
   public getAllProductErrorAction(error:any){
       this.error = error.message;
       console.log("errer = ", this.error);
+      this.blockUI.stop();
   }
 
   public add_new_product(data:any){
