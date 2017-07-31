@@ -2,6 +2,7 @@ import { Component, ElementRef } from '@angular/core';
 import { ApiService } from "./service/api.service";
 import { CookieService } from "./service/cookie.service";
 import { RootscopeService } from "./service/rootscope.service";
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 // Add the RxJS Observable operators.
 import './rxjs-operators';
 declare var $ : any;
@@ -12,6 +13,7 @@ declare var $ : any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  @BlockUI() blockUI: NgBlockUI;
   title = 'app works!';
   pic_url:string = "";
   hiddenLogin: any = true;
@@ -49,6 +51,7 @@ export class AppComponent {
     this.checkLogin();
     
     this.$rootScope.showNav$.subscribe(data => this.showNav(data));
+    this.$rootScope.doBlock$.subscribe(data => this.block(data));
   }
 
   checkLogin(){
@@ -127,6 +130,14 @@ export class AppComponent {
       this.rightPad = (pad) + "px";
     }
     // console.log(this.leftPad, " - ", this.rightPad);
+  }
+
+  block(obj:any) {
+    if(obj.block == true && obj.block != undefined){
+      this.blockUI.start('Loading...');
+    }else{
+      this.blockUI.stop();
+    }
   }
 
 }

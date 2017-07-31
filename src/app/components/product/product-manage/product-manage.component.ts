@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, ElementRef } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
+import { RootscopeService } from "../../../service/rootscope.service";
 import { Uploader } from 'angular2-http-file-upload';
 import { MyUploadItem } from "../../../upload-item";
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
 declare var $: any;
 declare var toastr: any;
 
@@ -13,7 +13,6 @@ declare var toastr: any;
 	styleUrls: ['./product-manage.component.css']
 })
 export class ProductManageComponent implements OnInit {
-	@BlockUI() blockUI: NgBlockUI;
 	public error: string = "";
 	public storage: any;
 	public product = {
@@ -45,6 +44,7 @@ export class ProductManageComponent implements OnInit {
 		public router: Router,
 		public route: ActivatedRoute,
 		public apiService: ApiService,
+		public $rootScope: RootscopeService,
 		public uploaderService: Uploader,
 		public _elRef: ElementRef
 	) {
@@ -97,7 +97,7 @@ export class ProductManageComponent implements OnInit {
 	}
 
 	getProductByid(productId: any) {
-		this.blockUI.start("Loading...");
+		this.$rootScope.setBlock(true);
 		let param = {
 				product_id: productId
 		};
@@ -138,12 +138,12 @@ export class ProductManageComponent implements OnInit {
 			}
 			this.uploadedFiles = pic_name;
 		}
-		this.blockUI.stop();
+		this.$rootScope.setBlock(false);
 	}
 
 	getProductByidErrorAction(error) {
 		console.log(error);
-		this.blockUI.stop();
+		this.$rootScope.setBlock(false);
 	}
 
 	changeCategory(newValue: any) {

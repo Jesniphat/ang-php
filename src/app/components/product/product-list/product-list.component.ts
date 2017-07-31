@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { RootscopeService } from "../../../service/rootscope.service";
 declare var $ : any;
 declare var toastr : any;
 
@@ -11,7 +11,6 @@ declare var toastr : any;
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  @BlockUI() blockUI: NgBlockUI;
   public error:any;
   public productLists:any = [];
   public productList:any = [];
@@ -26,6 +25,7 @@ export class ProductListComponent implements OnInit {
   constructor(
     public router: Router,
     public apiService: ApiService ,
+    public $rootscope: RootscopeService,
     public _elRef: ElementRef
   ) { }
 
@@ -38,7 +38,7 @@ export class ProductListComponent implements OnInit {
   }
 
   public getAllProduct(){
-      this.blockUI.start('Loading...');
+      this.$rootscope.setBlock(true);
       let param = {"id":"สินค้าทั้งหมด"}
       this.apiService
           .post("/api/product/product_list",param)
@@ -56,13 +56,13 @@ export class ProductListComponent implements OnInit {
             this.productLists[z].img = this.imgLink + this.productLists[z].img;
         }
     }
-    this.blockUI.stop();
+    this.$rootscope.setBlock(false);
   }
 
   public getAllProductErrorAction(error:any){
       this.error = error.message;
       console.log("errer = ", this.error);
-      this.blockUI.stop();
+      this.$rootscope.setBlock(false);
   }
 
   public add_new_product(data:any){

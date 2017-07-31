@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
+import { RootscopeService } from "../../../service/rootscope.service";
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 declare var $ : any;
 
@@ -24,7 +25,8 @@ export class CategoryListComponent implements OnInit {
 
   constructor(
     public router: Router,
-    public apiService: ApiService
+    public apiService: ApiService,
+    public $rootScope: RootscopeService
   ) { }
 
   ngOnInit() {
@@ -34,7 +36,7 @@ export class CategoryListComponent implements OnInit {
   }
 
   getCategoryList(){
-    this.blockUI.start('Loading...');
+    this.$rootScope.setBlock(true);
     let param = {"id":"ทดสอบ"}
     this.apiService
         .post("/api/category/category_list",param)
@@ -47,13 +49,13 @@ export class CategoryListComponent implements OnInit {
   getCategoryDoneAction(data:any){
       console.log("data = ", data);
       this.categoryLists = data.data;
-      this.blockUI.stop();
+      this.$rootScope.setBlock(false);
   }
 
   errorAction(error:any){
       this.error = error.message;
       console.log("errer = ", this.error);
-      this.blockUI.stop();
+      this.$rootScope.setBlock(false);
   }
 
   focusFilter(){

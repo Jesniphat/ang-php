@@ -22,7 +22,7 @@ import { HeadsliderModule } from './components/headslider/headslider.module';
     AppComponent
   ],
   imports: [
-    // BlockUIModule,
+    BlockUIModule,
     // routing //
     routing,
     // system //

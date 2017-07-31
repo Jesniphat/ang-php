@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { RootscopeService } from "../../../service/rootscope.service";
 declare var $: any;
 declare var toastr: any;
 
@@ -12,7 +12,6 @@ declare var toastr: any;
   providers: []
 })
 export class CategoryManageComponent implements OnInit {
-  @BlockUI() blockUI: NgBlockUI;
   error: string = "";
   cate = {
     cateId: "",
@@ -29,6 +28,7 @@ export class CategoryManageComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute,
     public apiService: ApiService,
+    public $rootscope: RootscopeService,
     public el: ElementRef
   ) { }
 
@@ -43,7 +43,7 @@ export class CategoryManageComponent implements OnInit {
   }
 
   getCategoryByid(id: any) {
-    this.blockUI.start('Loading...');
+    this.$rootscope.setBlock(true);
     let param = {
       cate_id: id
     };
@@ -66,13 +66,13 @@ export class CategoryManageComponent implements OnInit {
     } else {
       console.log("No data");
     }
-    this.blockUI.stop();
+    this.$rootscope.setBlock(false);
   }
 
   getCategoryByidErrorAction(error: any) {
     this.error = error.message;
     console.log("error = ", this.error);
-    this.blockUI.stop();
+    this.$rootscope.setBlock(false);
   }
 
   changeStatus(newValue: any) {
@@ -85,7 +85,7 @@ export class CategoryManageComponent implements OnInit {
   }
 
   saveCategory() {
-    this.blockUI.start('Loading...');
+    this.$rootscope.setBlock(true);
     this.apiService
       .post("/api/category/savecategory", this.cate)
       .subscribe(
@@ -102,7 +102,7 @@ export class CategoryManageComponent implements OnInit {
       console.log("can't save");
       toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
     }
-    this.blockUI.stop();
+    this.$rootscope.setBlock(false);
   }
 
   saveCategoryErrorAction(error: any) {
@@ -111,7 +111,7 @@ export class CategoryManageComponent implements OnInit {
     // this.toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Oops!');
     toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
     setTimeout(() => this.error = null, 4000);
-    this.blockUI.stop();
+    this.$rootscope.setBlock(false);
   }
 
   reset() {

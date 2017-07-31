@@ -20,54 +20,84 @@ router.use(function(req, res, next){
 });
 
 router.post("/category_list", (req, res, next) => {
+	let connection = conn.init();
 	let category = req.body;
+	let $scope;
 	// let sql = "SELECT id, cate_name, cate_description, '' as product_qty FROM category WHERE status = 'Y'";
 	// let where = [];
-	let gets = {
-		fields: "id, cate_name, cate_description, '' as product_qty",
-		table: "category",
-		where: {
-			status: "Y"
-		}
+	let category_list = function(){
+		return new promise((resolve, reject) => {
+			let gets = {
+				fields: "id, cate_name, cate_description, '' as product_qty",
+				table: "category",
+				where: {
+					status: "Y"
+				}
+			}
+			db.SelectAll(connection, gets, (data) => {
+					$scope = data;
+					resolve(data);
+				},(error) => {
+					console.log(error);
+					reject(error);
+			});
+		});
 	}
-	db.SelectAll(gets, 
-		(data) => {
-			// console.log(data);
-			res.json({
-				status: true,
-				data: data
-			});
-		},(error) => {
-			console.log(error);
-			res.json({
-				status: false,
-				error: error
-			});
-	});
+
+	category_list()
+	.then(function(data){
+		res.json({
+			status: true,
+			data: data
+		});
+	})
+	.catch(function(error){
+		res.json({
+			status: false,
+			error: error
+		});
+	});	
 });
 
 router.post("/getcategorybyid", function(req, res, next) {
-	// console.log(" get cate bt id ");
+	let connection = conn.init();
 	let category = req.body;
-	let where = {id:category.cate_id};
-	let gets = {
-		fields: ["*"],
-		table:  "category",
-		where:  where
-	};
-	db.SelectRow(gets, 
-		(data) => {
-			res.json({
-				status: true,
-				data: data
-			});
-		}, (error) => {
-			console.log(error);
-			res.json({
-				status: false,
-				error: error
-			});
+	let $scope;
+
+	let getcategorybyid = function(){
+		return new promise((resolve, reject) => {
+			let where = {id:category.cate_id};
+			let gets = {
+				fields: ["*"],
+				table:  "category",
+				where:  where
+			};
+			db.SelectRow(connection, gets, 
+				(data) => {
+					$scope = data;
+					resolve(data);
+				}, (error) => {
+					console.log(error);
+					reject(error);
+				});
 		});
+	}
+
+	getcategorybyid()
+	.then(function(data){
+		// console.log("return data = ", data);
+		// console.log("scope data = ", $scope);
+		res.json({
+			status: true,
+			data: data
+		});
+	}).catch(function(e){
+		res.json({
+			status: false,
+			error: e
+		});
+	})
+	
 });
 
 router.post("/savecategory", function(req, res, next) {
@@ -136,7 +166,7 @@ router.post("/savecategory", function(req, res, next) {
 
 	transection()
 	.then(savecetegory)
-	.then(function(){
+	.then(function(d){
 		return new promise((resolve, reject) => {
 			db.Commit(connection, (success) => {
 				console.log("commited !!");
