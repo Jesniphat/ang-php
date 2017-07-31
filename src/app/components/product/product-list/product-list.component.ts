@@ -38,14 +38,14 @@ export class ProductListComponent implements OnInit {
   }
 
   public getAllProduct(){
-		this.blockUI.start('Loading...');
-		let param = {"id":"สินค้าทั้งหมด"}
-		this.apiService
-				.post("/api/product/product_list",param)
-				.subscribe(
-						data => this.getAllProductDoneAction(data),//this.productLists = data.data,
-						error => this.getAllProductErrorAction(error)
-				);
+      this.blockUI.start('Loading...');
+      let param = {"id":"สินค้าทั้งหมด"}
+      this.apiService
+          .post("/api/product/product_list",param)
+          .subscribe(
+              data => this.getAllProductDoneAction(data),//this.productLists = data.data,
+              error => this.getAllProductErrorAction(error)
+          );
   }
 
   public getAllProductDoneAction(data){
@@ -55,14 +55,14 @@ export class ProductListComponent implements OnInit {
         for(let z = 0; z < this.productLists.length; z++){
             this.productLists[z].img = this.imgLink + this.productLists[z].img;
         }
-		}
-		this.blockUI.stop();
+    }
+    this.blockUI.stop();
   }
 
   public getAllProductErrorAction(error:any){
-		this.error = error.message;
-		console.log("errer = ", this.error);
-		this.blockUI.stop();
+      this.error = error.message;
+      console.log("errer = ", this.error);
+      this.blockUI.stop();
   }
 
   public add_new_product(data:any){

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from "@angular/http";
 import { BlockUIModule } from 'ng-block-ui';
 import { Uploader }      from 'angular2-http-file-upload';
+import { BlockUIModule } from 'ng-block-ui';
 
 import { SharedModule } from "../../shared/shared.module";
 

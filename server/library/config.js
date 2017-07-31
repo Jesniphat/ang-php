@@ -14,7 +14,7 @@ module.exports = new function() {
         console.log("Error Connect db");
         console.log(err);
       }else {
-        console.log("Connect DB Success");
+        // console.log("Connect DB Success");
       }
     });
     return db;
