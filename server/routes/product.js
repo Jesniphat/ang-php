@@ -127,26 +127,85 @@ router.post("/getproductbyid", (req, res, next) => {
 )
 
 router.post("/saveproduct", (req, res, next) => {
+  let connection = conn.init();
   console.log("save product = ", req.body);
   let product = req.body;
   let product_id = "";
   let product_code = "";
 
-  let save_product = function(){
-    let deferred = promise.pending();
-    if(product.id == "create"){
-      gencode.Code("product", "code", "P", 5, 1,(max_code) => {
-        product_code = max_code;
-        let insert = {
+  let beginTransection = function(){
+    return new Promise((resolve, reject) => {
+      db.BeginTransaction(connection, success => resolve(success), errors => reject(errors));
+    });
+  }
+
+  let saveProduct = function(){
+    return new Promise((resolve, reject) => {
+      if(product.id == "create"){
+        gencode.Code("product", "code", "P", 5, 1,(max_code) => {
+          product_code = max_code;
+          let insert = {
+            table: "product",
+            query: {
+              code: product_code,
+              product_name: product.name,
+              product_description: product.desc,
+              product_price: product.price,
+              product_qty: product.qty,
+              staff_id: product.staffid,
+              category_id: product.category
+            }
+          }
+          let insertProduct = db.Insert(connection, insert, results => resolve(results.insert_id), errors => reject(errors));
+        },(errer) => {
+          reject(error);
+        });
+      } else {
+        let update = {
           table: "product",
           query: {
-            code: product_code,
             product_name: product.name,
-            product_description: product.desc
-          }
+              product_description: product.desc,
+              product_price: product.price,
+              product_qty: product.qty,
+              staff_id: product.staffid,
+              category_id: product.category
+          },
+          where: { id: product.id }
         }
-      },(errer) => {});
-    }
+        let updateProduct = db.Update(connection, update, results => resolve(product.id), error => reject(error));
+      }
+    });
+  }
+
+  let picManage = function(product_id) {
+    return new Promise((resolve, reject) => {
+      if(product.pic_id){
+        let update = {
+          table: 'product_pic',
+          query: { status: 'N' },
+          where: { id: product_id }
+        }
+        let nPic = db.Update(connection, update, (success) => {
+          let updatePic = {
+            table: 'product_pic',
+            query: { product_id: product_id, status: 'Y' },
+            where: " id IN (" + (product.pic_id).toString() + ")"
+          }
+          let aPic = db.Update(connection, updatePic, success => resolve(success), errors => reject(errors));
+        }, errors => reject(errors));
+      } else {
+        let update = {
+          table: 'product_pic',
+          query: {
+            status: 'N',
+            cover: 'N'
+          },
+          where: { product_id: product_id }
+        }
+        let updatePicData = db.Update(connection, update, success => resolve(success), errors => reject(errors));
+      }
+    });
   }
   
 });
