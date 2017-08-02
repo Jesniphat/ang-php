@@ -2,7 +2,7 @@ let promise = require('bluebird');
 let db = require('./db');
 
 module.exports = new function() {
-  this.Code = function(table, fld, prefix, size, start, callback_success, callback_error){
+  this.Code = function(connection, table, fld, prefix, size, start, callback_success, callback_error){
     let where = " 1 = 1 ";
     if (prefix != '') {
         where += " AND `" + fld + "` LIKE '" + $prefix + "%'";
@@ -13,7 +13,7 @@ module.exports = new function() {
       where: where
     };
     let next = "";
-    let maxCode = db.SelectRow(sql, (result)=>{
+    let maxCode = db.SelectRow(connection, sql, (result)=>{
       if(result.maxCode){
         next = parseInt(maxCode.substr(prefix.length)) + 1;
       }else{
