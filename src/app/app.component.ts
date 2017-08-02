@@ -5,7 +5,8 @@ import { RootscopeService } from "./service/rootscope.service";
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 // Add the RxJS Observable operators.
 import './rxjs-operators';
-declare var $ : any;
+declare let $ : any;
+declare let element: any;
 
 @Component({
   selector: 'app-root',
@@ -102,7 +103,7 @@ export class AppComponent {
   }
 
   showNav(obj:any){
-    console.log(obj);
+    // console.log(obj);
     if(obj != "" && obj != undefined && Object.keys(obj).length != 0){
       // console.log("obj = ", obj);
       let show = obj;
@@ -137,6 +138,14 @@ export class AppComponent {
       this.blockUI.start('Loading...');
     }else{
       this.blockUI.stop();
+      let pageWidth = document.body.clientWidth;
+      console.log(pageWidth);
+      if(pageWidth < 1200){
+        // element.setAttribute("aria-hidden", true);
+        $("#my-side-bar").attr("aria-hidden",true);
+        $("#my-side-bar").removeClass("is-visible");
+        $(".mdl-layout__obfuscator").removeClass("is-visible");
+      }
     }
   }
 
