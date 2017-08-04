@@ -137,15 +137,15 @@ module.exports = new function() {
 
     if(typeof(data.where) == "object"){
       for(keys in data.where){
-        where += " AND " + keys + " = '?'";
+        where += " AND " + keys + " = ?";
         set.push(data.where[keys]);
       }
     }else if (data.where != undefined){
       where += " AND " + data.where;
     }
     let update = "UPDATE " + data.table + " SET " + fields + where;
-    // console.log(update);
-    connection.query(update, set, function(error, results, fields) {
+    let querys = connection.query(update, set, function(error, results, fields) {
+      console.log("Update is ", querys.sql);
       if (error) {
         errors(error)
       } else {

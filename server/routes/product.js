@@ -182,7 +182,7 @@ router.post("/saveproduct", (req, res, next) => {
 
   let picManage = function(product_id) {
     return new Promise((resolve, reject) => {
-      if(product.pic_id){
+      if((product.pic_id).length > 0){
         let update = {
           table: 'product_pic',
           query: { status: 'N' },
@@ -218,7 +218,7 @@ router.post("/saveproduct", (req, res, next) => {
             table: "product",
             fields: ['id'],
             where: { recommend: 'Y' },
-            oredr: rec_row
+            order: ['rec_row']
           }
           db.SelectAll(connection, query, (success) => {
             let recommend_list = [];
@@ -243,7 +243,7 @@ router.post("/saveproduct", (req, res, next) => {
             db.Update(connection, updateNRecomment, (success) => {
               for(let j = 0; j < recommend_list.length; j++){
                 let updateRecomment = {
-                  table: product,
+                  table: "product",
                   query: { recommend: "Y", rec_row: j },
                   where: { id: recommend_list[j] }
                 }
