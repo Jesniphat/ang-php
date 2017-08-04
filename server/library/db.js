@@ -118,7 +118,7 @@ module.exports = new function() {
         errors(error);
       } else {
         $scrope = {insert_id:results.insertId, effected_row:results.affectedRows, change_row:results.changedRows };
-        console.log("INSERT SUCCESS = ", $scrope);
+        // console.log("INSERT SUCCESS = ", $scrope);
         success($scrope);
       }
     });
