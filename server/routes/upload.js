@@ -2,6 +2,7 @@ let express = require('express');
 let upload = express.Router();
 let uuidv1 = require('uuid/v1');
 let promise = require('bluebird');
+let conn = require('../library/config');
 let db = require('../library/db');
 
 let fs = require('fs');
@@ -15,6 +16,7 @@ let uploadFile = multer({ dest: __dirname + '/tmp/' });
 /* GET users listing. */
 upload.post('/product', uploadFile.single('file'), function (req, res, next) {
   let $scope = {};
+  let connection = conn.init();
   // console.log("res product pic = ", req.file);
   let save_file = function(){
     let deferred = promise.pending();
@@ -54,7 +56,7 @@ upload.post('/product', uploadFile.single('file'), function (req, res, next) {
       }
     };
 
-    db.Insert(data, (results) => {
+    db.Insert(connection, data, (results) => {
       $scope.pic_id = results.insert_id;
       deferred.resolve("Insert pic data success");
     }, (errors) => {
@@ -72,7 +74,7 @@ upload.post('/product', uploadFile.single('file'), function (req, res, next) {
         id: $scope.pic_id
       }
     };
-    db.SelectRow(query, (results) => {
+    db.SelectRow(connection,query, (results) => {
       $scope = {};
       $scope = results;
       deferred.resolve("Can get data");

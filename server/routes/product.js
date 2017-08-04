@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 
 let Promise = require('bluebird');
+let uuidv1 = require('uuid/v1');
 let conn = require('../library/config');
 let gencode = require('../library/gencode')
 let db = require('../library/db');
@@ -142,7 +143,7 @@ router.post("/saveproduct", (req, res, next) => {
   let saveProduct = function(){
     return new Promise((resolve, reject) => {
       if(product.id == "create"){
-        gencode.Code("product", "code", "P", 5, 1,(max_code) => {
+        gencode.Code(connection, "product", "code", "P", 5, 1,(max_code) => {
           product_code = max_code;
           let insert = {
             table: "product",
@@ -152,12 +153,13 @@ router.post("/saveproduct", (req, res, next) => {
               product_description: product.desc,
               product_price: product.price,
               product_qty: product.qty,
-              staff_id: product.staffid,
-              category_id: product.category
+              created_by: product.staffid,
+              category_id: product.category,
+              uuid: uuidv1()
             }
           }
           let insertProduct = db.Insert(connection, insert, results => resolve(results.insert_id), errors => reject(errors));
-        },(errer) => {
+        },(error) => {
           reject(error);
         });
       } else {
@@ -168,7 +170,7 @@ router.post("/saveproduct", (req, res, next) => {
               product_description: product.desc,
               product_price: product.price,
               product_qty: product.qty,
-              staff_id: product.staffid,
+              created_by: product.staffid,
               category_id: product.category
           },
           where: { id: product.id }
@@ -180,7 +182,7 @@ router.post("/saveproduct", (req, res, next) => {
 
   let picManage = function(product_id) {
     return new Promise((resolve, reject) => {
-      if(product.pic_id){
+      if((product.pic_id).length > 0){
         let update = {
           table: 'product_pic',
           query: { status: 'N' },
@@ -192,7 +194,7 @@ router.post("/saveproduct", (req, res, next) => {
             query: { product_id: product_id, status: 'Y' },
             where: " id IN (" + (product.pic_id).toString() + ")"
           }
-          let aPic = db.Update(connection, updatePic, success => resolve(success), errors => reject(errors));
+          let aPic = db.Update(connection, updatePic, success => resolve(product_id), errors => reject(errors));
         }, errors => reject(errors));
       } else {
         let update = {
@@ -203,10 +205,111 @@ router.post("/saveproduct", (req, res, next) => {
           },
           where: { product_id: product_id }
         }
-        let updatePicData = db.Update(connection, update, success => resolve(success), errors => reject(errors));
+        let updatePicData = db.Update(connection, update, success => resolve(product_id), errors => reject(errors));
       }
     });
   }
+
+  let recommendProduct = function(product_id) {
+    return new Promise((resolve, reject) => {
+      if(product.recommend == true){
+        if(product.id == "create"){
+          let query = {
+            table: "product",
+            fields: ['id'],
+            where: { recommend: 'Y' },
+            order: ['rec_row']
+          }
+          db.SelectAll(connection, query, (success) => {
+            let recommend_list = [];
+            let recs = [];
+            for(let k = 0; k < success.length; k++){
+              recs.push(success[k].id);
+            }
+            let checkId = recs.indexOf(product_id);
+            for(let i = 0; i < success.length; i++){
+              if(i == 0 && success.length == 3 && checkId == (-1)){
+                continue;
+              }
+              recommend_list.push(success[i].id);
+            }
+            recommend_list.push(product_id);
+
+            let updateNRecomment = {
+              table: "product",
+              query: { recommend: "N" },
+              where: { recommend: "Y" }
+            }
+            db.Update(connection, updateNRecomment, (success) => {
+              for(let j = 0; j < recommend_list.length; j++){
+                let updateRecomment = {
+                  table: "product",
+                  query: { recommend: "Y", rec_row: j },
+                  where: { id: recommend_list[j] }
+                }
+                db.Update(connection, updateRecomment, success => resolve(product_id), er => reject(er));
+              }
+            }, err => reject(err));
+          }, errers => reject(errors));
+        }
+      } else {
+        let updateRecomment = {
+          table: "product",
+          query: { recommend: "N", rec_row: "0" },
+          where: { id: product_id }
+        }
+        db.Update(connection, updateRecomment, success => resolve(product_id), errors => reject(errors));
+      }
+    });
+  }
+
+  let setCover = function(product_id){
+    return new Promise((resolve, reject) => {
+      if(product.coverId != '0'){
+        let updateNCover = {
+          table: "product_pic",
+          query: { cover: "N"},
+          where: { product_id: product_id }
+        }
+        db.Update(connection, updateNCover, (success) => {
+          let updateCover = {
+            table: "product_pic",
+            query: { cover: "Y" },
+            where: { id: product.coverId }
+          }
+          db.Update(connection, updateCover, success => resolve(product_id), error => reject(error));
+        }, errors => reject(errors));
+      } else {
+        resolve(product_id);
+      }
+    });
+  }
+
+  beginTransection()
+  .then(saveProduct)
+  .then(picManage)
+  .then(recommendProduct)
+  .then(setCover)
+  .then((product_id) => {
+    return new Promise((resolve, reject) => {
+      db.Commit(connection, (success) => {
+        console.log("commited !!");
+				res.json({
+					status: true,
+					data: success
+				});
+        resolve(success);
+      }, errors => reject(errors));
+    });
+  }).catch((errors) => {
+    console.log("Roll back error is", errors);
+		db.Rollback(connection,(roll) => {
+			res.json({
+				status: false,
+				error: errors
+			});
+		});
+  });
   
 });
 

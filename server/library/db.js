@@ -86,7 +86,8 @@ module.exports = new function() {
     limit  = (data.limit != undefined) ? " LIMIT " + data.limit : "";
 
     let select = "SELECT " + fields + " FROM " + data.table + " WHERE " + where + order + limit;
-    connection.query(select, function(error, results, fields){
+    let select_row = connection.query(select, function(error, results, fields){
+      // console.log("sql select row = ", select_row.sql);
       if(error){
         console.log("error : ", error);
         errors(error)
@@ -103,7 +104,6 @@ module.exports = new function() {
 
   this.Insert = function(connection, data, success, errors){
     let $scrope;
-    let deferred = promise.pending();
     if(typeof(data) == "object"){
       
     } else {
@@ -118,7 +118,7 @@ module.exports = new function() {
         errors(error);
       } else {
         $scrope = {insert_id:results.insertId, effected_row:results.affectedRows, change_row:results.changedRows };
-        console.log("INSERT SUCCESS = ", $scrope);
+        // console.log("INSERT SUCCESS = ", $scrope);
         success($scrope);
       }
     });
@@ -137,15 +137,15 @@ module.exports = new function() {
 
     if(typeof(data.where) == "object"){
       for(keys in data.where){
-        where += " AND " + keys + " = '?'";
+        where += " AND " + keys + " = ?";
         set.push(data.where[keys]);
       }
     }else if (data.where != undefined){
       where += " AND " + data.where;
     }
     let update = "UPDATE " + data.table + " SET " + fields + where;
-    // console.log(update);
-    connection.query(update, set, function(error, results, fields) {
+    let querys = connection.query(update, set, function(error, results, fields) {
+      console.log("Update is ", querys.sql);
       if (error) {
         errors(error)
       } else {
