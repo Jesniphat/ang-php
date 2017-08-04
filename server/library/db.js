@@ -86,7 +86,8 @@ module.exports = new function() {
     limit  = (data.limit != undefined) ? " LIMIT " + data.limit : "";
 
     let select = "SELECT " + fields + " FROM " + data.table + " WHERE " + where + order + limit;
-    connection.query(select, function(error, results, fields){
+    let select_row = connection.query(select, function(error, results, fields){
+      // console.log("sql select row = ", select_row.sql);
       if(error){
         console.log("error : ", error);
         errors(error)
@@ -103,7 +104,6 @@ module.exports = new function() {
 
   this.Insert = function(connection, data, success, errors){
     let $scrope;
-    let deferred = promise.pending();
     if(typeof(data) == "object"){
       
     } else {
