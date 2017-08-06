@@ -58,7 +58,7 @@ export class StaffSettingComponent implements OnInit {
         password: this.staff.password
       }
       this.apiService
-          .post("/api/updatestaff", param)
+          .post("/api/staff/updatestaff", param)
           .subscribe(
               res => this.updateStaffDoneAction(res),
               error => this.updateStaffErrorAction(error)

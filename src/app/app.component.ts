@@ -47,7 +47,7 @@ export class AppComponent {
       // console.log("staff = ", this.staffData);
     }
     this.setPage();
-    $('.ui.dropdown').dropdown();
+    // $('.ui.dropdown').dropdown();
     // this.testapi();
     this.checkLogin();
     
