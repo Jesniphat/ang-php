@@ -1,60 +1,55 @@
 <form class="ui form" #categoryForm="ngForm">
   <h4 class="ui dividing header">Category control</h4>
-  <div class="field">
-    <label>Name</label>
-    <div class="fields">
-      <div class="four wide field">
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--6-col">
+      <label>Name</label>
+      <div>
         <input type="text" id="categoryName" placeholder="First Name" [(ngModel)]="cate.cateName" name="cateName" #cateName="ngModel" required>
       </div>
-      <div class="twelve wide field">
+      <div>
         <div class="required-message" [hidden]="cateName.valid || cateName.pristine">
-            <i class="remove circle outline icon"></i>
-            Category name is required
+          <i class="remove circle outline icon"></i>
+          Category name is required
         </div>
       </div>
     </div>
+    <div class="mdl-cell mdl-cell--6-col">
+      <label>Status</label>
+        <select class="ui fluid dropdown" id="categoryStatus" name="categoryStatus" [(ngModel)]="cate.selectedStatus">
+          <option *ngFor="let item of statusLists" [value]='item.value'>
+            {{item.label}}
+          </option>
+        </select>
+    </div>
   </div>
-  <div class="field">
-    <label>Description</label>
-    <div class="fields">
-      <div class="four wide field">
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+      <label>Description</label>
+      <div>
         <textarea type="text" id="categoryDesciption" placeholder="First Name" [(ngModel)]="cate.cateDescription" 
         name="categoryDesciption"></textarea>
       </div>
     </div>
   </div>
-  <div class="field">
-    <label>Status</label>
-    <div class="four wide field">
-        <select class="ui fluid dropdown" id="categoryStatus" name="categoryStatus" [(ngModel)]="cate.selectedStatus">
-            <option *ngFor="let item of statusLists" [value]='item.value'>
-                {{item.label}}
-            </option>
-        </select>
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+      <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" 
+      type="submit" [disabled]="categoryForm.form.invalid" (click)="confirmSaveCate()">Submit</button>
     </div>
   </div>
-  <button class="ui button" type="submit" [disabled]="categoryForm.form.invalid" (click)="saveCategory()">Submit</button>
 </form>
 
 
 
-
-<div class="ui basic modal" id="cateModal">
-  <div class="ui icon header">
-    <i class="archive icon"></i>
-    Save data
-  </div>
-  <div class="content">
-    <p>Do you want to save category?</p>
-  </div>
-  <div class="actions">
-    <div class="ui red basic cancel inverted button">
-      <i class="remove icon"></i>
-      No
+<div class="mdl-grid">
+  <dialog class="mdl-dialog mdl-cell mdl-cell--7-col" style="margin: auto;">
+    <h4 class="mdl-dialog__title">Save category?</h4>
+    <div class="mdl-dialog__content">
+      <p>Do you want to save category?</p>
     </div>
-    <div class="ui green ok inverted button" (click)="saveCategory()">
-      <i class="checkmark icon"></i>
-      Yes
+    <div class="mdl-dialog__actions">
+      <button type="button" class="mdl-button close" (click)="dialog.close()">No</button>
+      <button type="button" class="mdl-button" (click)="saveCategory()">Yes</button>
     </div>
-  </div>
+  </dialog>
 </div>

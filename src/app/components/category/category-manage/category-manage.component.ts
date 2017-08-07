@@ -4,6 +4,7 @@ import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
 declare var $: any;
 declare var toastr: any;
+declare var dialogPolyfill: any;
 
 @Component({
   selector: 'app-category-manage',
@@ -24,6 +25,8 @@ export class CategoryManageComponent implements OnInit {
 
   msgs: any;
 
+  public dialog;
+
   constructor(
     public router: Router,
     public route: ActivatedRoute,
@@ -39,6 +42,10 @@ export class CategoryManageComponent implements OnInit {
     //   console.log(this.cateId);
     if (this.cate.cateId != "create") {
       this.getCategoryByid(this.cate.cateId);
+    }
+    this.dialog = document.querySelector('dialog');
+    if (!this.dialog.showModal) {
+      dialogPolyfill.registerDialog(this.dialog);
     }
   }
 
@@ -81,11 +88,12 @@ export class CategoryManageComponent implements OnInit {
   }
 
   confirmSaveCate() {
-    $('#cateModal').modal('show');
+    this.dialog.showModal();
   }
 
   saveCategory() {
     this.$rootscope.setBlock(true);
+    this.dialog.close();
     this.apiService
       .post("/api/category/savecategory", this.cate)
       .subscribe(
