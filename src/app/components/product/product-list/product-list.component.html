@@ -43,7 +43,7 @@
 
 <br/>
 <select class="ui search dropdown" [(ngModel)]="pageNo">
-  <option *ngFor="let page of productLists | tableFilter:filterText | pageList:6" [value]='page'>{{page}}</option>
+  <option *ngFor="let page of productLists | tableFilter:filterText | pageList:9" [value]='page'>{{page}}</option>
 </select>
 
 <div class="ui small modal" id="deleteProduct">
