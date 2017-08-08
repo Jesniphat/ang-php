@@ -3,11 +3,13 @@
     <div class="two fields">
         <div class="field">
             <label>Category List</label>
-            <select class="ui fluid dropdown" id="categoryList" name="categoryList" [(ngModel)]="product.category">
-                <option *ngFor="let item of categoryList" [value]='item.value'>
+               <select class="ui fluid dropdown" id="categoryList" name="categoryList" [(ngModel)]="product.category">
+                <option *ngFor="let item of categoryLists" [value]='item.value'>
                     {{item.label}}
                 </option>
-            </select>
+            </select> 
+            <!-- <angular2-multiselect [data]="categoryLists" id="categoryList" name="categoryList" [(ngModel)]="product.category"
+            [settings]="dropdownSettings"></angular2-multiselect> -->
         </div>
         <div class="field">
             <label>
