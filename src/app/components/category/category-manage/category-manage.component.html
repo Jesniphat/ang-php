@@ -15,16 +15,11 @@
     </div>
     <div class="mdl-cell mdl-cell--6-col">
       <label>Status</label>
-         <select class="ui fluid dropdown" id="categoryStatus" name="categoryStatus" [(ngModel)]="cate.selectedStatus">
+          <select class="ui fluid dropdown" id="categoryStatus" name="categoryStatus" [(ngModel)]="cate.selectedStatus">
           <option *ngFor="let item of statusLists" [value]='item.value'>
             {{item.label}}
           </option>
-        </select> 
-        <!-- <ng-select
-          id="categoryStatus" name="categoryStatus" [(ngModel)]="cate.selectedStatus"
-          [options]="statusLists">
-        </ng-select> -->
-
+        </select>  
     </div>
   </div>
   <div class="mdl-grid">

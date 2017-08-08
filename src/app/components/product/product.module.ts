@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from "@angular/http";
 import { Uploader }      from 'angular2-http-file-upload';
-import { SelectModule }  from 'angular2-select';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 import { SharedModule } from "../../shared/shared.module";
 
@@ -22,7 +22,7 @@ import { ProductManageComponent } from './product-manage/product-manage.componen
     BrowserModule,
     FormsModule,
     HttpModule,
-    SelectModule,
+    AngularMultiSelectModule,
 
     SharedModule,
 

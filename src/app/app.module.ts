@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { SelectModule } from 'angular2-select';
 // import { Uploader }      from 'angular2-http-file-upload';
 
 import { BlockUIModule } from 'ng-block-ui';
@@ -30,7 +29,6 @@ import { HeadsliderModule } from './components/headslider/headslider.module';
     BrowserModule,
     FormsModule,
     HttpModule,
-    SelectModule,
     // Service module //
     SharedModule,
     // page module //
