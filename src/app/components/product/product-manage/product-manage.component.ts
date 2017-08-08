@@ -129,14 +129,14 @@ export class ProductManageComponent implements OnInit {
 			}
 
 			let pic_name = prodResData.pic;
-
-			if (pic_name.length > 0) {
+			console.log(pic_name);
+			if (pic_name != undefined && pic_name.length > 0) {
 					for (var z = 0; z < pic_name.length; z++) {
 						pic_name[z].productpic_path = this.imgLink + pic_name[z].productpic_path;
 						pic_name[z].flag = "u";
 					}
 			}
-			this.uploadedFiles = pic_name;
+			this.uploadedFiles = (pic_name == undefined) ? [] : pic_name;
 		}
 		this.$rootScope.setBlock(false);
 	}
@@ -204,7 +204,7 @@ export class ProductManageComponent implements OnInit {
 
 	saveProduct() {
 		// console.log("save product = ");
-		if ((this.uploadedFiles).length > 0) {
+		if (this.uploadedFiles != undefined && (this.uploadedFiles).length > 0) {
 				for (var i = 0; i < this.uploadedFiles.length; i++) {
 					(this.product.pic_id).push(this.uploadedFiles[i].id);
 				}

@@ -26,12 +26,13 @@ export class StaffCreateComponent implements OnInit {
 
   ngOnInit() {
     console.log("staff_create.component");
+    setTimeout(() => this.reset(), 1000);
   }
 
   public saveStaff(){
     // console.log(this.staff);
     this.apiService
-        .post("/api/createstaff", this.staff)
+        .post("/api/staff/createstaff", this.staff)
         .subscribe(
           res => this.saveStaffDoneAction(res),
           error => this.saveStaffErrorAction(error)

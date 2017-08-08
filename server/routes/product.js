@@ -101,9 +101,12 @@ router.post("/getproductbyid", (req, res, next) => {
       db.SelectAll(connection, gets, (data) => {
         product_data.pic = data;
         resolve("success");
-      },(errer) => {
-        console.log(error);
-        reject(error);
+      },(error) => {
+        if(error == "nodata"){
+          resolve("success");
+        } else {
+          reject(error);
+        }
       });
     });
     
@@ -112,7 +115,6 @@ router.post("/getproductbyid", (req, res, next) => {
     get_product(product.product_id)
     .then(get_product_pic)
     .then(function($d){
-      // console.log("$d = ", $d);
       res.json({
         status: true,
         data: product_data
@@ -213,45 +215,42 @@ router.post("/saveproduct", (req, res, next) => {
   let recommendProduct = function(product_id) {
     return new Promise((resolve, reject) => {
       if(product.recommend == true){
-        if(product.id == "create"){
-          let query = {
-            table: "product",
-            fields: ['id'],
-            where: { recommend: 'Y' },
-            order: ['rec_row']
-          }
-          db.SelectAll(connection, query, (success) => {
-            let recommend_list = [];
-            let recs = [];
-            for(let k = 0; k < success.length; k++){
-              recs.push(success[k].id);
-            }
-            let checkId = recs.indexOf(product_id);
-            for(let i = 0; i < success.length; i++){
-              if(i == 0 && success.length == 3 && checkId == (-1)){
-                continue;
-              }
-              recommend_list.push(success[i].id);
-            }
-            recommend_list.push(product_id);
-
-            let updateNRecomment = {
-              table: "product",
-              query: { recommend: "N" },
-              where: { recommend: "Y" }
-            }
-            db.Update(connection, updateNRecomment, (success) => {
-              for(let j = 0; j < recommend_list.length; j++){
-                let updateRecomment = {
-                  table: "product",
-                  query: { recommend: "Y", rec_row: j },
-                  where: { id: recommend_list[j] }
-                }
-                db.Update(connection, updateRecomment, success => resolve(product_id), er => reject(er));
-              }
-            }, err => reject(err));
-          }, errers => reject(errors));
+        let query = {
+          table: "product",
+          fields: ['id'],
+          where: { recommend: 'Y' },
+          order: ['rec_row']
         }
+        db.SelectAll(connection, query, (success) => {
+          let recommend_list = [];
+          let recs = [];
+          success.forEach((value, index) => {
+            recs.push(value);
+          });
+          let checkId = recs.indexOf(product_id);
+          success.forEach((value, index)=> {
+            if(index == 0 && success.length == 3 && checkId == (-1)){
+              return;
+            }
+            recommend_list.push(value.id);
+          });
+          recommend_list.push(product_id);
+          let updateNRecomment = {
+            table: "product",
+            query: { recommend: "N" },
+            where: { recommend: "Y" }
+          }
+          db.Update(connection, updateNRecomment, (success) => {
+            recommend_list.forEach((value, index) => {
+              let updateRecomment = {
+                table: "product",
+                query: { recommend: "Y", rec_row: index },
+                where: { id: value }
+              }
+              db.Update(connection, updateRecomment, success => resolve(product_id), er => reject(er));
+            });
+          }, err => reject(err));
+        }, errers => reject(errors));
       } else {
         let updateRecomment = {
           table: "product",
@@ -264,6 +263,7 @@ router.post("/saveproduct", (req, res, next) => {
   }
 
   let setCover = function(product_id){
+    console.log("set cover");
     return new Promise((resolve, reject) => {
       if(product.coverId != '0'){
         let updateNCover = {
@@ -292,6 +292,7 @@ router.post("/saveproduct", (req, res, next) => {
   .then(setCover)
   .then((product_id) => {
     return new Promise((resolve, reject) => {
+      console.log("commit");
       db.Commit(connection, (success) => {
         console.log("commited !!");
 				res.json({
@@ -311,6 +312,52 @@ router.post("/saveproduct", (req, res, next) => {
 		});
   });
   
+});
+
+router.post("/delete_product",(req, res, next) => {
+  let product = req.body;
+  let connection = conn.init();
+  
+  let beginTransection = function(){
+    return new Promise((resolve, reject) => {
+      db.BeginTransaction(connection, success => resolve(success), errors => reject(errors));
+    });
+  }
+
+  let deleteProd = function(){
+    return new Promise((resolve, reject) => {
+      let updateDelete = {
+        table: "product",
+        query: { status: "N" },
+        where: { id: product.id }
+      }
+      let up = db.Update(connection, updateDelete, success => resolve(success), error => reject(error));
+    });
+  }
+
+  beginTransection()
+  .then(deleteProd)
+  .then(function(){
+    return new Promise((resolve, reject) => {
+      console.log("commit");
+      db.Commit(connection, (success) => {
+        console.log("commited !!");
+				res.json({
+					status: true,
+					data: success
+				});
+        resolve(success);
+      }, errors => reject(errors));
+    });
+  }).catch((errors) => {
+    console.log("Roll back error is", errors);
+		db.Rollback(connection,(roll) => {
+			res.json({
+				status: false,
+				error: errors
+			});
+		});
+  });
 });
 
 module.exports = router;

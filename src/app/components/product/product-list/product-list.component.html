@@ -17,7 +17,7 @@
 </div>
 
 <div class="ui special cards">
-  <div class="card" style="padding:10px;" *ngFor="let item of productLists | tableFilter:filterText | pageNumber:pageNo">
+  <div class="card" style="padding:10px;" *ngFor="let item of productLists | tableFilter:filterText | pageNumber:{pageNo:pageNo, row: 9}">
     <div class="image">
       <img [src]="item.img" style="width: 270px; border-radius: 4px;">
     </div>
@@ -43,7 +43,7 @@
 
 <br/>
 <select class="ui search dropdown" [(ngModel)]="pageNo">
-  <option *ngFor="let page of productLists | tableFilter:filterText | pageList:6" [value]='page'>{{page}}</option>
+  <option *ngFor="let page of productLists | tableFilter:filterText | pageList:9" [value]='page'>{{page}}</option>
 </select>
 
 <div class="ui small modal" id="deleteProduct">

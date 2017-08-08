@@ -29,10 +29,9 @@ export class TableFilterPipe implements PipeTransform {
       }
       keys.push(k);
     }
-    
     let result:any = [];
     for(let i = 0; i < keys.length; i++){
-        if(data.filter(item => item[keys[i]].indexOf(str) !== -1).length !== 0){
+        if(data.filter(item => (item[keys[i]].toString()).indexOf(str) !== -1).length !== 0){
           result = result.concat(data.filter(item => item[keys[i]].indexOf(str) !== -1));
           // break;
         }

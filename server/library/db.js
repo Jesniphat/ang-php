@@ -3,12 +3,12 @@ let conn = require('./config');
 module.exports = new function() {
   this.BeginTransaction = function(connection, success, errors){
     connection.beginTransaction((err) => {
-      if (err) { 
+      if (err) {
         errors(err);
       } else {
         success("start transaction");
       }
-    })
+    });
   }
 
   this.Commit = function(connection, success, errors){
