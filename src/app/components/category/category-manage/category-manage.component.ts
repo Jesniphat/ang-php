@@ -2,9 +2,10 @@ import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
+import { DialogService } from "../../../service/dialog.service";
 declare var $: any;
 declare var toastr: any;
-declare var dialogPolyfill: any;
+// declare var dialogPolyfill: any;
 
 @Component({
   selector: 'app-category-manage',
@@ -32,7 +33,8 @@ export class CategoryManageComponent implements OnInit {
     public route: ActivatedRoute,
     public apiService: ApiService,
     public $rootscope: RootscopeService,
-    public el: ElementRef
+    public el: ElementRef,
+    public dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -43,10 +45,7 @@ export class CategoryManageComponent implements OnInit {
     if (this.cate.cateId != "create") {
       this.getCategoryByid(this.cate.cateId);
     }
-    this.dialog = document.querySelector('dialog');
-    if (!this.dialog.showModal) {
-      dialogPolyfill.registerDialog(this.dialog);
-    }
+    this.dialog = this.dialogService.build(document.querySelector('dialog'));
   }
 
   getCategoryByid(id: any) {
