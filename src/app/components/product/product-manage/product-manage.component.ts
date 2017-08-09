@@ -10,7 +10,7 @@ declare var toastr: any;
 @Component({
 	selector: 'app-product-manage',
 	templateUrl: './product-manage.component.html',
-	styleUrls: ['./product-manage.component.css']
+	styleUrls: ['./product-manage.component.css'],
 })
 export class ProductManageComponent implements OnInit {
 	public error: string = "";
@@ -29,7 +29,7 @@ export class ProductManageComponent implements OnInit {
 		coverId: "0",
 		recommend: false
 	}
-	public categoryList = [];
+	public categoryLists = [];
 	public selectedStatus: any = "Y";
 	public productPicName: any[] = [];
 	public uploadedFiles: any[] = [];
@@ -63,11 +63,7 @@ export class ProductManageComponent implements OnInit {
 			}
 
 			this.product.id = this.route.snapshot.params['id'];
-			// console.log("Product Id = ",this.product.id);
 			this.getCategoryList();
-			// if (this.product.id != "create") {
-			// 		this.getProductByid(this.product.id);
-			// }
 	}
 
 	getCategoryList(): Promise<boolean> {
@@ -79,7 +75,7 @@ export class ProductManageComponent implements OnInit {
 				(data) => {
 						if (data.status == true) {
 								for (let i = 0; i < data.data.length; i++) {
-										this.categoryList.push({ label: data.data[i].cate_name, value: data.data[i].id });
+										this.categoryLists.push({ label: data.data[i].cate_name, value: data.data[i].id });
 								}
 								this.product.category = data.data[0].id;
 								if (this.product.id != "create") {
@@ -88,7 +84,7 @@ export class ProductManageComponent implements OnInit {
 						} else {
 								console.log("error = ", data.error);
 						}
-				}, // OR this.categoryLists = data.data,
+				},
 					(error) => {
 							console.log("error = ", error);
 					}
@@ -129,7 +125,6 @@ export class ProductManageComponent implements OnInit {
 			}
 
 			let pic_name = prodResData.pic;
-			console.log(pic_name);
 			if (pic_name != undefined && pic_name.length > 0) {
 					for (var z = 0; z < pic_name.length; z++) {
 						pic_name[z].productpic_path = this.imgLink + pic_name[z].productpic_path;
@@ -269,7 +264,7 @@ export class ProductManageComponent implements OnInit {
 			pic_id: [],
 			staffid: "0",
 			pic_ids: "",
-			category: "1",
+			category: this.categoryLists[0].id,
 			productImage: <any>null,
 			coverId: "0",
 			recommend:false
