@@ -1,0 +1,12 @@
+.demo-card-square.mdl-card {
+  height: 500px;
+}
+
+.demo-card-wide > .mdl-card__title {
+  color: #fff;
+}
+
+.mdl-card__supporting-text {
+  height: 100px;
+  overflow-y: hidden;
+}

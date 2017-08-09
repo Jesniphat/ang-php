@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.getLogin();
-    this.$rootScope.loginShow({hiddenLogin:true, class10:false /*,loginPading:"0px" */});
+    this.$rootScope.loginShow({hiddenTopBar:true, hiddenSideBar:true /*,loginPading:"0px" */});
   }
 
   getLogin(){
@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
     if(res.status === true){
         let loginData = JSON.stringify(res.data);
         this.storage.setItem('logindata',loginData);
-        this.$rootScope.loginShow({hiddenLogin:false, class10:true});
+        this.$rootScope.loginShow({hiddenTopBar:false, hiddenSideBar:false});
         window.location.href = "";
         // window.location.reload();
     } else {

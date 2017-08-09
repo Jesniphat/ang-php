@@ -17,9 +17,10 @@ export class AppComponent {
   @BlockUI() blockUI: NgBlockUI;
   title = 'app works!';
   pic_url:string = "";
-  hiddenLogin: any = true;
-  showSide: any = true;
-  isLogged: boolean = true;
+  hiddenTopBar: any = true;   //Top bar hidden
+  hiddenSideBar: any = true;  //Side bar hidden
+  isLogged: boolean = true;   //Check staff login
+  manager: boolean = false;   //Check is staff?
 
   storage: any;
   staffData:any;
@@ -38,19 +39,17 @@ export class AppComponent {
   ) {}
 
   ngOnInit(){
+    console.log("start App");
     this.storage = localStorage;
     
     if(this.storage.getItem('logindata')){
       let logindata = JSON.parse(this.storage.getItem('logindata'));
       this.staffData = logindata;
       this.display_name = logindata.display_name;
-      // console.log("staff = ", this.staffData);
+      this.manager = true;
     }
     this.setPage();
-    // $('.ui.dropdown').dropdown();
-    // this.testapi();
     this.checkLogin();
-    
     this.$rootScope.showNav$.subscribe(data => this.showNav(data));
     this.$rootScope.doBlock$.subscribe(data => this.block(data));
   }
@@ -67,15 +66,17 @@ export class AppComponent {
 
   checkLoginDoneAction(res:any){ // เดี่ยวไปใช้ service
     // console.log(res);
-    if(res.data){
-        this.hiddenLogin = false;
-        this.showSide = true;
-    }else{
-        this.hiddenLogin = true;
-        this.showSide = false;
-        // window.location.href = "login";
+    if(this.manager){
+      if(res.data){
+        this.hiddenTopBar = false;
+        this.hiddenSideBar = false;
+      }else{
+        this.hiddenTopBar = true;
+        this.hiddenSideBar = true;
+      }
+    } else {
+      // do something in global
     }
-    console.log('hide = ', this.hiddenLogin, ' and show = ', this.showSide);
   }
 
   checkLoginErrorAction(error:any){
@@ -107,8 +108,8 @@ export class AppComponent {
     if(obj != "" && obj != undefined && Object.keys(obj).length != 0){
       // console.log("obj = ", obj);
       let show = obj;
-      this.hiddenLogin = show.hiddenLogin;
-      this.showSide = show.class10;
+      this.hiddenTopBar = show.hiddenTopBar;
+      this.hiddenSideBar = show.hiddenSideBar;
     }
 
     if(this.storage.getItem('logindata')){
@@ -139,7 +140,7 @@ export class AppComponent {
     }else{
       this.blockUI.stop();
       let pageWidth = document.body.clientWidth;
-      console.log(pageWidth);
+      // console.log(pageWidth);
       if(pageWidth < 1200){
         // element.setAttribute("aria-hidden", true);
         $("#my-side-bar").attr("aria-hidden",true);
