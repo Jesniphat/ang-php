@@ -56,9 +56,9 @@
 </div>-->
 <block-ui>
 <div class="main-page" (window:resize)="setPage()">
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" [hidden]="hiddenLogin">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" [hidden]="hiddenTopBar">
     <header class="page-header mdl-layout__header mdl-color--blue-grey-800">
-      <div class="mdl-layout__header-row">
+      <div class="mdl-layout__header-row" [hidden]="!manager">
         <span class="mdl-layout-title">Home</span>
         <div class="mdl-layout-spacer"></div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
@@ -83,8 +83,8 @@
   </div>
   <div class="page-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer" [style.padding-left]="leftPad">
     <div class="page-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50" id="my-side-bar" 
-         style="margin-top:64px;" [style.height]="sideHeight" [style.margin-left]="leftPad" [hidden]="hiddenLogin">
-      <div class="page-navigation mdl-navigation" [hidden]="false">
+         style="margin-top:64px;" [style.height]="sideHeight" [style.margin-left]="leftPad" [hidden]="hiddenSideBar">
+      <div class="page-navigation mdl-navigation" [hidden]="!manager">
         <header class="page-drawer-header">
           <img src="images/user.jpg" class="page-avatar">
           <div class="page-avatar-dropdown">
@@ -112,7 +112,7 @@
         </nav>
       </div>
     </div>
-    <main id="main" class="mdl-layout__content" [ngClass]="{'hiddenLeftMargin': hiddenLogin}" style="margin-top:64px;" [style.padding-right]="rightPad">
+    <main id="main" class="mdl-layout__content" [ngClass]="{'hiddenLeftMargin': hiddenSideBar}" style="margin-top:64px;" [style.padding-right]="rightPad">
       <div class="main-change" style="width:100%; padding:18px 18px 0px 18px;">
         <router-outlet></router-outlet>
       </div>
