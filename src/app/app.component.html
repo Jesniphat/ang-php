@@ -112,7 +112,7 @@
         </nav>
       </div>
     </div>
-    <main id="main" class="mdl-layout__content" [ngClass]="{'hiddenLeftMargin': hiddenSideBar}" style="margin-top:64px;" [style.padding-right]="rightPad">
+    <main id="main" class="mdl-layout__content" style="margin-top:64px;" [style.padding-right]="rightPad"> <!-- [ngClass]="{'hiddenLeftMargin': hiddenSideBar}" -->
       <div class="main-change" style="width:100%; padding:18px 18px 0px 18px;">
         <router-outlet></router-outlet>
       </div>

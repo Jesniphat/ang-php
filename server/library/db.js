@@ -93,7 +93,7 @@ module.exports = new function() {
         errors(error)
       }else if(results.length == 0) {
         console.log("error : on data");
-        deferred.reject("nodata");
+        // deferred.reject("nodata");
         errors("nodata");
       }else {
         $scrope = results;
