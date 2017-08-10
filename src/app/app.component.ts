@@ -64,15 +64,17 @@ export class AppComponent {
         );
   }
 
-  checkLoginDoneAction(res:any){ // เดี่ยวไปใช้ service
-    // console.log(res);
+  checkLoginDoneAction(res:any){
     if(this.manager){
+      // Check has manager login or not if login res.data will have data and then hidden bar will false mean it will show bar.
       if(res.data){
         this.hiddenTopBar = false;
         this.hiddenSideBar = false;
+        $("#main").removeClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be 0 px.
       }else{
         this.hiddenTopBar = true;
         this.hiddenSideBar = true;
+        $("#main").addClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be 0 px.
       }
     } else {
       // do something in global
@@ -106,17 +108,22 @@ export class AppComponent {
   showNav(obj:any){
     // console.log(obj);
     if(obj != "" && obj != undefined && Object.keys(obj).length != 0){
-      // console.log("obj = ", obj);
+      //If hidden bar false mean it will show bar
       let show = obj;
       this.hiddenTopBar = show.hiddenTopBar;
       this.hiddenSideBar = show.hiddenSideBar;
+      if(show.hiddenSideBar){
+        $("#main").addClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be 0 px.
+        $(".mdl-layout__obfuscator").removeClass("is-visible"); // If this class active it will disable black page of mian page
+      } else {
+        $("#main").removeClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be 0 px.
+      }
     }
 
     if(this.storage.getItem('logindata')){
       let logindata = JSON.parse(this.storage.getItem('logindata'));
       this.staffData = logindata;
       this.display_name = logindata.display_name;
-      // console.log("staff = ", this.staffData);
     }
   }
 
@@ -143,9 +150,9 @@ export class AppComponent {
       // console.log(pageWidth);
       if(pageWidth < 1200){
         // element.setAttribute("aria-hidden", true);
-        $("#my-side-bar").attr("aria-hidden",true);
-        $("#my-side-bar").removeClass("is-visible");
-        $(".mdl-layout__obfuscator").removeClass("is-visible");
+        $("#my-side-bar").attr("aria-hidden",true); // This element if it minisize and have aria-hidden = true side bar will show maybe it not need
+        $("#my-side-bar").removeClass("is-visible"); // If this class active it will hidden side bar and disable black page
+        $(".mdl-layout__obfuscator").removeClass("is-visible"); // If this class active it will disable black page of mian page
       }
     }
   }
