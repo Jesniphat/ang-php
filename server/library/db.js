@@ -145,7 +145,7 @@ module.exports = new function() {
     }
     let update = "UPDATE " + data.table + " SET " + fields + where;
     let querys = connection.query(update, set, function(error, results, fields) {
-      console.log("Update is ", querys.sql);
+      // console.log("Update is ", querys.sql);
       if (error) {
         errors(error)
       } else {
