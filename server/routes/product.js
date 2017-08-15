@@ -188,7 +188,7 @@ router.post("/saveproduct", (req, res, next) => {
         let update = {
           table: 'product_pic',
           query: { status: 'N' },
-          where: { id: product_id }
+          where: { product_id: product_id }
         }
         let nPic = db.Update(connection, update, (success) => {
           let updatePic = {
