@@ -12,6 +12,7 @@ declare var toastr : any;
 })
 export class ProductListComponent implements OnInit {
   public error:any;
+  public categoryLists = [];
   public productLists:any = [];
   public productList:any = [];
   public products:any = [];
@@ -33,9 +34,31 @@ export class ProductListComponent implements OnInit {
     console.log("product_list.component");
     this.uploadUrl = this.apiService.upl + this.uploadUrl;
     this.imgLink = this.apiService.img;
-
+    this.getCategoryList();
     this.getAllProduct();
   }
+
+  public getCategoryList(): Promise<boolean> {
+		return new Promise<boolean>((resolve, reject) => {
+			let param = {}
+			this.apiService
+				.post("/api/category/category_list", param)
+				.subscribe(
+				(data) => {
+						if (data.status == true) {
+								for (let i = 0; i < data.data.length; i++) {
+										this.categoryLists.push({ label: data.data[i].cate_name, value: data.data[i].id });
+								}
+						} else {
+								console.log("error = ", data.error);
+						}
+				},
+					(error) => {
+							console.log("error = ", error);
+					}
+				);
+		});
+	}
 
   public getAllProduct(){
       this.$rootscope.setBlock(true);
