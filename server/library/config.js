@@ -3,11 +3,11 @@ module.exports = new function() {
   this.init = function(){
     var mysql = require("mysql");
     db = mysql.createConnection({
-      host: "13.59.164.106",
+      host: "localhost",
       port: 3306,
       user: "root",
       password: "rootp@ssw0rd",
-      database: "project_jphp"
+      database: "project-jphp"
     });
     db.connect(function(err){
       if(err) {
