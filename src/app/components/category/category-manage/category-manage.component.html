@@ -32,24 +32,11 @@
     </div>
   </div>
   <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--12-col">
+    <!-- <div class="mdl-cell mdl-cell--12-col">
       <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" 
-      type="submit" [disabled]="categoryForm.form.invalid" (click)="confirmSaveCate()">Submit</button>
-    </div>
+      type="submit" [disabled]="categoryForm.form.invalid" (click)="saveCategory()">Submit</button>
+      <button class="mdl-button mdl-js-button mdl-button--raised" (click)="closeDialog()"
+      type="submit">Close</button>
+    </div> -->
   </div>
 </form>
-
-
-
-<div class="mdl-grid">
-  <dialog class="mdl-dialog mdl-cell mdl-cell--7-col" style="margin: auto;">
-    <h4 class="mdl-dialog__title">Save category?</h4>
-    <div class="mdl-dialog__content">
-      <p>Do you want to save category?</p>
-    </div>
-    <div class="mdl-dialog__actions">
-      <button type="button" class="mdl-button close" (click)="dialog.close()">No</button>
-      <button type="button" class="mdl-button" (click)="saveCategory()">Yes</button>
-    </div>
-  </dialog>
-</div>

@@ -53,11 +53,6 @@ export class CategoryManageComponent implements OnInit {
     this.dialog = this.dialogService.build(document.querySelector('dialog'));
   }
 
-  getCate(){
-    console.log("test");
-    this.calculate.emit( 1 + 2 );
-  }
-
   getCategoryByid(id: any) {
     this.$rootscope.setBlock(true);
     let param = {
@@ -102,7 +97,6 @@ export class CategoryManageComponent implements OnInit {
 
   saveCategory() {
     this.$rootscope.setBlock(true);
-    this.dialog.close();
     this.apiService
       .post("/api/category/savecategory", this.cate)
       .subscribe(
@@ -114,6 +108,7 @@ export class CategoryManageComponent implements OnInit {
   saveCategoryDoneAction(res: any) {
     if (res.status === true) {
       toastr.success('บันทึกข้อมูลสำเร็จ', 'Success!');
+      this.dialog.close();
       this.reset();
     } else {
       console.log("can't save");
