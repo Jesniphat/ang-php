@@ -48,3 +48,19 @@
   </tfoot> 
 </table>
 </div>
+
+<div class="mdl-grid">
+  <dialog class="mdl-dialog mdl-cell mdl-cell--7-col" style="margin: auto;">
+    <h4 class="mdl-dialog__title">Add category</h4>
+    <div class="mdl-dialog__content">
+      <p>Do you want to save category?</p>
+      <!-- <app-category-manage [categoryId]="categoryId"></app-category-manage> -->
+    </div>
+    <div class="mdl-dialog__actions">
+      <button type="button" class="mdl-button close" (click)="dialog.close()">No</button>
+      <button type="button" class="mdl-button" (click)="saveCategory()">Yes</button>
+    </div>
+  </dialog>
+</div>
+
+<app-category-manage [categoryId]="categoryId" (calculate)="result($event)"></app-category-manage>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
@@ -14,6 +14,8 @@ declare var toastr: any;
   providers: []
 })
 export class CategoryManageComponent implements OnInit {
+  @Input() categoryId:any;
+  @Output() calculate: EventEmitter<number> = new EventEmitter();
   error: string = "";
   cate = {
     cateId: "",
@@ -39,13 +41,21 @@ export class CategoryManageComponent implements OnInit {
 
   ngOnInit() {
     console.log("category_managet.component");
-
-    this.cate.cateId = this.route.snapshot.params['id'];
-    //   console.log(this.cateId);
+    if(this.route.snapshot.params['id']){
+      this.cate.cateId = this.route.snapshot.params['id'];
+    } else {
+      this.cate.cateId = this.categoryId;
+    }
+    // console.log(this.cate.cateId);
     if (this.cate.cateId != "create") {
       this.getCategoryByid(this.cate.cateId);
     }
     this.dialog = this.dialogService.build(document.querySelector('dialog'));
+  }
+
+  getCate(){
+    console.log("test");
+    this.calculate.emit( 1 + 2 );
   }
 
   getCategoryByid(id: any) {
