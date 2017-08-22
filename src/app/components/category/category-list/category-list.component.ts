@@ -78,7 +78,8 @@ export class CategoryListComponent implements OnInit {
 		// }else{
 		// 		link = ['/category_list/create_cate', data.id];
 		// }
-		// this.router.navigate(link);
+        // this.router.navigate(link);
+        this.dialog.showModal();
 		if(data == 'create'){
 			this.categoryId = data;
 			this.categoryManageComponent.reset();
