@@ -15,18 +15,18 @@ declare var toastr: any;
 })
 export class CategoryManageComponent implements OnInit {
   @Input() categoryId:any;
-  @Output() calculate: EventEmitter<number> = new EventEmitter();
-  error: string = "";
-  cate = {
+  @Output() childResult: EventEmitter<number> = new EventEmitter();
+  public error: string = "";
+  public cate = {
     cateId: "",
     cateName: "",
     cateDescription: "",
     selectedStatus: "Y"
   }
-  statusLists = [{ label: 'Active', value: 'Y' },
+  public statusLists = [{ label: 'Active', value: 'Y' },
   { label: 'Unactive', value: 'N' }];
 
-  msgs: any;
+  public msgs: any;
 
   public dialog;
 
@@ -39,7 +39,7 @@ export class CategoryManageComponent implements OnInit {
     public dialogService: DialogService
   ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     console.log("category_managet.component");
     if(this.route.snapshot.params['id']){
       this.cate.cateId = this.route.snapshot.params['id'];
@@ -53,7 +53,7 @@ export class CategoryManageComponent implements OnInit {
     this.dialog = this.dialogService.build(document.querySelector('dialog'));
   }
 
-  getCategoryByid(id: any) {
+  public getCategoryByid(id: any) {
     this.$rootscope.setBlock(true);
     let param = {
       cate_id: id
@@ -66,7 +66,7 @@ export class CategoryManageComponent implements OnInit {
       )
   }
 
-  getCategoryByidDoneAction(res: any) {
+  public getCategoryByidDoneAction(res: any) {
     if (res.status === true) {
       // console.log(res);
       let cateResData = res.data;
@@ -80,22 +80,22 @@ export class CategoryManageComponent implements OnInit {
     this.$rootscope.setBlock(false);
   }
 
-  getCategoryByidErrorAction(error: any) {
+  public getCategoryByidErrorAction(error: any) {
     this.error = error.message;
     console.log("error = ", this.error);
     this.$rootscope.setBlock(false);
   }
 
-  changeStatus(newValue: any) {
+  public changeStatus(newValue: any) {
     console.log(newValue);
     this.cate.selectedStatus = newValue;
   }
 
-  confirmSaveCate() {
+  public confirmSaveCate() {
     this.dialog.showModal();
   }
 
-  saveCategory() {
+  public saveCategory() {
     this.$rootscope.setBlock(true);
     this.apiService
       .post("/api/category/savecategory", this.cate)
@@ -105,7 +105,7 @@ export class CategoryManageComponent implements OnInit {
       )
   }
 
-  saveCategoryDoneAction(res: any) {
+  public saveCategoryDoneAction(res: any) {
     if (res.status === true) {
       toastr.success('บันทึกข้อมูลสำเร็จ', 'Success!');
       this.dialog.close();
@@ -117,7 +117,7 @@ export class CategoryManageComponent implements OnInit {
     this.$rootscope.setBlock(false);
   }
 
-  saveCategoryErrorAction(error: any) {
+  public saveCategoryErrorAction(error: any) {
     this.error = error.message;
     console.log("error = ", this.error);
     // this.toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Oops!');
@@ -126,7 +126,7 @@ export class CategoryManageComponent implements OnInit {
     this.$rootscope.setBlock(false);
   }
 
-  reset() {
+  public reset() {
     this.cate = {
       cateId: "create",
       cateName: "",
