@@ -15,7 +15,7 @@ declare var $: any;
 })
 export class CategoryListComponent implements OnInit {
 	@BlockUI() blockUI: NgBlockUI;
-	@ViewChild(CategoryManageComponent) categoryManageComponent: CategoryManageComponent;
+	@ViewChild(CategoryManageComponent) private categoryManageComponent: CategoryManageComponent;
 	public item = 1;
 	public error: string = "";
 	public query: string = "";
@@ -37,13 +37,13 @@ export class CategoryListComponent implements OnInit {
 		public dialogService: DialogService
 	) { }
 
-	ngOnInit() {
+	public ngOnInit() {
 		console.log("category_list.component");
 		this.dialog = this.dialogService.build(document.querySelector('dialog'));
 		this.getCategoryList();
 	}
 
-	getCategoryList() {
+	public getCategoryList() {
 		this.$rootScope.setBlock(true);
 		let param = { "id": "ทดสอบ" }
 		this.apiService
@@ -54,23 +54,23 @@ export class CategoryListComponent implements OnInit {
 			);
 	}
 
-	getCategoryDoneAction(data: any) {
+	public getCategoryDoneAction(data: any) {
 		console.log("data = ", data);
 		this.categoryLists = data.data;
 		this.$rootScope.setBlock(false);
 	}
 
-	errorAction(error: any) {
+	public errorAction(error: any) {
 		this.error = error.message;
 		console.log("errer = ", this.error);
 		this.$rootScope.setBlock(false);
 	}
 
-	focusFilter() {
+	public focusFilter() {
 		this.pageNo = 1;
 	}
 
-	add_new_category(data: any) {
+	public add_new_category(data: any) {
 		// console.log("add new cate = ", data);
 		// let link: any;
 		// if(data == 'create'){
@@ -78,8 +78,8 @@ export class CategoryListComponent implements OnInit {
 		// }else{
 		// 		link = ['/category_list/create_cate', data.id];
 		// }
-        // this.router.navigate(link);
-        this.dialog.showModal();
+		// this.router.navigate(link);
+		this.dialog.showModal();
 		if(data == 'create'){
 			this.categoryId = data;
 			this.categoryManageComponent.reset();
@@ -89,8 +89,13 @@ export class CategoryListComponent implements OnInit {
 		}
 	}
 
-	result(value){
-		console.log(value);
+	public childReturn(result){
+		if(result){
+			this.getCategoryList();
+		}else{
+			console.log("can't save");
+		}
+		console.log(result);
 	}
 
 }
