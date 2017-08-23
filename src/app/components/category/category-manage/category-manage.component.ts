@@ -54,7 +54,7 @@ export class CategoryManageComponent implements OnInit {
   }
 
   public getCategoryByid(id: any) {
-    this.$rootscope.setBlock(true);
+    // this.$rootscope.setBlock(true);
     let param = {
       cate_id: id
     };
@@ -110,9 +110,11 @@ export class CategoryManageComponent implements OnInit {
       toastr.success('บันทึกข้อมูลสำเร็จ', 'Success!');
       this.dialog.close();
       this.reset();
+      this.childResult.emit(1);
     } else {
       console.log("can't save");
       toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
+      this.childResult.emit(0);
     }
     this.$rootscope.setBlock(false);
   }
@@ -124,6 +126,7 @@ export class CategoryManageComponent implements OnInit {
     toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
     setTimeout(() => this.error = null, 4000);
     this.$rootscope.setBlock(false);
+    this.childResult.emit(0);
   }
 
   public reset() {

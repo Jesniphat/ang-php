@@ -89,8 +89,13 @@ export class CategoryListComponent implements OnInit {
 		}
 	}
 
-	public childReturn(value){
-		console.log(value);
+	public childReturn(result){
+		if(result){
+			this.getCategoryList();
+		}else{
+			console.log("can't save");
+		}
+		console.log(result);
 	}
 
 }
