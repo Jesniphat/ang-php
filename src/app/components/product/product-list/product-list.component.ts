@@ -1,7 +1,10 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { DialogService } from "../../../service/dialog.service";
 import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
+import { ProductManageComponent } from '../product-manage/product-manage.component';
 declare var $ : any;
 declare var toastr : any;
 
@@ -11,6 +14,7 @@ declare var toastr : any;
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
+  @ViewChild(ProductManageComponent) private productManageComponent: ProductManageComponent;
   public error:any;
   public categoryLists = [];
   public productLists:any = [];
@@ -22,18 +26,22 @@ export class ProductListComponent implements OnInit {
   public imgLink:string = "";
   public cols = ["product_name","product_description","product_qty","product_price"];
   public delete_id:any = "";
+  public productId:any = 'create';
+  public dialog:any;
 
   constructor(
     public router: Router,
     public apiService: ApiService ,
     public $rootscope: RootscopeService,
-    public _elRef: ElementRef
+    public _elRef: ElementRef,
+    public dialogService: DialogService
   ) { }
 
   ngOnInit() {
     console.log("product_list.component");
     this.uploadUrl = this.apiService.upl + this.uploadUrl;
     this.imgLink = this.apiService.img;
+    this.dialog = this.dialogService.build(document.querySelector('dialog'));
     this.getCategoryList();
     this.getAllProduct();
   }
@@ -89,14 +97,23 @@ export class ProductListComponent implements OnInit {
   }
 
   public add_new_product(data:any){
-		let link: any;
+		// let link: any;
+		// if(data == 'create'){
+		// 		link = ['/product_list/product', data];
+		// }
+		// else{
+		// 		link = ['/product_list/product', data.id];
+		// }
+    // this.router.navigate(link);
+    console.log("add new prod");
+    this.dialog.showModal();
 		if(data == 'create'){
-				link = ['/product_list/product', data];
+			this.productId = data;
+			this.productManageComponent.reset();
+		}else{
+			this.productId = data.id;
+			this.productManageComponent.getProductByid(data.id);
 		}
-		else{
-				link = ['/product_list/product', data.id];
-		}
-		this.router.navigate(link);
   }
 
   public focusFilter(){
@@ -124,6 +141,14 @@ export class ProductListComponent implements OnInit {
                 console.log(error);
               }
           );
+  }
+
+  public childReturn(result){
+		if(result){
+			this.getAllProduct();
+		}else{
+			console.log("can't save");
+		}
   }
 
 }

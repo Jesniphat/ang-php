@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, ElementRef } from "@angular/core";
+import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
 import { Uploader } from 'angular2-http-file-upload';
 import { MyUploadItem } from "../../../upload-item";
+import { DialogService } from "../../../service/dialog.service";
 declare var $: any;
 declare var toastr: any;
 
@@ -13,6 +14,8 @@ declare var toastr: any;
 	styleUrls: ['./product-manage.component.css'],
 })
 export class ProductManageComponent implements OnInit {
+	@Input() productId:any;
+  @Output() childResult: EventEmitter<number> = new EventEmitter();
 	public error: string = "";
 	public storage: any;
 	public product = {
@@ -38,6 +41,7 @@ export class ProductManageComponent implements OnInit {
 	public warningmsg: string = "";
 	public dialogmsg: string = "";
 	public imgIndex: any = 0;
+	public dialog: any;
 	//   public birthday = new Date(1988, 3, 15);
 
 	constructor(
@@ -46,7 +50,8 @@ export class ProductManageComponent implements OnInit {
 		public apiService: ApiService,
 		public $rootScope: RootscopeService,
 		public uploaderService: Uploader,
-		public _elRef: ElementRef
+		public _elRef: ElementRef,
+		public dialogService: DialogService
 	) {
 			this.storage = localStorage;
 	}
@@ -62,7 +67,13 @@ export class ProductManageComponent implements OnInit {
 					this.product.staffid = logindata.id;
 			}
 
-			this.product.id = this.route.snapshot.params['id'];
+			if(this.route.snapshot.params['id']){
+				this.product.id = this.route.snapshot.params['id'];
+			} else {
+				this.product.id = this.productId;
+			}
+
+			this.dialog = this.dialogService.build(document.querySelector('dialog'));
 			this.getCategoryList();
 	}
 
@@ -92,10 +103,10 @@ export class ProductManageComponent implements OnInit {
 		});
 	}
 
-	getProductByid(productId: any) {
+	getProductByid(prodId: any) {
 		this.$rootScope.setBlock(true);
 		let param = {
-				product_id: productId
+				product_id: prodId
 		};
 		this.apiService
 			.post("/api/product/getproductbyid", param)
@@ -199,6 +210,7 @@ export class ProductManageComponent implements OnInit {
 
 	saveProduct() {
 		// console.log("save product = ");
+		this.$rootScope.setBlock(true);
 		if (this.uploadedFiles != undefined && (this.uploadedFiles).length > 0) {
 				for (var i = 0; i < this.uploadedFiles.length; i++) {
 					(this.product.pic_id).push(this.uploadedFiles[i].id);
@@ -218,16 +230,21 @@ export class ProductManageComponent implements OnInit {
 		if (res.status === true) {
 			this.reset();
 			toastr.success('บันทึกข้อมูลสำเร็จ', 'Success!');
+			this.childResult.emit(1);
 		} else {
 			console.log("can't save ", res.error);
 			toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
+			this.childResult.emit(0);
 		}
+		this.$rootScope.setBlock(false);
 	}
 
 	saveProductErrorAction(error: any) {
 		this.error = error.message;
 		console.log("error = ", this.error);
 		toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
+		this.$rootScope.setBlock(false);
+    this.childResult.emit(0);
 	}
 
 	onSubmit(value: any) {
