@@ -103,7 +103,7 @@
 	<div class="mdl-grid">
 		<div class="mdl-cell mdl-cell--12-col">
 			<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="saveProduct" type="submit" [disabled]="productForm.form.invalid" (click)="saveProduct()">Save</button>
-			<button class="mdl-button mdl-js-button mdl-button--raised" id="cancelAll" type="submit" (click)="reset()">Cancel</button>
+			<button class="mdl-button mdl-js-button mdl-button--raised" id="cancelAll" type="submit" (click)="reset(); dialog.close();">Cancel</button>
 		</div>
 	</div>
 </form>
