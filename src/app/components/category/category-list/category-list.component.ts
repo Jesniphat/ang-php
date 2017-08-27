@@ -3,7 +3,6 @@ import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { DialogService } from "../../../service/dialog.service";
 import { CategoryManageComponent }  from '../category-manage/category-manage.component';
 declare var $: any;
@@ -14,7 +13,6 @@ declare var $: any;
 	styleUrls: ['./category-list.component.css']
 })
 export class CategoryListComponent implements OnInit {
-	@BlockUI() blockUI: NgBlockUI;
 	@ViewChild(CategoryManageComponent) private categoryManageComponent: CategoryManageComponent;
 	public item = 1;
 	public error: string = "";

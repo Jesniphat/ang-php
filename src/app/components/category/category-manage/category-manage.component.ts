@@ -1,8 +1,11 @@
 import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Uploader } from 'angular2-http-file-upload';
+import { MyUploadItem } from "../../../upload-item";
 import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
 import { DialogService } from "../../../service/dialog.service";
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 declare var $: any;
 declare var toastr: any;
 // declare var dialogPolyfill: any;
@@ -14,6 +17,7 @@ declare var toastr: any;
   providers: []
 })
 export class CategoryManageComponent implements OnInit {
+  @BlockUI() blockUI: NgBlockUI;
   @Input() categoryId:any;
   @Output() childResult: EventEmitter<number> = new EventEmitter();
   public error: string = "";
@@ -21,8 +25,16 @@ export class CategoryManageComponent implements OnInit {
     cateId: "",
     cateName: "",
     cateDescription: "",
-    selectedStatus: "Y"
+    selectedStatus: "Y",
+    coverPic:""
   }
+  public uploadUrl: string = "/api/upload/category";
+  public imgLink: string = "";
+  public uploadedFiles: any = {
+    flag: "",
+    pic_name:"",
+    coverPic:""
+  };
   public statusLists = [{ label: 'Active', value: 'Y' },
   { label: 'Unactive', value: 'N' }];
 
@@ -33,6 +45,7 @@ export class CategoryManageComponent implements OnInit {
   constructor(
     public router: Router,
     public route: ActivatedRoute,
+    public uploaderService: Uploader,
     public apiService: ApiService,
     public $rootscope: RootscopeService,
     public el: ElementRef,
@@ -41,6 +54,7 @@ export class CategoryManageComponent implements OnInit {
 
   public ngOnInit() {
     console.log("category_managet.component");
+    this.imgLink = this.apiService.img;
     if(this.route.snapshot.params['id']){
       this.cate.cateId = this.route.snapshot.params['id'];
     } else {
@@ -54,7 +68,7 @@ export class CategoryManageComponent implements OnInit {
   }
 
   public getCategoryByid(id: any) {
-    // this.$rootscope.setBlock(true);
+    this.blockUI.start('Loading...');
     let param = {
       cate_id: id
     };
@@ -74,9 +88,11 @@ export class CategoryManageComponent implements OnInit {
       this.cate.cateName = cateResData.cate_name;
       this.cate.cateDescription = cateResData.cate_description;
       this.cate.selectedStatus = cateResData.status;
+      this.uploadedFiles.coverPic = cateResData.cover_pic;
     } else {
       console.log("No data");
     }
+    this.blockUI.stop();
     this.$rootscope.setBlock(false);
   }
 
@@ -84,6 +100,7 @@ export class CategoryManageComponent implements OnInit {
     this.error = error.message;
     console.log("error = ", this.error);
     this.$rootscope.setBlock(false);
+    this.blockUI.stop();
   }
 
   public changeStatus(newValue: any) {
@@ -96,6 +113,7 @@ export class CategoryManageComponent implements OnInit {
   }
 
   public saveCategory() {
+    this.blockUI.start('Saving...');
     this.$rootscope.setBlock(true);
     this.apiService
       .post("/api/category/savecategory", this.cate)
@@ -116,6 +134,7 @@ export class CategoryManageComponent implements OnInit {
       toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
       this.childResult.emit(0);
     }
+    this.blockUI.stop();
     this.$rootscope.setBlock(false);
   }
 
@@ -125,6 +144,7 @@ export class CategoryManageComponent implements OnInit {
     // this.toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Oops!');
     toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
     setTimeout(() => this.error = null, 4000);
+    this.blockUI.stop();
     this.$rootscope.setBlock(false);
     this.childResult.emit(0);
   }
@@ -134,8 +154,55 @@ export class CategoryManageComponent implements OnInit {
       cateId: "create",
       cateName: "",
       cateDescription: "",
-      selectedStatus: "Y"
-    }
+      selectedStatus: "Y",
+      coverPic:""
+    };
+
+    this.uploadedFiles = {
+      flag: "",
+      pic_name:"",
+      coverPic:""
+    };
   }
+
+  public uploadFile(data: any) {
+    if(!data.target.files[0]){
+      return;
+    }
+    this.blockUI.start('Uploading...');
+		console.log("file = ", data.target.files[0]);
+		let uploadFile = data.target.files[0];
+
+		let myUploadItem = new MyUploadItem(uploadFile, this.uploadUrl);
+		myUploadItem.formData = { FormDataKey: 'Form Data Value' };  // (optional) form data can be sent with file
+
+		this.uploaderService.onSuccessUpload = (item, response, status, headers) => {
+			// console.log("onSuccessUpload = ", response);
+			let pic_name:any;
+      if(typeof response == 'string'){
+          pic_name = JSON.parse(response);
+      } else {
+          pic_name = response;
+      }
+      //  let pic_name = JSON.parse(response);
+       if(pic_name.status === true){
+          pic_name.data.coverPic = this.imgLink + pic_name.data.pic_path;
+          pic_name.data.flag = "c";
+          this.cate.coverPic = this.imgLink + pic_name.data.pic_path;
+          this.uploadedFiles = pic_name.data;
+          // console.log(this.uploadedFiles);
+          console.log("upload seccess");
+       } else {
+          console.log("error = ", pic_name.error);
+          toastr.warning('บันทึกรูปภาพไม่สำเร็จกรุณาลองใหม่อีกครั้ง', 'Warning!');
+       }
+			this.blockUI.stop();
+		};
+		this.uploaderService.onErrorUpload = (item, response, status, headers) => {
+			console.log("onErrorUpload = ", response);
+			this.blockUI.stop();
+		};
+		this.uploaderService.upload(myUploadItem);
+	}
 
 }

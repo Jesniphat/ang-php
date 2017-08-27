@@ -16,6 +16,7 @@ import { SettingModule } from './components/setting/setting.module';
 import { CategoryModule } from './components/category/category.module';
 import { ProductModule } from './components/product/product.module';
 import { HeadsliderModule } from './components/headslider/headslider.module';
+import { StockModule } from './components/stock/stock.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { HeadsliderModule } from './components/headslider/headslider.module';
     SettingModule,
     CategoryModule,
     ProductModule,
-    HeadsliderModule
+    HeadsliderModule,
+    StockModule
   ],
   providers: [
     // Uploader
