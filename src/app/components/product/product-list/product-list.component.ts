@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { DialogService } from "../../../service/dialog.service";
 import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
@@ -145,7 +144,8 @@ export class ProductListComponent implements OnInit {
 
   public childReturn(result){
 		if(result){
-			this.getAllProduct();
+      this.getAllProduct();
+      this.dialog.close();
 		}else{
 			console.log("can't save");
 		}

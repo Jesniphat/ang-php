@@ -5,6 +5,7 @@ import { RootscopeService } from "../../../service/rootscope.service";
 import { Uploader } from 'angular2-http-file-upload';
 import { MyUploadItem } from "../../../upload-item";
 import { DialogService } from "../../../service/dialog.service";
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 declare var $: any;
 declare var toastr: any;
 
@@ -14,16 +15,18 @@ declare var toastr: any;
 	styleUrls: ['./product-manage.component.css'],
 })
 export class ProductManageComponent implements OnInit {
+	@BlockUI() blockUI: NgBlockUI;
 	@Input() productId:any;
   @Output() childResult: EventEmitter<number> = new EventEmitter();
 	public error: string = "";
 	public storage: any;
 	public product = {
 		id: "",
+		code:"",
 		name: "",
 		desc: "",
 		price: 0,
-		qty: 0,
+		cost: 0,
 		pic_id: <any>[],
 		pic_ids: "",
 		staffid: "0",
@@ -104,7 +107,7 @@ export class ProductManageComponent implements OnInit {
 	}
 
 	getProductByid(prodId: any) {
-		this.$rootScope.setBlock(true);
+		this.blockUI.start('Loading...');
 		let param = {
 				product_id: prodId
 		};
@@ -117,17 +120,15 @@ export class ProductManageComponent implements OnInit {
 	}
 
 	getProductByidDoneAction(res) {
-			// console.log(res);
 		if (res.status === true) {
-				// console.log(res);
 			let prodResData = res.data;
 			this.product.id = prodResData.id;
 			this.product.name = prodResData.product_name;
 			this.product.desc = prodResData.product_description;
 			this.product.price = prodResData.product_price;
-			this.product.qty = prodResData.product_qty;
+			this.product.cost = prodResData.product_cost;
 			this.product.category = prodResData.category_id;
-			//   console.log(prodResData.pic);
+			this.product.code = 'Product code: ' + prodResData.code;
 
 			if(prodResData.recommend == 'Y'){
 				this.product.recommend = true;
@@ -144,12 +145,12 @@ export class ProductManageComponent implements OnInit {
 			}
 			this.uploadedFiles = (pic_name == undefined) ? [] : pic_name;
 		}
-		this.$rootScope.setBlock(false);
+		this.blockUI.stop();
 	}
 
 	getProductByidErrorAction(error) {
 		console.log(error);
-		this.$rootScope.setBlock(false);
+		this.blockUI.stop();
 	}
 
 	changeCategory(newValue: any) {
@@ -158,6 +159,7 @@ export class ProductManageComponent implements OnInit {
 	}
 
 	uploadFile(data: any) {
+		this.blockUI.start('Uploading...');
 		console.log("file = ", data.target.files[0]);
 		let uploadFile = data.target.files[0];
 
@@ -188,9 +190,11 @@ export class ProductManageComponent implements OnInit {
 				toastr.warning('บันทึกรูปภาพไม่สำเร็จกรุณาลองใหม่อีกครั้ง', 'Warning!');
 			}
 			this.product.productImage = "";
+			this.blockUI.stop();
 		};
 		this.uploaderService.onErrorUpload = (item, response, status, headers) => {
 			console.log("onErrorUpload = ", response);
+			this.blockUI.stop();
 		};
 		this.uploaderService.upload(myUploadItem);
 	}
@@ -209,8 +213,7 @@ export class ProductManageComponent implements OnInit {
 	}
 
 	saveProduct() {
-		// console.log("save product = ");
-		this.$rootScope.setBlock(true);
+		this.blockUI.start('Saving...');
 		if (this.uploadedFiles != undefined && (this.uploadedFiles).length > 0) {
 				for (var i = 0; i < this.uploadedFiles.length; i++) {
 					(this.product.pic_id).push(this.uploadedFiles[i].id);
@@ -236,14 +239,14 @@ export class ProductManageComponent implements OnInit {
 			toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
 			this.childResult.emit(0);
 		}
-		this.$rootScope.setBlock(false);
+		this.blockUI.stop();
 	}
 
 	saveProductErrorAction(error: any) {
 		this.error = error.message;
 		console.log("error = ", this.error);
 		toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
-		this.$rootScope.setBlock(false);
+		this.blockUI.stop();
     this.childResult.emit(0);
 	}
 
@@ -274,10 +277,11 @@ export class ProductManageComponent implements OnInit {
 	reset() {
 		this.product = {
 			id: "create",
+			code:"",
 			name: "",
 			desc: "",
 			price: 0,
-			qty: 0,
+			cost: 0,
 			pic_id: [],
 			staffid: "0",
 			pic_ids: "",

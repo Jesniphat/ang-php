@@ -1,43 +1,65 @@
-<form class="ui form" #categoryForm="ngForm">
-  <h4 class="ui dividing header">Category control</h4>
-  <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--6-col">
-      <label>Name</label>
-      <div>
-        <input type="text" id="categoryName" placeholder="First Name" [(ngModel)]="cate.cateName" name="cateName" #cateName="ngModel" required>
+<block-ui>
+  <div class="card-wide mdl-card mdl-shadow--2dp" style="margin: auto;">
+    <div class="mdl-card__title" [ngStyle]="{'background-image': 'url(' + uploadedFiles.coverPic + ')', 'background-size': 'cover'}">
+      <h2 class="mdl-card__title-text">Category</h2>
+    </div>
+    <div class="mdl-card__menu">
+      <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+        <i class="material-icons">share</i>
+      </button>
+    </div>
+  </div>
+  <br/>
+  <form class="ui form" #categoryForm="ngForm">
+    <h4 class="ui dividing header">Category control</h4>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--6-col">
+        <label>Name</label>
+        <div>
+          <input type="text" id="categoryName" placeholder="First Name" [(ngModel)]="cate.cateName" name="cateName" #cateName="ngModel" required>
+        </div>
+        <div>
+          <div class="required-message" [hidden]="cateName.valid || cateName.pristine">
+            <i class="material-icons">error</i>
+            Category name is required
+          </div>
+        </div>
       </div>
-      <div>
-        <div class="required-message" [hidden]="cateName.valid || cateName.pristine">
-          <i class="material-icons">error</i>
-          Category name is required
+      <div class="mdl-cell mdl-cell--6-col">
+        <label>Status</label>
+            <select class="ui fluid dropdown" id="categoryStatus" name="categoryStatus" [(ngModel)]="cate.selectedStatus">
+            <option *ngFor="let item of statusLists" [value]='item.value'>
+              {{item.label}}
+            </option>
+          </select>  
+      </div>
+    </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <label>Category image</label>
+        <div>
+          <input type="file" id="categoryImage" placeholder="Product image" [(ngModel)]="cate.cateImage" (change)="uploadFile($event)"
+          name="categoryImage" #categoryImage />
         </div>
       </div>
     </div>
-    <div class="mdl-cell mdl-cell--6-col">
-      <label>Status</label>
-          <select class="ui fluid dropdown" id="categoryStatus" name="categoryStatus" [(ngModel)]="cate.selectedStatus">
-          <option *ngFor="let item of statusLists" [value]='item.value'>
-            {{item.label}}
-          </option>
-        </select>  
-    </div>
-  </div>
-  <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--12-col">
-      <label>Description</label>
-      <div>
-        <textarea type="text" id="categoryDesciption" placeholder="First Name" [(ngModel)]="cate.cateDescription" 
-        name="categoryDesciption"></textarea>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <label>Description</label>
+        <div>
+          <textarea type="text" id="categoryDesciption" placeholder="First Name" [(ngModel)]="cate.cateDescription" 
+          name="categoryDesciption"></textarea>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--12-col">
-      <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" 
-      type="submit" [disabled]="categoryForm.form.invalid" (click)="saveCategory()">Submit</button>
-      <button class="mdl-button mdl-js-button mdl-button--raised" (click)="dialog.close()"
-      type="submit">Close</button>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" 
+        type="submit" [disabled]="categoryForm.form.invalid" (click)="saveCategory()">Submit</button>
+        <button class="mdl-button mdl-js-button mdl-button--raised" (click)="dialog.close()"
+        type="submit">Close</button>
+      </div>
     </div>
-  </div>
-</form>
+  </form>
+</block-ui>
 <dialog style="display:none;"></dialog>
