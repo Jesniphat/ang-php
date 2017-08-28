@@ -50,6 +50,18 @@
   </div>
 </div>
 
+<div class="mdl-grid">
+  <dialog class="mdl-dialog mdl-cell mdl-cell--7-col" style="margin: auto;overflow: scroll;max-height: 85%;">
+    <div class="mdl-dialog__content">
+      <app-product-manage [productId]="productId" (childResult)="childReturn($event)"></app-product-manage>
+    </div>
+    <!-- <div class="mdl-dialog__actions">
+      <button type="button" class="mdl-button close" (click)="dialog.close()">No</button>
+      <button type="button" class="mdl-button" (click)="categoryManageComponent.saveCategory()">Yes</button>
+    </div> -->
+  </dialog>
+</div>
+
 
 <!-- Sematic ui card -->
 

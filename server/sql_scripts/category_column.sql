@@ -1,0 +1,2 @@
+ALTER TABLE `category` 
+CHANGE COLUMN `cover_pic` `cover_pic` VARCHAR(255) CHARACTER SET 'utf8' NULL DEFAULT NULL ;

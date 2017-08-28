@@ -122,7 +122,8 @@ router.post("/savecategory", function(req, res, next) {
 					query: {
 						cate_name: category.cateName,
 						cate_description: category.cateDescription,
-						status: category.selectedStatus
+						status: category.selectedStatus,
+						cover_pic: category.coverPic
 					},
 					table: "category",
 					where: {
@@ -144,6 +145,7 @@ router.post("/savecategory", function(req, res, next) {
 						cate_name: category.cateName,
 						cate_description: category.cateDescription,
 						status: category.selectedStatus,
+						cover_pic: category.coverPic,
 						created_by: permission.getID(req),
 						updated_by: permission.getID(req),
 						uuid: uuidv1()

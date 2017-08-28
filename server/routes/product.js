@@ -154,7 +154,7 @@ router.post("/saveproduct", (req, res, next) => {
               product_name: product.name,
               product_description: product.desc,
               product_price: product.price,
-              product_qty: product.qty,
+              product_cost: product.cost,
               created_by: product.staffid,
               category_id: product.category,
               uuid: uuidv1()
@@ -171,7 +171,7 @@ router.post("/saveproduct", (req, res, next) => {
             product_name: product.name,
               product_description: product.desc,
               product_price: product.price,
-              product_qty: product.qty,
+              product_cost: product.cost,
               created_by: product.staffid,
               category_id: product.category
           },

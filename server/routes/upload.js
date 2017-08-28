@@ -102,4 +102,52 @@ upload.post('/product', uploadFile.single('file'), function (req, res, next) {
   
 });
 
+
+upload.post('/category', uploadFile.single('file'), function (req, res, next) {
+  let $scope = {};
+  let connection = conn.init();
+  // console.log("res product pic = ", req.file);
+  let save_file = function(){
+    let deferred = promise.pending();
+    let newName = moment().format('YYYY-MM-DD_hh-mm-ss') + '_' + req.file.originalname;
+    let filename = __dirname + '/../dist/public/images/category-img/' + newName;
+    let src = fs.createReadStream(req.file.path);
+    src.pipe(fs.createWriteStream(filename));
+    src.on('end', function () {
+      // res.send({
+      //   status: true,
+      //   fileName: newName
+      // });
+      $scope.newName = newName;
+      deferred.resolve("Save file success");
+    });
+    src.on('error', function (err) {
+      // res.send({
+      //   status: false,
+      //   exMessage: 'upload file error' + err
+      // });
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+
+
+  save_file()
+  .then(function(){
+    res.json({
+      status: true,
+      data: {
+        pic_name: $scope.newName,
+        pic_path: "public/images/category-img/"  + $scope.newName
+      }
+    });
+  }).catch(function(e){
+    res.json({
+      status: false,
+      error: e
+    });
+  });
+  
+});
+
 module.exports = upload;

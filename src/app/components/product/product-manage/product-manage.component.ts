@@ -1,9 +1,11 @@
-import { Component, OnInit, Input, ElementRef } from "@angular/core";
+import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
 import { Uploader } from 'angular2-http-file-upload';
 import { MyUploadItem } from "../../../upload-item";
+import { DialogService } from "../../../service/dialog.service";
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 declare var $: any;
 declare var toastr: any;
 
@@ -13,14 +15,18 @@ declare var toastr: any;
 	styleUrls: ['./product-manage.component.css'],
 })
 export class ProductManageComponent implements OnInit {
+	@BlockUI() blockUI: NgBlockUI;
+	@Input() productId:any;
+  @Output() childResult: EventEmitter<number> = new EventEmitter();
 	public error: string = "";
 	public storage: any;
 	public product = {
 		id: "",
+		code:"",
 		name: "",
 		desc: "",
 		price: 0,
-		qty: 0,
+		cost: 0,
 		pic_id: <any>[],
 		pic_ids: "",
 		staffid: "0",
@@ -38,6 +44,7 @@ export class ProductManageComponent implements OnInit {
 	public warningmsg: string = "";
 	public dialogmsg: string = "";
 	public imgIndex: any = 0;
+	public dialog: any;
 	//   public birthday = new Date(1988, 3, 15);
 
 	constructor(
@@ -46,7 +53,8 @@ export class ProductManageComponent implements OnInit {
 		public apiService: ApiService,
 		public $rootScope: RootscopeService,
 		public uploaderService: Uploader,
-		public _elRef: ElementRef
+		public _elRef: ElementRef,
+		public dialogService: DialogService
 	) {
 			this.storage = localStorage;
 	}
@@ -62,7 +70,13 @@ export class ProductManageComponent implements OnInit {
 					this.product.staffid = logindata.id;
 			}
 
-			this.product.id = this.route.snapshot.params['id'];
+			if(this.route.snapshot.params['id']){
+				this.product.id = this.route.snapshot.params['id'];
+			} else {
+				this.product.id = this.productId;
+			}
+
+			this.dialog = this.dialogService.build(document.querySelector('dialog'));
 			this.getCategoryList();
 	}
 
@@ -92,10 +106,10 @@ export class ProductManageComponent implements OnInit {
 		});
 	}
 
-	getProductByid(productId: any) {
-		this.$rootScope.setBlock(true);
+	getProductByid(prodId: any) {
+		this.blockUI.start('Loading...');
 		let param = {
-				product_id: productId
+				product_id: prodId
 		};
 		this.apiService
 			.post("/api/product/getproductbyid", param)
@@ -106,17 +120,15 @@ export class ProductManageComponent implements OnInit {
 	}
 
 	getProductByidDoneAction(res) {
-			// console.log(res);
 		if (res.status === true) {
-				// console.log(res);
 			let prodResData = res.data;
 			this.product.id = prodResData.id;
 			this.product.name = prodResData.product_name;
 			this.product.desc = prodResData.product_description;
 			this.product.price = prodResData.product_price;
-			this.product.qty = prodResData.product_qty;
+			this.product.cost = prodResData.product_cost;
 			this.product.category = prodResData.category_id;
-			//   console.log(prodResData.pic);
+			this.product.code = 'Product code: ' + prodResData.code;
 
 			if(prodResData.recommend == 'Y'){
 				this.product.recommend = true;
@@ -133,12 +145,12 @@ export class ProductManageComponent implements OnInit {
 			}
 			this.uploadedFiles = (pic_name == undefined) ? [] : pic_name;
 		}
-		this.$rootScope.setBlock(false);
+		this.blockUI.stop();
 	}
 
 	getProductByidErrorAction(error) {
 		console.log(error);
-		this.$rootScope.setBlock(false);
+		this.blockUI.stop();
 	}
 
 	changeCategory(newValue: any) {
@@ -147,6 +159,7 @@ export class ProductManageComponent implements OnInit {
 	}
 
 	uploadFile(data: any) {
+		this.blockUI.start('Uploading...');
 		console.log("file = ", data.target.files[0]);
 		let uploadFile = data.target.files[0];
 
@@ -177,9 +190,11 @@ export class ProductManageComponent implements OnInit {
 				toastr.warning('บันทึกรูปภาพไม่สำเร็จกรุณาลองใหม่อีกครั้ง', 'Warning!');
 			}
 			this.product.productImage = "";
+			this.blockUI.stop();
 		};
 		this.uploaderService.onErrorUpload = (item, response, status, headers) => {
 			console.log("onErrorUpload = ", response);
+			this.blockUI.stop();
 		};
 		this.uploaderService.upload(myUploadItem);
 	}
@@ -198,7 +213,7 @@ export class ProductManageComponent implements OnInit {
 	}
 
 	saveProduct() {
-		// console.log("save product = ");
+		this.blockUI.start('Saving...');
 		if (this.uploadedFiles != undefined && (this.uploadedFiles).length > 0) {
 				for (var i = 0; i < this.uploadedFiles.length; i++) {
 					(this.product.pic_id).push(this.uploadedFiles[i].id);
@@ -218,16 +233,21 @@ export class ProductManageComponent implements OnInit {
 		if (res.status === true) {
 			this.reset();
 			toastr.success('บันทึกข้อมูลสำเร็จ', 'Success!');
+			this.childResult.emit(1);
 		} else {
 			console.log("can't save ", res.error);
 			toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
+			this.childResult.emit(0);
 		}
+		this.blockUI.stop();
 	}
 
 	saveProductErrorAction(error: any) {
 		this.error = error.message;
 		console.log("error = ", this.error);
 		toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
+		this.blockUI.stop();
+    this.childResult.emit(0);
 	}
 
 	onSubmit(value: any) {
@@ -257,10 +277,11 @@ export class ProductManageComponent implements OnInit {
 	reset() {
 		this.product = {
 			id: "create",
+			code:"",
 			name: "",
 			desc: "",
 			price: 0,
-			qty: 0,
+			cost: 0,
 			pic_id: [],
 			staffid: "0",
 			pic_ids: "",
