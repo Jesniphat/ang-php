@@ -1,3 +1,10 @@
+/**
+ * Start Script when page loade
+ */
+
+/**
+ * Import libraly
+ */
 import { Component, ElementRef } from '@angular/core';
 import { ApiService } from "./service/api.service";
 import { CookieService } from "./service/cookie.service";
@@ -14,47 +21,71 @@ declare let element: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  @BlockUI() blockUI: NgBlockUI;
-  title = 'app works!';
-  pic_url:string = "";
-  hiddenTopBar: any = true;   //Top bar hidden
-  hiddenSideBar: any = true;  //Side bar hidden
-  isLogged: boolean = true;   //Check staff login
-  manager: boolean = false;   //Check is staff?
+  @BlockUI() blockUI: NgBlockUI; // Load block UI
+  public title = 'app works!';       // Title
+  public pic_url:string = "";        // Pic url
+  public hiddenTopBar: any = true;   //Top bar hidden
+  public hiddenSideBar: any = true;  //Side bar hidden
+  public isLogged: boolean = true;   //Check staff login
+  public manager: boolean = false;   //Check is staff?
 
-  storage: any;
-  staffData:any;
-  display_name: any;
-  menuId: any[];
-  dropDownMenu: any;
-  sideHeight:string = "611px";
-  leftPad:string = "0px";
-  rightPad:string = "0px";
+  public storage: any;
+  public staffData:any;
+  public display_name: any;
+  public menuId: any[];
+  public dropDownMenu: any;
+  public sideHeight:string = "611px";
+  public leftPad:string = "0px";
+  public rightPad:string = "0px";
 
-  constructor(
+  
+/**
+ * Construtor of class
+ * 
+ * @param ApiService apiSevice 
+ * @param CookieService cookie 
+ * @param RootscopeService $rootScope 
+ * @param ElementRef _elRef 
+ * @access public
+ */
+public constructor(
    public apiSevice: ApiService, 
    public cookie: CookieService, 
    public $rootScope: RootscopeService,
    public _elRef: ElementRef
   ) {}
 
-  ngOnInit(){
+
+/**
+ * Automatic start function
+ * 
+ * @access public 
+ */
+public ngOnInit(){
     console.log("start App");
     this.storage = localStorage;
     
+    // Get login data from local storage
     if(this.storage.getItem('logindata')){
       let logindata = JSON.parse(this.storage.getItem('logindata'));
       this.staffData = logindata;
       this.display_name = logindata.display_name;
       this.manager = true;
     }
+
     this.setPage();
     this.checkLogin();
     this.$rootScope.showNav$.subscribe(data => this.showNav(data));
     this.$rootScope.doBlock$.subscribe(data => this.block(data));
   }
 
-  checkLogin(){
+
+/**
+ * Check login staff
+ * 
+ * @access public
+ */
+public checkLogin(){
     let param:any = {"id":"isLogin"};
     this.apiSevice
         .post("/api/authen/checklogin", param)
@@ -64,7 +95,14 @@ export class AppComponent {
         );
   }
 
-  checkLoginDoneAction(res:any){
+
+/**
+ * If check login is true
+ * 
+ * @param any res
+ * @access public 
+ */
+public checkLoginDoneAction(res:any){
     if(this.manager){
       // Check has manager login or not if login res.data will have data and then hidden bar will false mean it will show bar.
       if(res.data){
@@ -81,32 +119,25 @@ export class AppComponent {
     }
   }
 
+
+/**
+ * If can't check login
+ * 
+ * @param error
+ * @access public
+ */
   checkLoginErrorAction(error:any){
       console.log(error);
   }
 
-  testapi(){
-    let param = {"id":"ทดสอบ"}
-    this.apiSevice.post("/api/test", param)
-        .subscribe(
-          data => this.testdone(data),
-          error => this.testerror(error)
-        );
-  }
 
-  testdone(data:any){
-    console.log("data = ", data);
-    if(!data.status){
-      this.testerror(data);
-    }
-  }
-
-  testerror(error:any){
-    console.log("error => ", error)
-  }
-
-  showNav(obj:any){
-    // console.log(obj);
+/**
+ * Show nav sitebar
+ * 
+ * @param obj 
+ * @access public
+ */
+public showNav(obj:any){
     if(obj != "" && obj != undefined && Object.keys(obj).length != 0){
       //If hidden bar false mean it will show bar
       let show = obj;
@@ -127,7 +158,13 @@ export class AppComponent {
     }
   }
 
-  setPage(){
+
+/**
+ * Set page width automatic
+ * 
+ * @access private
+ */
+private setPage(){
     this.sideHeight = (document.body.clientHeight - 64) + "px";
     let pageWidth = document.body.clientWidth;
     if(pageWidth < 1200){
@@ -138,18 +175,22 @@ export class AppComponent {
       this.leftPad = (pad) + "px";
       this.rightPad = (pad) + "px";
     }
-    // console.log(this.leftPad, " - ", this.rightPad);
   }
 
-  block(obj:any) {
+
+/**
+ * Block Ui action
+ * 
+ * @param obj
+ * @access public 
+ */
+public block(obj:any) {
     if(obj.block == true && obj.block != undefined){
       this.blockUI.start('Loading...');
     }else{
       this.blockUI.stop();
       let pageWidth = document.body.clientWidth;
-      // console.log(pageWidth);
       if(pageWidth < 1200){
-        // element.setAttribute("aria-hidden", true);
         $("#my-side-bar").attr("aria-hidden",true); // This element if it minisize and have aria-hidden = true side bar will show maybe it not need
         $("#my-side-bar").removeClass("is-visible"); // If this class active it will hidden side bar and disable black page
         $(".mdl-layout__obfuscator").removeClass("is-visible"); // If this class active it will disable black page of mian page
