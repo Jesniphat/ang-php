@@ -1,0 +1,1 @@
+CREATE  OR REPLACE VIEW `autocomplete_product` AS select id, concat(code, ':', product_name) as name from product where status = 'Y';

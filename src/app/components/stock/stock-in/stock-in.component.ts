@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CreateNewAutocompleteGroup, SelectedAutocompleteItem, NgAutocompleteComponent} from "ng-auto-complete";
+import { ProductStorageService } from "../../../service/product-storage.service";
 
 @Component({
   selector: 'app-stock-in',
@@ -22,18 +23,47 @@ export class StockInComponent implements OnInit {
       {titleKey: 'title', childrenKey: null}
     ),
   ];
-  constructor() {
+  
+  /**
+   * constructor of class
+   * 
+   * @param storages
+   * @access public 
+   */
+  public constructor( public storages:ProductStorageService) {
+
   }
 
-  ngOnInit() {
-    
+
+  /**
+   * start function
+   * 
+   * @access public
+   */
+  public ngOnInit() {
+    // console.log(this.storages.getProductNameList());
+    // console.log(this.storages.ngOnInit());
   }
 
-  Selected(item: SelectedAutocompleteItem){
+
+  /**
+   * Library function of autocomple
+   * 
+   * @param item
+   * @access public 
+   */
+  public Selected(item: SelectedAutocompleteItem){
     console.log(item);
   }
 
-  submit() {
+
+  /**
+   * Submit function
+   * 
+   * @access public
+   */
+  public submit() {
+
   }
 
 }

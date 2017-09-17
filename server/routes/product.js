@@ -7,6 +7,13 @@ let conn = require('../library/config');
 let gencode = require('../library/gencode')
 let db = require('../library/db');
 
+/**
+ * Use functiion
+ * 
+ * @access public
+ * @param callback function req res next
+ * @return JSON
+ */
 router.use(function (req, res, next) {
   // console.log("perrmission : ", permission.readToken(req));
   if (permission.isLogin(req)) {
@@ -20,6 +27,14 @@ router.use(function (req, res, next) {
   }
 });
 
+
+/**
+ * product list
+ * 
+ * @access public
+ * @param callback function req res next
+ * @return JSON
+ */
 router.post("/product_list",(req, res, next) => {
   let connection = conn.init();
   let product = req.body;
@@ -64,6 +79,13 @@ router.post("/product_list",(req, res, next) => {
 });
 
 
+/**
+ * Get product by id
+ * 
+ * @access public
+ * @param callbackfucnt(@pruduct id)
+ * @return JSON
+ */
 router.post("/getproductbyid", (req, res, next) => {
   let connection = conn.init();
   let product = req.body;
@@ -127,8 +149,16 @@ router.post("/getproductbyid", (req, res, next) => {
     });
     
   }
-)
+);
 
+
+/**
+ * Save product
+ * 
+ * @access public
+ * @param {product object}
+ * @return JSON
+ */
 router.post("/saveproduct", (req, res, next) => {
   let connection = conn.init();
   console.log("save product = ", req.body);
@@ -136,12 +166,18 @@ router.post("/saveproduct", (req, res, next) => {
   let product_id = "";
   let product_code = "";
 
+  /**Begin transection */
   let beginTransection = function(){
     return new Promise((resolve, reject) => {
       db.BeginTransaction(connection, success => resolve(success), errors => reject(errors));
     });
   }
 
+  /**
+   * Save product 
+   * 
+   * @return product id and error
+   */
   let saveProduct = function(){
     return new Promise((resolve, reject) => {
       if(product.id == "create"){
@@ -182,6 +218,12 @@ router.post("/saveproduct", (req, res, next) => {
     });
   }
 
+  /**
+   * Manage product picture
+   * 
+   * @param product id
+   * @return product id and error
+   */
   let picManage = function(product_id) {
     return new Promise((resolve, reject) => {
       if((product.pic_id).length > 0){
@@ -212,6 +254,12 @@ router.post("/saveproduct", (req, res, next) => {
     });
   }
 
+  /**
+   * Reccommend
+   * 
+   * @param {*} product_id 
+   * @return product_id and error
+   */
   let recommendProduct = function(product_id) {
     return new Promise((resolve, reject) => {
       if(product.recommend == true){
@@ -262,6 +310,13 @@ router.post("/saveproduct", (req, res, next) => {
     });
   }
 
+
+  /**
+   * Set cover pic
+   * 
+   * @param {*} product_id
+   * @return product_id and error
+   */
   let setCover = function(product_id){
     console.log("set cover");
     return new Promise((resolve, reject) => {
@@ -314,16 +369,33 @@ router.post("/saveproduct", (req, res, next) => {
   
 });
 
+
+/**
+ * Delete product
+ * 
+ * @access publict
+ * @param product id
+ * @return JSON
+ */
 router.post("/delete_product",(req, res, next) => {
   let product = req.body;
   let connection = conn.init();
   
+  /**
+   * Begintranseccion
+   */
   let beginTransection = function(){
     return new Promise((resolve, reject) => {
       db.BeginTransaction(connection, success => resolve(success), errors => reject(errors));
     });
   }
 
+
+  /**
+   * Delete product
+   * 
+   * @return void
+   */
   let deleteProd = function(){
     return new Promise((resolve, reject) => {
       let updateDelete = {
@@ -335,6 +407,12 @@ router.post("/delete_product",(req, res, next) => {
     });
   }
 
+
+  /**
+   * Blue bird start
+   * 
+   * @return JSON
+   */
   beginTransection()
   .then(deleteProd)
   .then(function(){
@@ -358,6 +436,65 @@ router.post("/delete_product",(req, res, next) => {
 			});
 		});
   });
+});
+
+
+/**
+ * Get producname for autocomplete
+ * 
+ * @access function
+ * @param max_id
+ * @return JSON
+ */
+router.post("/autocompleteProductNameList",(req, res, next) => {
+  let max_id = req.body.max_id;
+  let connection = conn.init();
+
+  /**
+   * Get data function
+   * 
+   * @access public
+   * @return promist
+   */
+  let getProductName = function(){
+    return new Promise((resolve, reject) => {
+      let get = {
+        fields: [
+          "id, concat(code, ':', product_name) as name"
+        ],
+        table: "product",
+        where: "status = 'Y' and id > " + max_id
+      };
+      db.SelectAll(connection, get, (data) => {
+        resolve(data);
+      },(error) => {
+        console.log(error);
+        reject("error");
+      });
+    });
+  }
+
+
+  /**
+   * Blue bird start
+   * 
+   * @return JSON
+   */
+  getProductName()
+  .then(function(data){
+    console.log(data);
+    res.json({
+      status: true,
+      data: data
+    });
+  }).catch((errors) => {
+    console.log("Roll back error is", errors);
+    res.json({
+      status: false,
+      error: errors
+    });
+  });
+
 });
 
 module.exports = router;
