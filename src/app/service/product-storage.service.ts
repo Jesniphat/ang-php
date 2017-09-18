@@ -41,6 +41,27 @@ export class ProductStorageService {
   }
 
   /**
+   * Get Data to aucompelte 
+   * 
+   * @access public
+   * @param call back
+   * @return call back
+   */
+  public autocomplete(resule, error){
+    let $scope:any;
+    this.getMaxProductId(this.apiService)
+    .then(this.getProductNameList)
+    .then((data) => {
+      console.log("test");
+      resule(data);
+    })
+    .catch((error) => {
+      console.log(error);
+      error(error);
+    });
+  }
+
+  /**
    * Get Max id frm data base
    * 
    * @access public
@@ -49,13 +70,13 @@ export class ProductStorageService {
   public getMaxProductId(apiService): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       apiService
-      .post("/api/product/autocompleteProductNameList",{'max_id':'0'})
+      .post("/api/product/maxProductId",{})
       .subscribe(
           data => { 
-            console.log(data, 'sdfdsd');
+            console.log(data.data, 'sdfdsd');
             let param = {
               apiService: apiService,
-              scope: data
+              max_id: data.data
             }
             return resolve(param); 
           },
