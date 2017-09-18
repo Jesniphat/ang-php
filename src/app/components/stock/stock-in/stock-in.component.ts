@@ -9,17 +9,12 @@ import { ProductStorageService } from "../../../service/product-storage.service"
 })
 export class StockInComponent implements OnInit {
   @ViewChild(NgAutocompleteComponent) public completer: NgAutocompleteComponent;
+  public listProductName = [
+  ];
   public group = [
     CreateNewAutocompleteGroup(
       'Search / choose in / from list',
-      'completer',
-      [
-          {title: 'Option 1', id: '1'},
-          {title: 'Option 2', id: '2'},
-          {title: 'Option 3', id: '3'},
-          {title: 'Option 4', id: '4'},
-          {title: 'Option 5', id: '5'},
-      ],
+      'completer',this.listProductName ,
       {titleKey: 'title', childrenKey: null}
     ),
   ];
@@ -44,15 +39,32 @@ export class StockInComponent implements OnInit {
     // console.log(this.storages.getProductNameList());
     this.storages.autocomplete(resule => {
       console.log(resule);
-      this.test(resule);
+      this.addNewList(resule);
     }, error =>{
       console.log(error);
     });
   }
 
 
-  public test(ss){
-    console.log('ss = ', ss);
+  /**
+   * Add New Name List to var
+   * 
+   * @access public
+   * @param ss 
+   */
+  public addNewList(list:any){
+    list.data.forEach(element => {
+      console.log(element);
+      this.listProductName.push({title: element.name, id: element.id});
+    });
+    console.log('ss = ', this.listProductName);
+    this.group = [
+      CreateNewAutocompleteGroup(
+        'Search / choose in / from list',
+        'completer',this.listProductName,
+        {titleKey: 'title', childrenKey: null}
+      ),
+    ];
   }
 
 
