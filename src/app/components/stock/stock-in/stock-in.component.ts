@@ -42,7 +42,17 @@ export class StockInComponent implements OnInit {
    */
   public ngOnInit() {
     // console.log(this.storages.getProductNameList());
-    // console.log(this.storages.ngOnInit());
+    this.storages.autocomplete(resule => {
+      console.log(resule);
+      this.test(resule);
+    }, error =>{
+      console.log(error);
+    });
+  }
+
+
+  public test(ss){
+    console.log('ss = ', ss);
   }
 
 

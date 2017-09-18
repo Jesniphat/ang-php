@@ -482,7 +482,7 @@ router.post("/autocompleteProductNameList",(req, res, next) => {
    */
   getProductName()
   .then(function(data){
-    console.log(data);
+    // console.log(data);
     res.json({
       status: true,
       data: data
@@ -495,6 +495,57 @@ router.post("/autocompleteProductNameList",(req, res, next) => {
     });
   });
 
+});
+
+
+/**
+ * MaxProductId
+ * 
+ * @return JSON
+ */
+router.post("/maxProductId", (req, res, next) => {
+  let connection = conn.init();
+
+
+  /**
+   * Get product max id
+   * 
+   * @access public
+   * @return Promise
+   */
+  let getProductMaxId = function(){
+    return new Promise((resolve, reject) => {
+      let get = {
+        fields: [
+          "MAX(id) AS max"
+        ],
+        table: "product",
+        where: "status = 'Y'"
+      };
+      db.SelectAll(connection, get, (data) => {
+        resolve(data);
+      },(error) => {
+        console.log(error);
+        reject("error");
+      });
+    });
+  }
+
+  getProductMaxId()
+  .then((data) => {
+    // console.log(data[0].max);
+    res.json({
+      status: true,
+      data: data[0].max
+    });
+  })
+  .catch((error) => {
+    console.log("error => ", error);
+    res.json({
+      status: false,
+      error: error
+    });
+  });
 });
 
 module.exports = router;
