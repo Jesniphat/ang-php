@@ -72,8 +72,7 @@ export class ProductStorageService {
       apiService
       .post("/api/product/maxProductId",{})
       .subscribe(
-          data => { 
-            console.log(data.data, 'sdfdsd');
+          data => {
             let param = {
               apiService: apiService,
               max_id: data.data
@@ -99,35 +98,53 @@ export class ProductStorageService {
    let productListName = [];
     // Get data from local storage
     if(storage.getItem('productlistname')){
-      productListName = JSON.parse(this.storage.getItem('productlistname'));
+      productListName = JSON.parse(storage.getItem('productlistname'));
     }
 
     return new Promise<any>((resolve, reject) => {
       let listData:any;
       if(productListName.length != 0){
-        //Select by last id
-        console.log("dfd", param.scope);
-        param.apiService
-        .post("/api/product/autocompleteProductNameList",{'max_id':'0'})
-        .subscribe(
-            (data) => { 
-              console.log(data); 
-              return resolve(data); 
-            },
-            (error) => {
-              console.log(error);
-              return reject(error);
-            }
-        );
+        if(productListName[productListName.length - 1].id == param.max_id){
+          return resolve(productListName);
+        }else{
+          // Select by last id
+          let setMax = 0;
+          if(productListName[productListName.length - 1].id < param.max_id){
+            setMax = productListName[productListName.length - 1].id;
+          } else {
+            setMax = param.max_id;
+          }
+          console.log(setMax);
+          param.apiService
+          .post("/api/product/autocompleteProductNameList",{'max_id':setMax})
+          .subscribe(
+              (resule) => { 
+                console.log(resule);
+                if(!resule.status){
+                  return resolve(productListName);
+                } else {
+                  resule.data.forEach(element => {
+                    productListName.push(element);
+                  });
+                  storage.setItem('productlistname',JSON.stringify(productListName));
+                  return resolve(productListName);
+                } 
+              },
+              (error) => {
+                console.log(error);
+                return reject(error);
+              }
+          );
+        }
       }else{
         //Select all first
-        console.log("dfds", param.scope);
         param.apiService
         .post("/api/product/autocompleteProductNameList",{'max_id':'0'})
         .subscribe(
-          (data) => { 
-            console.log(data); 
-            return resolve(data); 
+          (result) => { 
+            console.log(result); 
+            storage.setItem('productlistname',JSON.stringify(result.data));
+            return resolve(result.data); 
           },
           (error) => {
             console.log(error);
