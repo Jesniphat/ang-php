@@ -15,15 +15,15 @@ module.exports = new function() {
     let next = "";
     let maxCode = db.SelectRow(connection, sql, (result)=>{
       if(result.maxCode){
-        console.log("Maxcode = ", result.maxCode);
+        console.log("Maxcode 18 = ", result.maxCode);
         next = parseInt((result.maxCode).substr(prefix.length)) + 1;
+        console.log("20 => ", prefix + '0000000000000' + next);
+        callback_success(prefix + (('0000000000000' + next).substr(-size)));
       }else{
         next = start + 0;
       }
     }, (error)=>{
       callback_error(error);
     });
-
-    callback_success((prefix + '0000000000000' + next).substr(-size));
   }
 }
