@@ -10,13 +10,15 @@ import { ProductStorageService } from "../../../service/product-storage.service"
 export class StockInComponent implements OnInit {
   @ViewChild(NgAutocompleteComponent) public completer: NgAutocompleteComponent;
   public listProductName = [
+    // {id:1, title:'jesse'},
+    // {id:2, title:'love'}
   ];
   public group = [
-    CreateNewAutocompleteGroup(
-      'Search / choose in / from list',
-      'completer',this.listProductName ,
-      {titleKey: 'title', childrenKey: null}
-    ),
+    // CreateNewAutocompleteGroup(
+    //   'Search / choose in / from list',
+    //   'completer',this.listProductName,
+    //   {titleKey: 'title', childrenKey: null}
+    // ),
   ];
   
   /**
@@ -53,11 +55,9 @@ export class StockInComponent implements OnInit {
    * @param ss 
    */
   public addNewList(list:any){
-    list.data.forEach(element => {
-      console.log(element);
+    list.forEach(element => {
       this.listProductName.push({title: element.name, id: element.id});
     });
-    console.log('ss = ', this.listProductName);
     this.group = [
       CreateNewAutocompleteGroup(
         'Search / choose in / from list',
@@ -65,6 +65,7 @@ export class StockInComponent implements OnInit {
         {titleKey: 'title', childrenKey: null}
       ),
     ];
+    return;
   }
 
 
