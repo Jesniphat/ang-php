@@ -29,15 +29,6 @@ export class ProductStorageService {
  */
   public ngOnInit(){
     let $scope:any;
-
-    this.getMaxProductId(this.apiService)
-    .then(this.getProductNameList)
-    .then(() => {
-      console.log("test");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
   }
 
   /**
