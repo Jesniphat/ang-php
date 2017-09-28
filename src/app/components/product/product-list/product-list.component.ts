@@ -27,6 +27,7 @@ export class ProductListComponent implements OnInit {
   public delete_id:any = "";
   public productId:any = 'create';
   public dialog:any;
+  public deleteProductDialog:any;
 
   constructor(
     public router: Router,
@@ -40,7 +41,8 @@ export class ProductListComponent implements OnInit {
     console.log("product_list.component");
     this.uploadUrl = this.apiService.upl + this.uploadUrl;
     this.imgLink = this.apiService.img;
-    this.dialog = this.dialogService.build(document.querySelector('dialog'));
+    this.dialog = this.dialogService.build(document.getElementById('add-product'));
+    this.deleteProductDialog = this.dialogService.build(document.getElementById('delete-product'));
     this.getCategoryList();
     this.getAllProduct();
   }
@@ -122,7 +124,8 @@ export class ProductListComponent implements OnInit {
   public delete_product(data:any){
     // console.log(data);
     this.delete_id = data.id;
-    $('#deleteProduct').modal('show');
+    // $('#deleteProduct').modal('show');
+    this.deleteProductDialog.showModal();
   }
 
   public removeProduct(){
@@ -135,6 +138,7 @@ export class ProductListComponent implements OnInit {
                 console.log(data);
                 toastr.success('ลบข้อมูลสำเร็จ', 'Success!');
                 this.getAllProduct();
+                this.deleteProductDialog.close();
               },
               (error) => {
                 console.log(error);
