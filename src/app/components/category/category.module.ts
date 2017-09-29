@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { BlockUIModule } from 'ng-block-ui';
 import { Uploader }      from 'angular2-http-file-upload';
 
@@ -15,6 +16,7 @@ import { CategoryManageComponent } from './category-manage/category-manage.compo
   imports: [
     BrowserModule,
     FormsModule,
+    NgxDatatableModule,
     routing,
     SharedModule,
     BlockUIModule
