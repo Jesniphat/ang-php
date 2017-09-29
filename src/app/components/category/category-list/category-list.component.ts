@@ -37,7 +37,7 @@ export class CategoryListComponent implements OnInit {
 
 	public ngOnInit() {
 		console.log("category_list.component");
-		this.dialog = this.dialogService.build(document.querySelector('dialog'));
+		this.dialog = this.dialogService.build(document.getElementById('add-cate'));
 		this.getCategoryList();
 	}
 
