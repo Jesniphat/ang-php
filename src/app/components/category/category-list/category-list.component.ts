@@ -18,7 +18,7 @@ export class CategoryListComponent implements OnInit {
 	public error: string = "";
 	public query: string = "";
 	public categoryLists: any = [];
-	public categoryList: any = [];
+	// public categoryList: any = [];
 	public categorys: any = [];
 	public filterText: any = "";
 	public pageNo: any = 1;
@@ -27,6 +27,11 @@ export class CategoryListComponent implements OnInit {
 
 	public testPipes = "";
 	public dialog;
+	public columns = [
+		{prop: 'cate_name', name: 'Category Name'},
+		{prop: 'cate_description', name: 'category Description'},
+		{name: 'Action'}
+	]
 
 	constructor(
 		public router: Router,
