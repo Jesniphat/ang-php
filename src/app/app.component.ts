@@ -23,7 +23,7 @@ declare let element: any;
 export class AppComponent {
   @BlockUI() blockUI: NgBlockUI; // Load block UI
   public title = 'app works!';       // Title
-  public pic_url:string = "";        // Pic url
+  public pic_url:string = './assets/images/empty.png';        // Pic url
   public hiddenTopBar: any = true;   //Top bar hidden
   public hiddenSideBar: any = true;  //Side bar hidden
   public isLogged: boolean = true;   //Check staff login

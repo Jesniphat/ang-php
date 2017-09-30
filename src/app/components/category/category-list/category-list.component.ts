@@ -5,7 +5,7 @@ import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
 import { DialogService } from "../../../service/dialog.service";
 import { CategoryManageComponent }  from '../category-manage/category-manage.component';
-declare var $: any;
+declare let $: any;
 
 @Component({
 	selector: 'app-category-list',
@@ -18,7 +18,6 @@ export class CategoryListComponent implements OnInit {
 	public error: string = "";
 	public query: string = "";
 	public categoryLists: any = [];
-	// public categoryList: any = [];
 	public categorys: any = [];
 	public filterText: any = "";
 	public pageNo: any = 1;
@@ -27,11 +26,12 @@ export class CategoryListComponent implements OnInit {
 
 	public testPipes = "";
 	public dialog;
-	public columns = [
-		{prop: 'cate_name', name: 'Category Name'},
-		{prop: 'cate_description', name: 'category Description'},
-		{name: 'Action'}
-	]
+
+	// public columns = [
+	// 	{prop: 'cate_name', name: 'Category Name'},
+	// 	{prop: 'cate_description', name: 'Category Description'},
+	// 	{name: 'Action'}
+	// ]
 
 	constructor(
 		public router: Router,
@@ -71,10 +71,11 @@ export class CategoryListComponent implements OnInit {
 
 	public focusFilter() {
 		this.pageNo = 1;
+		$('.datatable-icon-prev').click();
 	}
 
 	public add_new_category(data: any) {
-		// console.log("add new cate = ", data);
+		console.log("add new cate = ", data);
 		// let link: any;
 		// if(data == 'create'){
 		// 		link = ['/category_list/create_cate', data];
@@ -87,8 +88,8 @@ export class CategoryListComponent implements OnInit {
 			this.categoryId = data;
 			this.categoryManageComponent.reset();
 		}else{
-			this.categoryId = data.id;
-			this.categoryManageComponent.getCategoryByid(data.id);
+			this.categoryId = data;
+			this.categoryManageComponent.getCategoryByid(data);
 		}
 	}
 
