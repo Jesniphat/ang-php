@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from "@angular/http";
 import { StockInComponent } from './stock-in/stock-in.component';
-import { NgAutoCompleteModule } from "ng-auto-complete";
 
 import { routing } from "./stock.routing";
 
@@ -16,7 +15,6 @@ import { SharedModule } from "../../shared/shared.module";
     BrowserModule,
     FormsModule,
     HttpModule,
-    NgAutoCompleteModule,
 
     routing,
 

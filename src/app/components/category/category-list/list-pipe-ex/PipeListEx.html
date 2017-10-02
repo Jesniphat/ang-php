@@ -1,0 +1,34 @@
+<table class="mdl-data-table mdl-js-data-table mdl-cell mdl-cell--12-col">
+  <thead>
+    <tr>
+      <th class="mdl-data-table__cell--non-numeric">Name</th>
+      <th class="mdl-data-table__cell--non-numeric">Description</th>
+      <th class="mdl-data-table__cell--non-numeric">Qty</th>
+      <th style="text-align:center;">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of categoryLists | tableFilter:filterText | pageNumber:{pageNo:pageNo, row:10}">
+      <td class="mdl-data-table__cell--non-numeric">{{item.cate_name}}</td>
+      <td class="mdl-data-table__cell--non-numeric">{{item.cate_description}}</td>
+      <td class="mdl-data-table__cell--non-numeric">{{item.product_qty}}</td>
+      <td style="text-align:center;">
+        <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" (click)="add_new_category(item)">
+          <i class="material-icons">mode_edit</i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+   <tfoot>
+    <tr>
+      <th class="mdl-data-table__cell--non-numeric" colspan="4">
+        <div class="mdl-cell--12-col">
+          <!-- page -->
+          <select class="ui search dropdown" [(ngModel)]="pageNo">
+            <option *ngFor="let page of categoryLists | tableFilter:filterText | pageList:6" [value]='page'>{{page}}</option>
+          </select>
+        </div>
+      </th>
+    </tr>
+  </tfoot> 
+</table>
