@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { ApiService } from "./api.service";
 
 @Injectable()
@@ -12,13 +13,27 @@ export class ProductStorageService {
   public productListName: any = [];
   public $scope: any;
 
+  /**
+   * 
+   * Observable varaible
+   */
+  public $productList:Observable<any>;
+
+  /**
+   * 
+   * Oberver data
+   */
+  public _producList:any;
+
 /**
  * Construtor of class
  * 
+ * @param apiService
  * @access public
+ * @return void
  */
   public constructor(public apiService: ApiService) {
-
+    this.$productList = new Observable(observer => this._producList = observer);
   }
 
 
@@ -38,17 +53,20 @@ export class ProductStorageService {
    * @param call back
    * @return call back
    */
-  public autocomplete(resule, error){
+  public autocomplete(){
     let $scope:any;
+    let that = this;
     this.getMaxProductId(this.apiService)
     .then(this.getProductNameList)
     .then((data) => {
       console.log("test");
-      resule(data);
+      that._producList.next(data);
+      // resule(data);
     })
     .catch((error) => {
       console.log(error);
-      error(error);
+      that._producList.next(error);
+      // error(error);
     });
   }
 

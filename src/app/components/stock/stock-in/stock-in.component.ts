@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CreateNewAutocompleteGroup, SelectedAutocompleteItem, NgAutocompleteComponent} from "ng-auto-complete";
 import { ProductStorageService } from "../../../service/product-storage.service";
+
+declare let $: any;
 
 @Component({
   selector: 'app-stock-in',
@@ -8,18 +9,22 @@ import { ProductStorageService } from "../../../service/product-storage.service"
   styleUrls: ['./stock-in.component.css']
 })
 export class StockInComponent implements OnInit {
-  @ViewChild(NgAutocompleteComponent) public completer: NgAutocompleteComponent;
-  public listProductName = [
-    // {id:1, title:'jesse'},
-    // {id:2, title:'love'}
-  ];
-  public group = [
-    // CreateNewAutocompleteGroup(
-    //   'Search / choose in / from list',
-    //   'completer',this.listProductName,
-    //   {titleKey: 'title', childrenKey: null}
-    // ),
-  ];
+  
+  /**
+   * Create var
+   */
+  public productNameList:any;
+
+  public options = {
+    data: [],
+      getValue: "name",
+      // template: {
+      //   type: "description",
+      //   fields: {
+      //     description: "type"
+      //   }
+      // }
+  };
   
   /**
    * constructor of class
@@ -28,7 +33,7 @@ export class StockInComponent implements OnInit {
    * @access public 
    */
   public constructor( public storages:ProductStorageService) {
-
+    this.storages.$productList.subscribe(data => this.getProductNameList(data));
   }
 
 
@@ -39,12 +44,7 @@ export class StockInComponent implements OnInit {
    */
   public ngOnInit() {
     // console.log(this.storages.getProductNameList());
-    this.storages.autocomplete(resule => {
-      console.log(resule);
-      this.addNewList(resule);
-    }, error =>{
-      console.log(error);
-    });
+    this.storages.autocomplete();
   }
 
 
@@ -55,16 +55,16 @@ export class StockInComponent implements OnInit {
    * @param ss 
    */
   public addNewList(list:any){
-    list.forEach(element => {
-      this.listProductName.push({title: element.name, id: element.id});
-    });
-    this.group = [
-      CreateNewAutocompleteGroup(
-        'Search / choose in / from list',
-        'completer',this.listProductName,
-        {titleKey: 'title', childrenKey: null}
-      ),
-    ];
+    // list.forEach(element => {
+    //   this.listProductName.push({title: element.name, id: element.id});
+    // });
+    // this.group = [
+    //   CreateNewAutocompleteGroup(
+    //     'Search / choose in / from list',
+    //     'completer',this.listProductName,
+    //     {titleKey: 'title', childrenKey: null}
+    //   ),
+    // ];
     return;
   }
 
@@ -75,8 +75,8 @@ export class StockInComponent implements OnInit {
    * @param item
    * @access public 
    */
-  public Selected(item: SelectedAutocompleteItem){
-    console.log(item);
+  public Selected(){
+    console.log();
   }
 
 
@@ -87,6 +87,23 @@ export class StockInComponent implements OnInit {
    */
   public submit() {
 
+  }
+
+  /**
+   * Show obsavel data
+   * 
+   * @access public
+   * @param data
+   * @return voie
+   */
+  public getProductNameList(data:any){
+    console.log(data);
+    this.options.data = data;
+    $("#product-name").easyAutocomplete(this.options);
+  }
+
+  public getValue(data:any){
+    console.log(data);
   }
 
 }

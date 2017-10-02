@@ -5,11 +5,12 @@
 /**
  * Import libraly
  */
-import { Component, ElementRef } from '@angular/core';
-import { ApiService } from "./service/api.service";
-import { CookieService } from "./service/cookie.service";
-import { RootscopeService } from "./service/rootscope.service";
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { Component, ElementRef }  from '@angular/core';
+import { ApiService }             from './service/api.service';
+import { CookieService }          from './service/cookie.service';
+import { RootscopeService }       from './service/rootscope.service';
+import { BlockUI, NgBlockUI }     from 'ng-block-ui';
+
 // Add the RxJS Observable operators.
 import './rxjs-operators';
 declare let $ : any;
@@ -162,9 +163,9 @@ public showNav(obj:any){
 /**
  * Set page width automatic
  * 
- * @access private
+ * @access public
  */
-private setPage(){
+public setPage(){
     this.sideHeight = (document.body.clientHeight - 64) + "px";
     let pageWidth = document.body.clientWidth;
     if(pageWidth < 1200){

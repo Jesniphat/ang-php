@@ -19,9 +19,13 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/easy-autocomplete/dist/easy-autocomplete.min.css",
+        "../node_modules/easy-autocomplete/dist/easy-autocomplete.themes.min.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/easy-autocomplete/dist/jquery.easy-autocomplete.min.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

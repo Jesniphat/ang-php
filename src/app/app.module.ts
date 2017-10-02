@@ -1,22 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-// import { Uploader }      from 'angular2-http-file-upload';
+import { BrowserModule }    from '@angular/platform-browser';
+import { NgModule }         from '@angular/core';
+import { FormsModule }      from '@angular/forms';
+import { HttpModule }       from '@angular/http';
 
-import { BlockUIModule } from 'ng-block-ui';
-import { routing } from "./app.routing";
+import { BlockUIModule }    from 'ng-block-ui';
+import { routing }          from './app.routing';
 
-import { AppComponent } from './app.component';
-import { SharedModule } from "./shared/shared.module";
+import { AppComponent }     from './app.component';
+import { SharedModule }     from './shared/shared.module';
 
-import { LoginModule } from './components/login/login.module';
-import { HomeModule } from './components/home/home.module';
-import { SettingModule } from './components/setting/setting.module';
-import { CategoryModule } from './components/category/category.module';
-import { ProductModule } from './components/product/product.module';
+import { LoginModule }      from './components/login/login.module';
+import { HomeModule }       from './components/home/home.module';
+import { SettingModule }    from './components/setting/setting.module';
+import { CategoryModule }   from './components/category/category.module';
+import { ProductModule }    from './components/product/product.module';
 import { HeadsliderModule } from './components/headslider/headslider.module';
-import { StockModule } from './components/stock/stock.module';
+import { StockModule }      from './components/stock/stock.module';
 
 @NgModule({
   declarations: [
@@ -42,7 +41,7 @@ import { StockModule } from './components/stock/stock.module';
     StockModule
   ],
   providers: [
-    // Uploader
+    
   ],
   bootstrap: [AppComponent]
 })

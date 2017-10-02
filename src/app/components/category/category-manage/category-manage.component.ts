@@ -26,7 +26,8 @@ export class CategoryManageComponent implements OnInit {
     cateName: "",
     cateDescription: "",
     selectedStatus: "Y",
-    coverPic:""
+    coverPic:"",
+    cateImage:""
   }
   public uploadUrl: string = "/api/upload/category";
   public imgLink: string = "";
@@ -155,7 +156,8 @@ export class CategoryManageComponent implements OnInit {
       cateName: "",
       cateDescription: "",
       selectedStatus: "Y",
-      coverPic:""
+      coverPic:"",
+      cateImage:""
     };
 
     this.uploadedFiles = {
