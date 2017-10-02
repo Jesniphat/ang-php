@@ -460,7 +460,7 @@ router.post("/autocompleteProductNameList",(req, res, next) => {
     return new Promise((resolve, reject) => {
       let get = {
         fields: [
-          "id, concat(code, ':', product_name) as name"
+          "id, code, product_name as name"
         ],
         table: "product",
         where: "status = 'Y' and id > " + max_id

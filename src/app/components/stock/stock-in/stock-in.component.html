@@ -2,7 +2,7 @@
   stock-in works!
 </p>
 <div class="ui input">
-  <input id="product-name" placeholder="Search..." />
+  <input type="text" id="product-name" [(ngModel)]="productName" placeholder="Search..." />
 </div>
 
 <button (click)="submit()">test</button>
