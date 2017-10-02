@@ -14,16 +14,25 @@ export class StockInComponent implements OnInit {
    * Create var
    */
   public productNameList:any;
+  public productId:any = 0;;
 
+  /**
+   * Create Autocomplete Option
+   */
   public options = {
     data: [],
-      getValue: "name",
-      // template: {
-      //   type: "description",
-      //   fields: {
-      //     description: "type"
-      //   }
-      // }
+    getValue: "name",
+    template: {
+      type: "description",
+      fields: {
+        description: "code"
+      }
+    },
+    list: {
+      onSelectItemEvent: function() {
+        var selectedItemValue = $("#product-name").getSelectedItemData().id;
+      }
+    }
   };
   
   /**
@@ -33,7 +42,6 @@ export class StockInComponent implements OnInit {
    * @access public 
    */
   public constructor( public storages:ProductStorageService) {
-    this.storages.$productList.subscribe(data => this.getProductNameList(data));
   }
 
 
@@ -44,41 +52,9 @@ export class StockInComponent implements OnInit {
    */
   public ngOnInit() {
     // console.log(this.storages.getProductNameList());
+    this.storages.$productList.subscribe(data => this.getProductNameList(data));
     this.storages.autocomplete();
   }
-
-
-  /**
-   * Add New Name List to var
-   * 
-   * @access public
-   * @param ss 
-   */
-  public addNewList(list:any){
-    // list.forEach(element => {
-    //   this.listProductName.push({title: element.name, id: element.id});
-    // });
-    // this.group = [
-    //   CreateNewAutocompleteGroup(
-    //     'Search / choose in / from list',
-    //     'completer',this.listProductName,
-    //     {titleKey: 'title', childrenKey: null}
-    //   ),
-    // ];
-    return;
-  }
-
-
-  /**
-   * Library function of autocomple
-   * 
-   * @param item
-   * @access public 
-   */
-  public Selected(){
-    console.log();
-  }
-
 
   /**
    * Submit function
@@ -86,7 +62,6 @@ export class StockInComponent implements OnInit {
    * @access public
    */
   public submit() {
-
   }
 
   /**
@@ -100,10 +75,6 @@ export class StockInComponent implements OnInit {
     console.log(data);
     this.options.data = data;
     $("#product-name").easyAutocomplete(this.options);
-  }
-
-  public getValue(data:any){
-    console.log(data);
   }
 
 }

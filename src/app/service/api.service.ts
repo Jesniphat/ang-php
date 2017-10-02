@@ -47,7 +47,7 @@ export class ApiService {
         let body = res.json();
         if(body.nologin){
             console.log("go to new login.");
-            window.location.href = "login";
+            window.location.href = "#/login";
             return body || { }; 
         }else{
             // console.log("body = ", body);
