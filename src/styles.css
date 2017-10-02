@@ -140,3 +140,12 @@
 .ng-autocomplete-dropdown-icon.open:after {
   transform: rotate(180deg);
 }
+
+/* Edit data table css */
+ngx-datatable {
+  box-shadow: none !important;
+}
+
+.ngx-text-center {
+  text-align: center !important;
+}

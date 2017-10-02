@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
-// import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class RootscopeService {
   // Observable navItem source
   // public data:any;
-  private _showNav = new BehaviorSubject<any>({});
-  private _blockUI = new BehaviorSubject<any>({});
+  public doBlock$:Observable<any>;
+  public showNav$:Observable<any>;
 
-  constructor() { }
+  private _blockUI: any;
+  private _showNav: any;
 
-  // Observable navItem stream
-  public showNav$ = this._showNav.asObservable();
-  public doBlock$ = this._blockUI.asObservable();
+  constructor() {
+    this.doBlock$ = new Observable(observer => this._blockUI = observer);
+    this.showNav$ = new Observable(observer => this._showNav = observer);
+  }
+
   // service command
   public loginShow(someObj:any) {
     this._showNav.next(someObj);
