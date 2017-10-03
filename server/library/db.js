@@ -56,8 +56,9 @@ module.exports = new function() {
         console.log("error : ", error);
         errors(error);
       }else if(results.length == 0) {
-        console.log("error : Nodata");
-        errors("nodata");
+        console.log("Nodata => ", results);
+        $scrope = results;
+        success($scrope);
       }else {
         $scrope = results;
         success($scrope);
@@ -92,9 +93,9 @@ module.exports = new function() {
         console.log("error : ", error);
         errors(error)
       }else if(results.length == 0) {
-        console.log("error : on data");
-        // deferred.reject("nodata");
-        errors("nodata");
+        console.log("Nodata => ", results);
+        $scrope = results;
+        success({});
       }else {
         $scrope = results;
         success($scrope[0]);
