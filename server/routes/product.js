@@ -466,11 +466,16 @@ router.post("/autocompleteProductNameList",(req, res, next) => {
         where: "status = 'Y' and updated_date > " + "date_format('" + max_update + "', '%Y-%m-%d %H:%i:%s')",
         order: ['updated_date']
       };
+      
       db.SelectAll(connection, get, (data) => {
         resolve(data);
       },(error) => {
-        console.log(error);
-        reject("error");
+        if(error == 'nodata'){
+          resolve([]);
+        }else{
+          console.log(error);
+          reject(error);
+        }
       });
     });
   }
