@@ -31,6 +31,7 @@ export class StockInComponent implements OnInit {
     list: {
       onSelectItemEvent: function() {
         var selectedItemValue = $("#product-name").getSelectedItemData().id;
+        $('#product-id').val(selectedItemValue).trigger("change");;
       }
     }
   };
@@ -62,6 +63,7 @@ export class StockInComponent implements OnInit {
    * @access public
    */
   public submit() {
+    console.log($('#product-id').val());
   }
 
   /**

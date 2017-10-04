@@ -79,12 +79,12 @@ export class ProductStorageService {
   public getMaxProductId(apiService): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       apiService
-      .post("/api/product/maxProductId",{})
+      .post("/api/product/maxProductUpdate",{})
       .subscribe(
           data => {
             let param = {
               apiService: apiService,
-              max_id: data.data
+              max_update: data.data
             }
             return resolve(param); 
           },
@@ -113,22 +113,22 @@ export class ProductStorageService {
     return new Promise<any>((resolve, reject) => {
       let listData:any;
       if(productListName.length != 0){
-        if(productListName[productListName.length - 1].id == param.max_id){
+        if(new Date(productListName[productListName.length - 1].updated_date) == new Date(param.max_update)){
           return resolve(productListName);
         }else{
           // Select by last id
-          let setMax = 0;
-          if(productListName[productListName.length - 1].id < param.max_id){
-            setMax = productListName[productListName.length - 1].id;
+          let setMax = '2000-10-01';
+          if(new Date(productListName[productListName.length - 1].updated_date) < new Date(param.max_update)){
+            setMax = productListName[productListName.length - 1].updated_date;
           } else {
-            setMax = param.max_id;
+            setMax = param.max_update;
           }
-          console.log(setMax);
+          // console.log(setMax);
           param.apiService
-          .post("/api/product/autocompleteProductNameList",{'max_id':setMax})
+          .post("/api/product/autocompleteProductNameList",{'max_update':setMax})
           .subscribe(
               (resule) => { 
-                console.log(resule);
+                // console.log(resule);
                 if(!resule.status){
                   return resolve(productListName);
                 } else {
@@ -148,10 +148,10 @@ export class ProductStorageService {
       }else{
         //Select all first
         param.apiService
-        .post("/api/product/autocompleteProductNameList",{'max_id':'0'})
+        .post("/api/product/autocompleteProductNameList",{'max_update':'2000-10-01'})
         .subscribe(
           (result) => { 
-            console.log(result); 
+            // console.log(result); 
             storage.setItem('productlistname',JSON.stringify(result.data));
             return resolve(result.data); 
           },

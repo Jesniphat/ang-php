@@ -447,7 +447,7 @@ router.post("/delete_product",(req, res, next) => {
  * @return JSON
  */
 router.post("/autocompleteProductNameList",(req, res, next) => {
-  let max_id = req.body.max_id;
+  let max_update = req.body.max_update;
   let connection = conn.init();
 
   /**
@@ -460,16 +460,22 @@ router.post("/autocompleteProductNameList",(req, res, next) => {
     return new Promise((resolve, reject) => {
       let get = {
         fields: [
-          "id, code, product_name as name"
+          "id, code, product_name as name, DATE_FORMAT(updated_date, '%Y-%m-%d %H:%i:%s') as updated_date"
         ],
         table: "product",
-        where: "status = 'Y' and id > " + max_id
+        where: "status = 'Y' and updated_date > " + "date_format('" + max_update + "', '%Y-%m-%d %H:%i:%s')",
+        order: ['updated_date']
       };
+      
       db.SelectAll(connection, get, (data) => {
         resolve(data);
       },(error) => {
-        console.log(error);
-        reject("error");
+        if(error == 'nodata'){
+          resolve([]);
+        }else{
+          console.log(error);
+          reject(error);
+        }
       });
     });
   }
@@ -503,7 +509,7 @@ router.post("/autocompleteProductNameList",(req, res, next) => {
  * 
  * @return JSON
  */
-router.post("/maxProductId", (req, res, next) => {
+router.post("/maxProductUpdate", (req, res, next) => {
   let connection = conn.init();
 
 
@@ -517,7 +523,7 @@ router.post("/maxProductId", (req, res, next) => {
     return new Promise((resolve, reject) => {
       let get = {
         fields: [
-          "MAX(id) AS max"
+          "MAX(DATE_FORMAT(updated_date, '%Y-%m-%d %H:%i:%s')) AS max"
         ],
         table: "product",
         where: "status = 'Y'"
