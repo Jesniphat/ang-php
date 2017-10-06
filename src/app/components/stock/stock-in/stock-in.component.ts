@@ -14,7 +14,8 @@ export class StockInComponent implements OnInit {
    * Create var
    */
   public productNameList:any;
-  public productId:any = 0;;
+  public productId:any = 0;
+  public productName:any = "";
 
   /**
    * Create Autocomplete Option
@@ -29,7 +30,7 @@ export class StockInComponent implements OnInit {
       }
     },
     list: {
-      onSelectItemEvent: function() {
+      onChooseEvent: function() {
         var selectedItemValue = $("#product-name").getSelectedItemData().id;
         $('#product-id').val(selectedItemValue).trigger("change");;
       }
@@ -64,6 +65,13 @@ export class StockInComponent implements OnInit {
    */
   public submit() {
     console.log($('#product-id').val());
+  }
+
+  /**
+   * Clear hidden box data when focus on autocomplete box
+   */
+  public clearData(){
+    $("#product-id").val('');
   }
 
   /**
