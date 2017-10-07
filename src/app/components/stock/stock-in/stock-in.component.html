@@ -1,9 +1,11 @@
 <p>
   stock-in works!
 </p>
-<input type='text' id='product-id' style="display:none;" />
+<input type='text' id='product-id' style="display:none;"/>
 <div class="ui input">
-  <input type="text" id="product-name" [(ngModel)]="productName" placeholder="Search..." />
+  <input type="text" id="product-name" [(ngModel)]="productName" (focus)="clearData()" placeholder="Search..." />
 </div>
 
-<button (click)="submit()">test</button>
+<button (click)="submit()" class="mdl-button mdl-js-button mdl-button--icon">
+  <i class="material-icons">search</i>
+</button>

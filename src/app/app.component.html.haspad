@@ -1,6 +1,6 @@
 <block-ui>
-<div class="main-page"> <!--set space [style.padding-left]="leftPad" -->
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer" [hidden]="hiddenTopBar"> <!--set space Get it's out mdl-layout--fixed-drawer -->
+<div class="main-page" (window:resize)="setPage()">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" [hidden]="hiddenTopBar">
     <header class="page-header mdl-layout__header mdl-color--blue-grey-800">
       <div class="mdl-layout__header-row" [hidden]="!manager">
         <span class="mdl-layout-title">Home</span>
@@ -25,9 +25,9 @@
       </div>
     </header>
   </div>
-  <div class="page-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer"> <!-- set space left [style.padding-left]="leftPad" -->
+  <div class="page-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer" [style.padding-left]="leftPad">
     <div class="page-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50" id="my-side-bar" 
-        [hidden]="hiddenSideBar"> <!-- set space left style="margin-top:64px;" [style.height]="sideHeight" [style.margin-left]="leftPad" -->
+         style="margin-top:64px;" [style.height]="sideHeight" [style.margin-left]="leftPad" [hidden]="hiddenSideBar">
       <div class="page-navigation mdl-navigation" [hidden]="!manager">
         <header class="page-drawer-header">
           <img [src]="pic_url" class="page-avatar">
@@ -56,7 +56,7 @@
         </nav>
       </div>
     </div>
-    <main id="main" class="mdl-layout__content" style="margin-top:64px;"> <!-- set right space [style.padding-right]="rightPad" --> <!-- [ngClass]="{'hiddenLeftMargin': hiddenSideBar}" -->
+    <main id="main" class="mdl-layout__content" style="margin-top:64px;" [style.padding-right]="rightPad"> <!-- [ngClass]="{'hiddenLeftMargin': hiddenSideBar}" -->
       <div class="main-change" style="width:100%; padding:18px 18px 0px 18px;">
         <router-outlet></router-outlet>
       </div>
