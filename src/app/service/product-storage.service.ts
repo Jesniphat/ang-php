@@ -133,6 +133,10 @@ export class ProductStorageService {
                   return resolve(productListName);
                 } else {
                   resule.data.forEach(element => {
+                    let newDate = productListName.filter(function(el) {
+                      return el.id !== element.id;
+                    });
+                    productListName = newDate;
                     productListName.push(element);
                   });
                   storage.setItem('productlistname',JSON.stringify(productListName));

@@ -1,11 +1,50 @@
-<p>
-  stock-in works!
-</p>
-<input type='text' id='product-id' style="display:none;"/>
-<div class="ui input">
-  <input type="text" id="product-name" [(ngModel)]="productName" (focus)="clearData()" placeholder="Search..." />
+
+<h4 class="ui dividing header">Product stock in</h4>
+<div class="mdl-grid">
+  <input type='text' id='product-id' style="display:none;"/>
+  <div class="mdl-cell mdl-cell--6-col">
+    <div class="ui input">
+      <input type="text" id="product-name" [(ngModel)]="productName" (focus)="clearData()" placeholder="Search..." />
+    </div>
+    
+    <button (click)="searchProduct()" class="mdl-button mdl-js-button mdl-button--icon">
+      <i class="material-icons">search</i>
+    </button>
+  </div>
 </div>
 
-<button (click)="submit()" class="mdl-button mdl-js-button mdl-button--icon">
-  <i class="material-icons">search</i>
-</button>
+<form class="ui form" #stockInForm="ngForm">
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--6-col">
+      <label>
+        <span>Product Code </span> 
+      </label>
+      <div>
+        <input type="text" id="stock-in-product-code" placeholder="Product Code" [(ngModel)]="stockInProduct.code" 
+        name="stockInProductCode" #stockInProductCode="ngModel" disabled />
+      </div>
+    </div>
+
+    <div class="mdl-cell mdl-cell--6-col">
+      <label>
+        <span>Product Name </span> 
+      </label>
+      <div>
+        <input type="text" id="stock-in-product-name" placeholder="Product Name" [(ngModel)]="stockInProduct.name" 
+        name="stockInProductName" #stockInProductName="ngModel" disabled />
+      </div>
+    </div>
+  </div>
+
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+      <label>
+        <span>Product Qty</span> 
+      </label>
+      <div>
+        <input type="text" id="stock-in-product-qty" placeholder="Product Qty" [(ngModel)]="stockInProduct.qty" 
+        name="stockInProductQty" #stockInProductQty="ngModel" />
+      </div>
+    </div>
+  </div>
+</form>
