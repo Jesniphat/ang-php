@@ -21,10 +21,12 @@
       "styles": [
         "styles.css",
         "../node_modules/easy-autocomplete/dist/easy-autocomplete.min.css",
-        "../node_modules/easy-autocomplete/dist/easy-autocomplete.themes.min.css"
+        "../node_modules/easy-autocomplete/dist/easy-autocomplete.themes.min.css",
+        "../node_modules/dialog-polyfill/dialog-polyfill.css"
       ],
       "scripts": [
-        "../node_modules/easy-autocomplete/dist/jquery.easy-autocomplete.min.js"
+        "../node_modules/easy-autocomplete/dist/jquery.easy-autocomplete.min.js",
+        "../node_modules/dialog-polyfill/dialog-polyfill.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
