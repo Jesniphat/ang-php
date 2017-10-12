@@ -21,7 +21,7 @@
       </label>
       <div>
         <input type="text" id="stock-in-product-code" placeholder="Product Code" [(ngModel)]="stockInProduct.code" 
-        name="stockInProductCode" #stockInProductCode="ngModel" disabled />
+        name="stockInProductCode" #stockInProductCode="ngModel" disabled required />
       </div>
     </div>
 
@@ -31,7 +31,7 @@
       </label>
       <div>
         <input type="text" id="stock-in-product-name" placeholder="Product Name" [(ngModel)]="stockInProduct.name" 
-        name="stockInProductName" #stockInProductName="ngModel" disabled />
+        name="stockInProductName" #stockInProductName="ngModel" disabled required />
       </div>
     </div>
   </div>
@@ -43,8 +43,16 @@
       </label>
       <div>
         <input type="text" id="stock-in-product-qty" placeholder="Product Qty" [(ngModel)]="stockInProduct.qty" 
-        name="stockInProductQty" #stockInProductQty="ngModel" />
+        name="stockInProductQty" #stockInProductQty="ngModel" required />
       </div>
     </div>
   </div>
+
+  <div class="mdl-grid">
+		<div class="mdl-cell mdl-cell--12-col">
+      <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="saveLotIn" 
+              type="submit" [disabled]="stockInForm.form.invalid" (click)="saveLotIn()">Save</button>
+			<button class="mdl-button mdl-js-button mdl-button--raised" id="cancelAll" type="submit" (click)="reset()">Cancel</button>
+		</div>
+	</div>
 </form>

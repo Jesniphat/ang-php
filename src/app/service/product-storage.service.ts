@@ -10,7 +10,7 @@ export class ProductStorageService {
    * Variable
    */
   public storage: any;
-  public productListName: any = [];
+  public productList: any = [];
   public $scope: any;
 
   /**
@@ -37,11 +37,11 @@ export class ProductStorageService {
   }
 
 
-/**
- * Automatic start function
- * 
- * @access public 
- */
+  /**
+   * Automatic start function
+   * 
+   * @access public 
+   */
   public ngOnInit(){
     let $scope:any;
   }
@@ -53,11 +53,11 @@ export class ProductStorageService {
    * @param call back
    * @return call back
    */
-  public autocomplete(){
+  public productListGetting(){
     let $scope:any;
     let that = this;
     this.getMaxProductId(this.apiService)
-    .then(this.getProductNameList)
+    .then(this.getProductList)
     .then((data) => {
       console.log("test");
       that._producList.next(data);
@@ -102,45 +102,45 @@ export class ProductStorageService {
    * 
    * @access public
    */
-  public getProductNameList(param):Promise<any> {
-   let  storage = localStorage;
-   let productListName = [];
+  public getProductList(param):Promise<any> {
+   let storage = localStorage;
+   let productList = [];
     // Get data from local storage
-    if(storage.getItem('productlistname')){
-      productListName = JSON.parse(storage.getItem('productlistname'));
+    if(storage.getItem('productlist')){
+      productList = JSON.parse(storage.getItem('productlist'));
     }
 
     return new Promise<any>((resolve, reject) => {
       let listData:any;
-      if(productListName.length != 0){
-        if(new Date(productListName[productListName.length - 1].updated_date) == new Date(param.max_update)){
-          return resolve(productListName);
+      if(productList.length != 0){
+        if(new Date(productList[productList.length - 1].updated_date) == new Date(param.max_update)){
+          return resolve(productList);
         }else{
           // Select by last id
           let setMax = '2000-10-01';
-          if(new Date(productListName[productListName.length - 1].updated_date) < new Date(param.max_update)){
-            setMax = productListName[productListName.length - 1].updated_date;
+          if(new Date(productList[productList.length - 1].updated_date) < new Date(param.max_update)){
+            setMax = productList[productList.length - 1].updated_date;
           } else {
             setMax = param.max_update;
           }
           // console.log(setMax);
           param.apiService
-          .post("/api/product/autocompleteProductNameList",{'max_update':setMax})
+          .post("/api/product/getAllProductStore",{'max_update':setMax})
           .subscribe(
               (resule) => { 
                 // console.log(resule);
                 if(!resule.status){
-                  return resolve(productListName);
+                  return resolve(productList);
                 } else {
                   resule.data.forEach(element => {
-                    let newDate = productListName.filter(function(el) {
+                    let newDate = productList.filter(function(el) {
                       return el.id !== element.id;
                     });
-                    productListName = newDate;
-                    productListName.push(element);
+                    productList = newDate;
+                    productList.push(element);
                   });
-                  storage.setItem('productlistname',JSON.stringify(productListName));
-                  return resolve(productListName);
+                  storage.setItem('productlist',JSON.stringify(productList));
+                  return resolve(productList);
                 } 
               },
               (error) => {
@@ -152,11 +152,11 @@ export class ProductStorageService {
       }else{
         //Select all first
         param.apiService
-        .post("/api/product/autocompleteProductNameList",{'max_update':'2000-10-01'})
+        .post("/api/product/getAllProductStore",{'max_update':'2000-10-01'})
         .subscribe(
           (result) => { 
             // console.log(result); 
-            storage.setItem('productlistname',JSON.stringify(result.data));
+            storage.setItem('productlist',JSON.stringify(result.data));
             return resolve(result.data); 
           },
           (error) => {
@@ -166,6 +166,30 @@ export class ProductStorageService {
         );
       }
     });
+  }
+
+
+  /**
+   * When Remove Product Out
+   * 
+   * @param product 
+   * @access public
+   * @return productList
+   */
+  public deleteProductStore(product: any){
+    let storage = localStorage;
+    let productList = [];
+    // Get data from local storage
+    if(storage.getItem('productlist')){
+      productList = JSON.parse(storage.getItem('productlist'));
+    }
+
+    let newDate = productList.filter(function(el) {
+      return el.id !== product.id;
+    });
+    productList = newDate;
+    storage.setItem('productlist',JSON.stringify(productList));
+    this._producList.next(productList);
   }
 
 }
