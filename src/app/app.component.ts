@@ -109,7 +109,7 @@ public checkLoginDoneAction(res:any){
       if(res.data){
         this.hiddenTopBar = false;
         this.hiddenSideBar = false;
-        $("#main").removeClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be 0 px.
+        $("#main").removeClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be not 0 px.
       }else{
         this.hiddenTopBar = true;
         this.hiddenSideBar = true;
@@ -148,7 +148,7 @@ public showNav(obj:any){
         $("#main").addClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be 0 px.
         $(".mdl-layout__obfuscator").removeClass("is-visible"); // If this class active it will disable black page of mian page
       } else {
-        $("#main").removeClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be 0 px.
+        $("#main").removeClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be not 0 px.
       }
     }
 

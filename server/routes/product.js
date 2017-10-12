@@ -446,7 +446,7 @@ router.post("/delete_product",(req, res, next) => {
  * @param max_id
  * @return JSON
  */
-router.post("/autocompleteProductNameList",(req, res, next) => {
+router.post("/getAllProductStore",(req, res, next) => {
   let max_update = req.body.max_update;
   let connection = conn.init();
 
@@ -460,7 +460,7 @@ router.post("/autocompleteProductNameList",(req, res, next) => {
     return new Promise((resolve, reject) => {
       let get = {
         fields: [
-          "id, code, product_name as name, DATE_FORMAT(updated_date, '%Y-%m-%d %H:%i:%s') as updated_date"
+          "id, code, product_name as name, product_description, DATE_FORMAT(updated_date, '%Y-%m-%d %H:%i:%s') as updated_date"
         ],
         table: "product",
         where: "status = 'Y' and updated_date > " + "date_format('" + max_update + "', '%Y-%m-%d %H:%i:%s')",
