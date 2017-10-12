@@ -37,11 +37,11 @@ export class ProductStorageService {
   }
 
 
-/**
- * Automatic start function
- * 
- * @access public 
- */
+  /**
+   * Automatic start function
+   * 
+   * @access public 
+   */
   public ngOnInit(){
     let $scope:any;
   }
@@ -53,11 +53,11 @@ export class ProductStorageService {
    * @param call back
    * @return call back
    */
-  public autocomplete(){
+  public productListGetting(){
     let $scope:any;
     let that = this;
     this.getMaxProductId(this.apiService)
-    .then(this.getProductNameList)
+    .then(this.getProductList)
     .then((data) => {
       console.log("test");
       that._producList.next(data);
@@ -102,7 +102,7 @@ export class ProductStorageService {
    * 
    * @access public
    */
-  public getProductNameList(param):Promise<any> {
+  public getProductList(param):Promise<any> {
    let storage = localStorage;
    let productList = [];
     // Get data from local storage

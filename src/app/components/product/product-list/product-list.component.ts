@@ -4,6 +4,7 @@ import { DialogService } from "../../../service/dialog.service";
 import { ApiService } from "../../../service/api.service";
 import { RootscopeService } from "../../../service/rootscope.service";
 import { ProductManageComponent } from '../product-manage/product-manage.component';
+import { ProductStorageService } from "../../../service/product-storage.service";
 declare var $ : any;
 declare var toastr : any;
 
@@ -34,7 +35,8 @@ export class ProductListComponent implements OnInit {
     public apiService: ApiService ,
     public $rootscope: RootscopeService,
     public _elRef: ElementRef,
-    public dialogService: DialogService
+    public dialogService: DialogService,
+    public productStoreService: ProductStorageService
   ) { }
 
   ngOnInit() {
@@ -139,6 +141,7 @@ export class ProductListComponent implements OnInit {
                 toastr.success('ลบข้อมูลสำเร็จ', 'Success!');
                 this.getAllProduct();
                 this.deleteProductDialog.close();
+                this.productStoreService.deleteProductStore(param);
               },
               (error) => {
                 console.log(error);
