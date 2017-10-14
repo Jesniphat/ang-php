@@ -512,7 +512,6 @@ router.post("/getAllProductStore",(req, res, next) => {
 router.post("/maxProductUpdate", (req, res, next) => {
   let connection = conn.init();
 
-
   /**
    * Get product max id
    * 
@@ -552,6 +551,66 @@ router.post("/maxProductUpdate", (req, res, next) => {
       error: error
     });
   });
+});
+
+
+/**
+ * Save stock in
+ */
+router.post('/saveStockIn', (req, res, next) => {
+  let connection = conn.init();
+  let stock = req.body;
+
+  /**Begin transection */
+  let beginTransection = function(){
+    return new Promise((resolve, reject) => {
+      db.BeginTransaction(connection, success => resolve(success), errors => reject(errors));
+    });
+  }
+
+
+  let saveStock = function(){
+    return new Promise((resolve, reject) => {
+      let insert = {
+        table: "lot_in",
+        query: {
+          product_id: stock.product_id,
+          // product_code: stock.product_code,
+          lot_in: stock.product_qty,
+          uuid: uuidv1()
+        }
+      }
+      let insertStock = db.Insert(
+        connection, insert, 
+        results => resolve(results.insert_id), 
+        errors => reject(errors));
+    });
+  }
+
+  beginTransection()
+  .then(saveStock)
+  .then((stock_id) => {
+    return new Promise((resolve, reject) => {
+      console.log("commit");
+      db.Commit(connection, (success) => {
+        console.log("commited !!");
+				res.json({
+					status: true,
+					data: success
+				});
+        resolve(success);
+      }, errors => reject(errors));
+    });
+  }).catch((errors) => {
+    console.log("Roll back error is", errors);
+		db.Rollback(connection, (roll) => {
+			res.json({
+				status: false,
+				error: errors
+			});
+		});
+  })
+
 });
 
 module.exports = router;

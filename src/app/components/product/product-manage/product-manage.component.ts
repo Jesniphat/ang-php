@@ -70,8 +70,8 @@ export class ProductManageComponent implements OnInit {
 					this.product.staffid = logindata.id;
 			}
 
-			if(this.route.snapshot.params['id']){
-				this.product.id = this.route.snapshot.params['id'];
+			if(this.route.snapshot.paramMap.has('id')){
+				this.product.id = this.route.snapshot.paramMap.get('id');
 			} else {
 				this.product.id = this.productId;
 			}
@@ -283,7 +283,7 @@ export class ProductManageComponent implements OnInit {
 			price: 0,
 			cost: 0,
 			pic_id: [],
-			staffid: "0",
+			staffid: this.product.staffid,
 			pic_ids: "",
 			category: this.categoryLists[0].id,
 			productImage: <any>null,

@@ -113,7 +113,7 @@ export class ProductStorageService {
     return new Promise<any>((resolve, reject) => {
       let listData:any;
       if(productList.length != 0){
-        if(new Date(productList[productList.length - 1].updated_date) == new Date(param.max_update)){
+        if(productList[productList.length - 1].updated_date === param.max_update){
           return resolve(productList);
         }else{
           // Select by last id

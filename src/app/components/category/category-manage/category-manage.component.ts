@@ -17,9 +17,24 @@ declare var toastr: any;
   providers: []
 })
 export class CategoryManageComponent implements OnInit {
+  /**
+   * BlockUI Setting
+   */
   @BlockUI() blockUI: NgBlockUI;
+
+  /**
+   * Data from parent page e.g. category_list 
+   */
   @Input() categoryId:any;
+
+  /**
+   * Sent date back to parent page e.g. category_list
+   */
   @Output() childResult: EventEmitter<number> = new EventEmitter();
+
+  /**
+   * Varable
+   */
   public error: string = "";
   public cate = {
     cateId: "",
@@ -56,8 +71,8 @@ export class CategoryManageComponent implements OnInit {
   public ngOnInit() {
     console.log("category_managet.component");
     this.imgLink = this.apiService.img;
-    if(this.route.snapshot.params['id']){
-      this.cate.cateId = this.route.snapshot.params['id'];
+    if(this.route.snapshot.paramMap.has('id')){
+      this.cate.cateId = this.route.snapshot.paramMap.get('id');
     } else {
       this.cate.cateId = this.categoryId;
     }

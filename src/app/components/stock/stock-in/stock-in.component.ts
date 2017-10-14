@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProductStorageService } from "../../../service/product-storage.service";
 import { ApiService } from "../../../service/api.service";
+import { DialogService } from "../../../service/dialog.service";
+import { RootscopeService } from "../../../service/rootscope.service";
 
 declare let $: any;
+declare var toastr: any;
 
 @Component({
   selector: 'app-stock-in',
@@ -17,12 +20,14 @@ export class StockInComponent implements OnInit {
   public productNameList:any;
   public productId:any = 0;
   public productName:any = "";
+  public storage: any;
 
   public stockInProduct:any = {
     id:"",
     code: "",
     name: "",
-    qty:  ""
+    qty:  "",
+    staffid:0
   }
 
 
@@ -53,8 +58,12 @@ export class StockInComponent implements OnInit {
    * @param storages
    * @access public 
    */
-  public constructor( public storages:ProductStorageService, public apiService: ApiService,) {
-  }
+  public constructor( 
+    public storages:ProductStorageService, 
+    public apiService: ApiService, 
+    public dialogService: DialogService,
+    public $rootScope: RootscopeService,
+  ) { }
 
 
   /**
@@ -64,6 +73,12 @@ export class StockInComponent implements OnInit {
    */
   public ngOnInit() {
     // console.log(this.storages.getProductNameList());
+    this.storage = localStorage;
+    if (this.storage.getItem('logindata')) {
+      let logindata = JSON.parse(this.storage.getItem('logindata'));
+      this.stockInProduct.staffid = logindata.id;
+  }
+
     this.storages.$productList.subscribe(data => this.getProductNameList(data));
     this.storages.productListGetting();
   }
@@ -76,7 +91,7 @@ export class StockInComponent implements OnInit {
    */
   public searchProduct() {
     console.log($('#product-id').val());
-
+    this.$rootScope.setBlock(true);
     let param = {
       product_id: $('#product-id').val()
     };
@@ -99,6 +114,7 @@ export class StockInComponent implements OnInit {
     this.stockInProduct.id = res.data.id;
     this.stockInProduct.code = res.data.code;
     this.stockInProduct.name = res.data.product_name;
+    this.$rootScope.setBlock(false);
   }
 
 
@@ -111,6 +127,7 @@ export class StockInComponent implements OnInit {
    */
   public getProductByidErrorAction(error){
     console.log(error);
+    this.$rootScope.setBlock(false);
   }
 
 
@@ -148,8 +165,33 @@ export class StockInComponent implements OnInit {
     let param = {
       product_id: this.stockInProduct.id,
       product_code: this.stockInProduct.code,
-      product_qty: this.stockInProduct.qty
+      product_qty: this.stockInProduct.qty,
+      staff_id: this.stockInProduct.staffid
     }
+    this.apiService
+      .post("/api/product/saveStockIn", param)
+      .subscribe(
+      res => this.saveStockDoneAction(res),
+      error => this.saveStockErrorAction(error)
+    )
+  }
+
+
+  private saveStockDoneAction(res: any) {
+    console.log(res);
+    if(res.status === true){
+      this.reset();
+			toastr.success('บันทึกข้อมูลสำเร็จ', 'Success!');
+    }else{
+      console.log("can't save ", res.error);
+			toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
+    }
+  }
+
+
+  private saveStockErrorAction(error: any) {
+    console.log("can't save ", error);
+    toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
   }
 
 
@@ -165,7 +207,8 @@ export class StockInComponent implements OnInit {
       id:"",
       code: "",
       name: "",
-      qty:  ""
+      qty:  "",
+      staffid: this.stockInProduct.staffid
     }
     this.options.data = [];
     $("#product-id").val('');

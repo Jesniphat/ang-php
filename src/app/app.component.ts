@@ -33,7 +33,6 @@ export class AppComponent {
   public storage: any;
   public staffData:any;
   public display_name: any;
-  public menuId: any[];
   public dropDownMenu: any;
   public sideHeight:string = "611px";
   public leftPad:string = "0px";
@@ -190,6 +189,8 @@ public block(obj:any) {
       this.blockUI.start('Loading...');
     }else{
       this.blockUI.stop();
+
+      // This function for clear site bar and black page when page is minisize and click site bar menu 
       let pageWidth = document.body.clientWidth;
       if(pageWidth < 1200){
         $("#my-side-bar").attr("aria-hidden",true); // This element if it minisize and have aria-hidden = true side bar will show maybe it not need
