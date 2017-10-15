@@ -210,8 +210,8 @@ export class StockInComponent implements OnInit {
       qty:  "",
       staffid: this.stockInProduct.staffid
     }
-    this.options.data = [];
-    $("#product-id").val('');
+    // this.options.data = [];
+    // $("#product-id").val('');
   }
 
 }
