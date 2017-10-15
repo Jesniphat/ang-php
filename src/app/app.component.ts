@@ -109,10 +109,12 @@ public checkLoginDoneAction(res:any){
         this.hiddenTopBar = false;
         this.hiddenSideBar = false;
         $("#main").removeClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be not 0 px.
+        $("#main").removeClass("hiddenTopMargin");
       }else{
         this.hiddenTopBar = true;
         this.hiddenSideBar = true;
         $("#main").addClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be 0 px.
+        $("#main").addClass("hiddenTopMargin");
       }
     } else {
       // do something in global
@@ -143,6 +145,12 @@ public showNav(obj:any){
       let show = obj;
       this.hiddenTopBar = show.hiddenTopBar;
       this.hiddenSideBar = show.hiddenSideBar;
+      if(show.hiddenTopBar){
+        $("#main").addClass("hiddenTopMargin");
+      }else{
+        $("#main").removeClass("hiddenTopMargin");
+      }
+      
       if(show.hiddenSideBar){
         $("#main").addClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be 0 px.
         $(".mdl-layout__obfuscator").removeClass("is-visible"); // If this class active it will disable black page of mian page

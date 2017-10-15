@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+
+import { ProductManageComponent } from '../product-manage/product-manage.component';
+
 import { ProductStorageService } from "../../../service/product-storage.service";
 import { ApiService } from "../../../service/api.service";
 import { DialogService } from "../../../service/dialog.service";
@@ -13,13 +16,17 @@ declare var toastr: any;
   styleUrls: ['./stock-in.component.css']
 })
 export class StockInComponent implements OnInit {
+
+  /** Connect to child */
+  @ViewChild(ProductManageComponent) public productManageComponent: ProductManageComponent;
+  public productId:any = 'create';
   
   /**
    * Create var
    */
-  public productNameList:any;
-  public productId:any = 0;
-  public productName:any = "";
+  public productNameList:any[];
+  // public productId:number = 0;
+  public productName:string = "";
   public storage: any;
 
   public stockInProduct:any = {
@@ -29,6 +36,15 @@ export class StockInComponent implements OnInit {
     qty:  "",
     staffid:0
   }
+
+  /** Data table var */
+  public stockList: any[] = [];
+  public columns = [
+    { name: 'Code', prop: 'code' },
+    { name: 'Name', prop: 'product_name' },
+    { name: 'Lot In', prop: 'lot_in' },
+    { name: 'Price', prop: 'product_price'}
+  ];
 
 
   /**
@@ -50,6 +66,9 @@ export class StockInComponent implements OnInit {
       }
     }
   };
+
+  /** Dialog */
+  public addProductDialog:any;
 
   
   /**
@@ -73,14 +92,17 @@ export class StockInComponent implements OnInit {
    */
   public ngOnInit() {
     // console.log(this.storages.getProductNameList());
+    this.$rootScope.setBlock(false);
     this.storage = localStorage;
     if (this.storage.getItem('logindata')) {
       let logindata = JSON.parse(this.storage.getItem('logindata'));
       this.stockInProduct.staffid = logindata.id;
-  }
+    }
 
     this.storages.$productList.subscribe(data => this.getProductNameList(data));
     this.storages.productListGetting();
+
+    this.addProductDialog = this.dialogService.build(document.getElementById('add-product'));
   }
 
 
@@ -91,6 +113,12 @@ export class StockInComponent implements OnInit {
    */
   public searchProduct() {
     console.log($('#product-id').val());
+    if(!$('#product-id').val()){
+      this.productId = "create";
+      this.addProductDialog.showModal();
+			this.productManageComponent.reset();
+      return;
+    }
     this.$rootScope.setBlock(true);
     let param = {
       product_id: $('#product-id').val()
@@ -110,10 +138,13 @@ export class StockInComponent implements OnInit {
    * @access public
    * @return void
    */
-  public getProductByidDoneAction(res){
+  public getProductByidDoneAction(res: any){
     this.stockInProduct.id = res.data.id;
     this.stockInProduct.code = res.data.code;
     this.stockInProduct.name = res.data.product_name;
+
+    this.getStockList(res.data.id);
+
     this.$rootScope.setBlock(false);
   }
 
@@ -125,7 +156,7 @@ export class StockInComponent implements OnInit {
    * @access public
    * @return void
    */
-  public getProductByidErrorAction(error){
+  public getProductByidErrorAction(error: any){
     console.log(error);
     this.$rootScope.setBlock(false);
   }
@@ -162,6 +193,7 @@ export class StockInComponent implements OnInit {
    */
   public saveLotIn(){
     console.log("save lot in");
+    this.$rootScope.setBlock(true);
     let param = {
       product_id: this.stockInProduct.id,
       product_code: this.stockInProduct.code,
@@ -176,24 +208,56 @@ export class StockInComponent implements OnInit {
     )
   }
 
-
+/**
+ * Save stock done.
+ * 
+ * @param res 
+ * @access private
+ */
   private saveStockDoneAction(res: any) {
     console.log(res);
     if(res.status === true){
       this.reset();
+      this.$rootScope.setBlock(false);
+      this.searchProduct();
 			toastr.success('บันทึกข้อมูลสำเร็จ', 'Success!');
     }else{
       console.log("can't save ", res.error);
+      this.$rootScope.setBlock(false);
 			toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
     }
   }
 
 
+  /**
+   * Save stock error
+   * 
+   * @param error 
+   * @access private
+   */
   private saveStockErrorAction(error: any) {
     console.log("can't save ", error);
+    this.$rootScope.setBlock(false);
     toastr.warning('บันทึกข้อมูลไม่สำเร็จ', 'Warning!');
   }
 
+
+  /**
+   * Get stock list
+   * 
+   * @access private
+   */
+  private getStockList(id: any) {
+    let param = {
+      product_id: id//$('#product-id').val()
+    };
+    this.apiService
+    .post("/api/product/getStockList", param)
+    .subscribe(
+      res => this.stockList = res.data,
+      error => console.log(error)
+    )
+  }
 
   /**
    * Reset every thing

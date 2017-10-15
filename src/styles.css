@@ -36,6 +36,10 @@
   margin-left: 0px !important;
 }
 
+.hiddenTopMargin {
+  margin-top:  0px !important;
+}
+
 /* Style for Autocomplete*/
 .fifty {
   width: 50%;

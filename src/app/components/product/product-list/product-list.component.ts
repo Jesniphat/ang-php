@@ -14,7 +14,7 @@ declare var toastr : any;
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  @ViewChild(ProductManageComponent) private productManageComponent: ProductManageComponent;
+  @ViewChild(ProductManageComponent) public productManageComponent: ProductManageComponent;
   public error:any;
   public categoryLists = [];
   public productLists:any = [];
