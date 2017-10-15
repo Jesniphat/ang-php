@@ -6,12 +6,14 @@ import { HttpModule } from "@angular/http";
 import { Uploader }      from 'angular2-http-file-upload';
 import { BlockUIModule } from 'ng-block-ui';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import { SharedModule } from "../../shared/shared.module";
 
 import { routing } from "./product.routing";
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductManageComponent } from './product-manage/product-manage.component';
+import { StockInComponent } from './stock-in/stock-in.component';
 
 // import { TableFilterPipe } from '../../pipes/table-filter.pipe';
 // import { PageNumberPipe } from '../../pipes/page-number.pipe';
@@ -25,6 +27,7 @@ import { ProductManageComponent } from './product-manage/product-manage.componen
     HttpModule,
     BlockUIModule,
     AngularMultiSelectModule,
+    NgxDatatableModule,
 
     SharedModule,
 
@@ -35,7 +38,8 @@ import { ProductManageComponent } from './product-manage/product-manage.componen
     // PageNumberPipe,
     // PageListPipe,
     ProductListComponent, 
-    ProductManageComponent
+    ProductManageComponent,
+    StockInComponent
   ],
   providers: [ 
     Uploader 

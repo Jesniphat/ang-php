@@ -56,3 +56,25 @@
 		</div>
 	</div>
 </form>
+
+<div class="mdl-grid">
+  <ngx-datatable
+    #mydatatable
+    class="material striped mdl-data-table mdl-js-data-table mdl-cell mdl-cell--12-col"
+    [headerHeight]="50"
+    [limit]="5"
+    [columns]="columns"
+    [columnMode]="'force'"
+    [footerHeight]="50"
+    [rowHeight]="'auto'"
+    [rows]="stockList">
+  </ngx-datatable>
+</div>
+
+<div class="mdl-grid">
+  <dialog class="mdl-dialog mdl-cell mdl-cell--7-col" id='add-product' style="margin: auto;overflow: scroll;max-height: 60%;">
+    <div class="mdl-dialog__content">
+      <app-product-manage [productId]="productId" (childResult)="childReturn($event)"></app-product-manage>
+    </div>
+  </dialog>
+</div>

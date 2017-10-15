@@ -33,7 +33,6 @@ export class AppComponent {
   public storage: any;
   public staffData:any;
   public display_name: any;
-  public menuId: any[];
   public dropDownMenu: any;
   public sideHeight:string = "611px";
   public leftPad:string = "0px";
@@ -110,10 +109,12 @@ public checkLoginDoneAction(res:any){
         this.hiddenTopBar = false;
         this.hiddenSideBar = false;
         $("#main").removeClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be not 0 px.
+        $("#main").removeClass("hiddenTopMargin");
       }else{
         this.hiddenTopBar = true;
         this.hiddenSideBar = true;
         $("#main").addClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be 0 px.
+        $("#main").addClass("hiddenTopMargin");
       }
     } else {
       // do something in global
@@ -144,6 +145,12 @@ public showNav(obj:any){
       let show = obj;
       this.hiddenTopBar = show.hiddenTopBar;
       this.hiddenSideBar = show.hiddenSideBar;
+      if(show.hiddenTopBar){
+        $("#main").addClass("hiddenTopMargin");
+      }else{
+        $("#main").removeClass("hiddenTopMargin");
+      }
+      
       if(show.hiddenSideBar){
         $("#main").addClass("hiddenLeftMargin"); // hiddenLeftMargin mean this element margin-left will be 0 px.
         $(".mdl-layout__obfuscator").removeClass("is-visible"); // If this class active it will disable black page of mian page
@@ -190,6 +197,8 @@ public block(obj:any) {
       this.blockUI.start('Loading...');
     }else{
       this.blockUI.stop();
+
+      // This function for clear site bar and black page when page is minisize and click site bar menu 
       let pageWidth = document.body.clientWidth;
       if(pageWidth < 1200){
         $("#my-side-bar").attr("aria-hidden",true); // This element if it minisize and have aria-hidden = true side bar will show maybe it not need

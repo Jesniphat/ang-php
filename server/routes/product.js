@@ -512,7 +512,6 @@ router.post("/getAllProductStore",(req, res, next) => {
 router.post("/maxProductUpdate", (req, res, next) => {
   let connection = conn.init();
 
-
   /**
    * Get product max id
    * 
@@ -552,6 +551,113 @@ router.post("/maxProductUpdate", (req, res, next) => {
       error: error
     });
   });
+});
+
+
+/**
+ * Save stock in
+ */
+router.post('/saveStockIn', (req, res, next) => {
+  let connection = conn.init();
+  let stock = req.body;
+
+  /**Begin transection */
+  let beginTransection = function(){
+    return new Promise((resolve, reject) => {
+      db.BeginTransaction(connection, success => resolve(success), errors => reject(errors));
+    });
+  }
+
+
+  /** Save stock */
+  let saveStock = function(){
+    return new Promise((resolve, reject) => {
+      let insert = {
+        table: "lot_in",
+        query: {
+          product_id: stock.product_id,
+          // product_code: stock.product_code,
+          lot_in: stock.product_qty,
+          uuid: uuidv1()
+        }
+      }
+      let insertStock = db.Insert(
+        connection, insert, 
+        results => resolve(results.insert_id), 
+        errors => reject(errors));
+    });
+  }
+
+  beginTransection()
+  .then(saveStock)
+  .then((stock_id) => {
+    return new Promise((resolve, reject) => {
+      console.log("commit");
+      db.Commit(connection, (success) => {
+        console.log("commited !!");
+				res.json({
+					status: true,
+					data: success
+				});
+        resolve(success);
+      }, errors => reject(errors));
+    });
+  }).catch((errors) => {
+    console.log("Roll back error is", errors);
+		db.Rollback(connection, (roll) => {
+			res.json({
+				status: false,
+				error: errors
+			});
+		});
+  })
+
+});
+
+
+router.post("/getStockList", (req, res, next) => {
+  let connection = conn.init();
+  let stock = req.body;
+
+  /** Get data of stock */
+  let getStockById = function(){
+    return new Promise((resolve, reject) => {
+      let get = {
+        fields: [
+          "s.lot_in",
+          "s.created_at",
+          "p.code",
+          "p.product_name",
+          "p.product_price"
+        ],
+        table: "lot_in s inner join product p on s.product_id = p.id",
+        where: {'p.status': 'Y', 's.product_id': stock.product_id}
+      };
+      db.SelectAll(connection, get, (data) => {
+        resolve(data);
+      },(error) => {
+        console.log(error);
+        reject("error");
+      });
+    });
+  }
+
+  getStockById()
+  .then((data) => {
+    // console.log(data[0].max);
+    res.json({
+      status: true,
+      data: data
+    });
+  })
+  .catch((error) => {
+    console.log("error => ", error);
+    res.json({
+      status: false,
+      error: error
+    });
+  });
+
 });
 
 module.exports = router;

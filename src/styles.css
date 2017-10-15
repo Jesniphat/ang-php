@@ -21,12 +21,23 @@
 @import '~@swimlane/ngx-datatable/release/themes/material.css';
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
 
+/* Material menu */
+
+.page-navigation .mdl-navigation__link .material-icons {
+  font-size: 24px;
+  margin-right: 32px;
+}
+
 .required-message {
   color: red;
 }
 
 .hiddenLeftMargin {
   margin-left: 0px !important;
+}
+
+.hiddenTopMargin {
+  margin-top:  0px !important;
 }
 
 /* Style for Autocomplete*/
