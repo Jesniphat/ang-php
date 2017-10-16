@@ -10,3 +10,7 @@
   height: 100px;
   overflow-y: hidden;
 }
+
+.card-margin {
+  margin: 8px;
+}
