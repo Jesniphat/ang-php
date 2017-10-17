@@ -1,20 +1,19 @@
 <div class="mdl-grid">
-  <div class="mdl-cell mdl-cell--2-col">
+  <div class="mdl-cell mdl-cell--12-col">
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" (click)="add_new_product('create')">
       <i class="material-icons">add</i>
       New
     </button>
-  </div>
-  <div class="mdl-cell mdl-cell--3-col">
-    <div class="ui input">
+    <br/>
+    <div class="ui input" style="margin-top:16px;">
       <input type="text" placeholder="Search..." [(ngModel)]="filterText" (focus)="focusFilter()">
     </div>
   </div>
 </div>
 
 <div class="mdl-grid">
-  <div class="mdl-cell" *ngFor="let item of productLists | tableFilter:filterText | pageNumber:{pageNo:pageNo, row: 9}">
-    <div class="demo-card-square mdl-card mdl-shadow--2dp" style="width: 100%;">
+  <div class="card-margin" *ngFor="let item of productLists | tableFilter:filterText | pageNumber:{pageNo:pageNo, row: 9}">
+    <div class="demo-card-square mdl-card mdl-shadow--2dp">
       <div class="mdl-card__title mdl-card--expand" [ngStyle]="{'background-image': 'url(' + item.img + ')', 'background-size': 'cover'}">
         <h2 class="mdl-card__title-text">{{item.product_name}}</h2>
       </div>
@@ -35,9 +34,13 @@
 
 
 <br/>
- <select class="ui search dropdown" [(ngModel)]="pageNo">
-  <option *ngFor="let page of productLists | tableFilter:filterText | pageList:9" [value]='page'>{{page}}</option>
-</select>  
+<div class="mdl-grid">
+  <div class="mdl-cell">
+      <select class="ui search dropdown" [(ngModel)]="pageNo">
+        <option *ngFor="let page of productLists | tableFilter:filterText | pageList:9" [value]='page'>{{page}}</option>
+      </select>  
+  </div>
+</div>
 
 <!-- <div class="ui small modal" id="deleteProduct">
   <div class="header">Delete product pictuer</div>
@@ -55,10 +58,6 @@
     <div class="mdl-dialog__content">
       <app-product-manage [productId]="productId" (childResult)="childReturn($event)"></app-product-manage>
     </div>
-    <!-- <div class="mdl-dialog__actions">
-      <button type="button" class="mdl-button close" (click)="dialog.close()">No</button>
-      <button type="button" class="mdl-button" (click)="categoryManageComponent.saveCategory()">Yes</button>
-    </div> -->
   </dialog>
 </div>
 

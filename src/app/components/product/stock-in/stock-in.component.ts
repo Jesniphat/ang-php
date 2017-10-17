@@ -278,4 +278,8 @@ export class StockInComponent implements OnInit {
     // $("#product-id").val('');
   }
 
+  public childReturn(result){
+		console.log(result);
+  }
+
 }
