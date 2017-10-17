@@ -13,7 +13,7 @@
     "ngbuild2": "ng build --prod",
     "dev": "ng serve --proxy-config proxy.conf.json",
     "devs": "concurrently \"ng serve --proxy-config proxy.conf2.json\" \"nodemon ./server/bin/www\" ",
-    "start2": "node ./bin/www"
+    "start2": "node ./server/bin/www"
   },
   "private": true,
   "dependencies": {
