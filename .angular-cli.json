@@ -19,6 +19,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "w3.css",
         "styles.css",
         "../node_modules/easy-autocomplete/dist/easy-autocomplete.min.css",
         "../node_modules/easy-autocomplete/dist/easy-autocomplete.themes.min.css",
