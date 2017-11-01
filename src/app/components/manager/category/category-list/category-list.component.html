@@ -1,3 +1,59 @@
-<p>
-  category-list works!
-</p>
+
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--12-col">
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" (click)="add_new_category('create')">
+      <i class="material-icons">widgets</i>
+      New
+    </button>
+  </div>
+  <div class="mdl-cell mdl-cell--12-col">
+    <div class="ui input">
+      <input type="text" placeholder="Search..." [(ngModel)]="filterText" (focus)="focusFilter()">
+    </div>
+  </div>
+</div>
+<div class="mdl-grid">
+  <ngx-datatable
+    #mydatatable
+    class="material striped mdl-data-table mdl-js-data-table mdl-cell mdl-cell--12-col"
+    [headerHeight]="50"
+    [limit]="5"
+    [columnMode]="'flex'"
+    [footerHeight]="50"
+    [rowHeight]="'auto'"
+    [rows]="categoryLists | tableFilter:filterText">
+    <ngx-datatable-column name="Category Name" prop="cate_name" [flexGrow]="2">
+      <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+        <span title="Double click to edit">
+          {{value}}
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Category Description" prop="cate_description" [flexGrow]="3">
+      <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
+        <span title="Double click to edit" >
+          {{value}}
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Action" prop="id" [flexGrow]="1" headerClass="ngx-text-center" cellClass="ngx-text-center">
+      <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
+          <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" (click)="add_new_category(value)">
+            <i class="material-icons">mode_edit</i>
+          </button>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>
+
+<div class="mdl-grid">
+  <dialog class="mdl-dialog mdl-cell mdl-cell--7-col" id="add-cate" style="margin: auto;overflow: scroll;max-height: 60%;">
+    <div class="mdl-dialog__content">
+      <app-category-manage [categoryId]="categoryId" (childResult)="childReturn($event)"></app-category-manage>
+    </div>
+    <!-- <div class="mdl-dialog__actions">
+      <button type="button" class="mdl-button close" (click)="dialog.close()">No</button>
+      <button type="button" class="mdl-button" (click)="categoryManageComponent.saveCategory()">Yes</button>
+    </div> -->
+  </dialog>
+</div>

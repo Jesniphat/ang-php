@@ -10,8 +10,12 @@ import { SharedModule }     from '../../shared/shared.module';
 
 import { BlockUIModule }    from 'ng-block-ui';
 
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { Uploader }      from 'angular2-http-file-upload';
+
 import { ManagerComponent } from './manager.component';
 import { CategoryListComponent } from './category/category-list/category-list.component';
+import { CategoryManageComponent } from './category/category-manage/category-manage.component';
 
 @NgModule({
   imports: [
@@ -24,11 +28,17 @@ import { CategoryListComponent } from './category/category-list/category-list.co
 
     routing,
 
-    SharedModule
+    SharedModule,
+
+    NgxDatatableModule
+  ],
+  providers: [ 
+    Uploader 
   ],
   declarations: [
     ManagerComponent,
-    CategoryListComponent
+    CategoryListComponent,
+    CategoryManageComponent
   ]
 })
 export class ManagerModule { }
