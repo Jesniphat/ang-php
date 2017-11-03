@@ -1,6 +1,6 @@
 let conn = require('./config');
 
-module.exports = new function() {
+let _database = new function(){
   this.BeginTransaction = function(connection, success, errors){
     connection.beginTransaction((err) => {
       if (err) {
@@ -179,5 +179,6 @@ module.exports = new function() {
       success($scrope);
     });
   }
-
 }
+
+module.exports = _database;
