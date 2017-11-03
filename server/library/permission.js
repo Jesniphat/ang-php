@@ -2,7 +2,7 @@ var promise       = require('bluebird');
 var conn          = require('./config');
 var jwt           = require('jwt-simple');
 
-module.exports = new function() {
+var _permission = new function(){
   this.secret     = "xxx";
   this.cookieName = "user";
 
@@ -47,4 +47,6 @@ module.exports = new function() {
     var token = this.readToken(req);
     return token.id;
   }
-};
+}
+
+module.exports = _permission;

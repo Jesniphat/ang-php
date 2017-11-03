@@ -1,7 +1,7 @@
 // let promise = require('bluebird');
 let db = require('./db');
 
-module.exports = new function() {
+let _gencode = new function(){
   this.Code = function(connection, table, fld, prefix, size, start, callback_success, callback_error){
     let where = " 1 = 1 ";
     if (prefix != '') {
@@ -27,3 +27,5 @@ module.exports = new function() {
     });
   }
 }
+
+module.exports = _gencode;
