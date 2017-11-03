@@ -13,6 +13,8 @@ let upload = require('./routes/upload');
 let staff = require('./routes/staff');
 // let home = require('./routes/home');
 
+const PORT = 3000;
+
 let app = express();
 
 // view engine setup
@@ -34,6 +36,10 @@ app.use('/api/product', product);
 app.use('/api/upload', upload);
 app.use('/api/staff', staff);
 
+app.get('*', (req, res) => {
+  res.render(path.join(__dirname + './dist/index.html'), {req});
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   let err = new Error('Not Found');
@@ -53,5 +59,9 @@ app.use(function(err, req, res, next) {
 });
 
 permission = require("./library/permission");
+
+// app.listen(3000, () => {
+//   console.log(`listening on `);
+// });
 
 module.exports = app;

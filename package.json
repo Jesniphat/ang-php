@@ -13,11 +13,12 @@
     "ngbuild2": "ng build --prod",
     "dev": "ng serve --proxy-config proxy.conf.json",
     "devs": "concurrently \"ng serve --proxy-config proxy.conf2.json\" \"nodemon ./server/bin/www\" ",
-    "start2": "node ./server/bin/www"
+    "start2": "node ./server/bin/www",
+    "type": "ts-node ./server/app.ts"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^4.0.1",
+    "@angular/animations": "^4.4.6",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",
     "@angular/core": "^4.0.0",
@@ -25,8 +26,10 @@
     "@angular/http": "^4.0.0",
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
+    "@angular/platform-server": "^5.0.0",
     "@angular/router": "^4.0.0",
     "@swimlane/ngx-datatable": "^10.2.3",
+    "@types/express": "^4.0.39",
     "angular2-http-file-upload": "^1.0.6",
     "angular2-multiselect-dropdown": "^1.2.3",
     "bluebird": "^3.5.0",
@@ -69,7 +72,7 @@
     "moment": "^2.18.1",
     "nodemon": "^1.11.0",
     "protractor": "^5.1.0",
-    "ts-node": "^2.0.0",
+    "ts-node": "^2.1.2",
     "tslint": "^4.5.0",
     "typescript": "^2.2.0"
   }
