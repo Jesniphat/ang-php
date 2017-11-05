@@ -2,7 +2,8 @@ var promise       = require('bluebird');
 var conn          = require('./config');
 var jwt           = require('jwt-simple');
 
-var _permission = new function(){
+module.exports = new function() {
+  // console.log("permistion");
   this.secret     = "xxx";
   this.cookieName = "user";
 

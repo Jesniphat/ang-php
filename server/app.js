@@ -11,6 +11,7 @@ let category = require('./routes/category');
 let product = require('./routes/product');
 let upload = require('./routes/upload');
 let staff = require('./routes/staff');
+let user = require('./routes/users');
 // let home = require('./routes/home');
 
 const PORT = 3000;
@@ -35,6 +36,7 @@ app.use('/api/category', category);
 app.use('/api/product', product);
 app.use('/api/upload', upload);
 app.use('/api/staff', staff);
+app.use('/api/user', user);
 
 app.get('*', (req, res) => {
   res.render(path.join(__dirname + './dist/index.html'), {req});
